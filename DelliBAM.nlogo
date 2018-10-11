@@ -1,5 +1,9 @@
 ; Bottom-up Adaptive Macroeconomics
 
+breed [firms firm]
+breed [workers worker]
+breed [banks bank]
+
 to setup
 
 end
