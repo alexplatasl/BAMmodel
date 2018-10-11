@@ -4,12 +4,29 @@ breed [firms firm]
 breed [workers worker]
 breed [banks bank]
 
+
+; Setup procedures
 to setup
+  clear-all
+
+  create-firms
+  create-workers
+  create-banks
 
 end
 
 to go
+  ; Process overview and scheduling
+  firms-calculate-production
+  labor-market
+  credit-market
+  firms-produce
+  goods-market
+  firms-pay
+  firmas-banks-survive
+  replace-bankrupt
 
+  tick
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
