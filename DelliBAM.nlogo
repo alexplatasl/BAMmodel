@@ -1,4 +1,12 @@
 ; Bottom-up Adaptive Macroeconomics
+
+to setup
+
+end
+
+to go
+
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -26,6 +34,40 @@ GRAPHICS-WINDOW
 1
 ticks
 30.0
+
+BUTTON
+22
+29
+95
+62
+NIL
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+102
+29
+165
+62
+NIL
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
