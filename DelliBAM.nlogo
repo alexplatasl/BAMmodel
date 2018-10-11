@@ -1,17 +1,56 @@
 ; Bottom-up Adaptive Macroeconomics
 
-breed [firms firm]
-breed [workers worker]
-breed [banks bank]
+breed[firms firm]
+breed[workers worker]
+breed[banks bank]
 
+firms-own[]
+workers-own[]
+banks-own[]
 
 ; Setup procedures
 to setup
   clear-all
 
-  create-firms
-  create-workers
-  create-banks
+  initialize-variables
+  start-firms number-of-firms
+  start-workers round (number-of-firms * 50)
+  start-banks round (number-of-firms / 10)
+
+  reset-ticks
+end
+
+to initialize-variables
+
+end
+
+to start-firms [#firms]
+  create-firms #firms [
+    setxy random-xcor * 0.9 random-ycor * 0.9
+    set color blue
+    set size 1.2
+    set shape "factory"
+  ]
+
+end
+
+to start-workers [#workers]
+  create-workers #workers [
+    setxy random-xcor random-ycor
+    set color yellow
+    set size 1 / log number-of-firms 3
+    set shape "person"
+  ]
+
+end
+
+to start-banks [#banks]
+  create-banks #banks[
+    setxy random-xcor * 0.9 random-ycor * 0.9
+    set color red
+    set size 1.5
+    set shape "house"
+  ]
 
 end
 
@@ -23,10 +62,40 @@ to go
   firms-produce
   goods-market
   firms-pay
-  firmas-banks-survive
+  firms-banks-survive
   replace-bankrupt
 
   tick
+end
+
+to  firms-calculate-production
+
+end
+
+to labor-market
+
+end
+to credit-market
+
+end
+
+to firms-produce
+
+end
+
+to goods-market
+
+end
+to firms-pay
+
+end
+
+to firms-banks-survive
+
+end
+
+to replace-bankrupt
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -43,8 +112,8 @@ GRAPHICS-WINDOW
 1
 1
 0
-1
-1
+0
+0
 1
 -16
 16
@@ -89,6 +158,21 @@ NIL
 NIL
 NIL
 0
+
+SLIDER
+23
+78
+201
+111
+number-of-firms
+number-of-firms
+10
+200
+10.0
+5
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -214,7 +298,7 @@ Circle -7500403 true true 90 90 120
 face happy
 false
 0
-Circle -7500403 true true 8 8 285
+Circle -1184463 true false 8 8 285
 Circle -16777216 true false 60 75 60
 Circle -16777216 true false 180 75 60
 Polygon -16777216 true false 150 255 90 239 62 213 47 191 67 179 90 203 109 218 150 225 192 218 210 203 227 181 251 194 236 217 212 240
@@ -234,6 +318,26 @@ Circle -7500403 true true 8 8 285
 Circle -16777216 true false 60 75 60
 Circle -16777216 true false 180 75 60
 Polygon -16777216 true false 150 168 90 184 62 210 47 232 67 244 90 220 109 205 150 198 192 205 210 220 227 242 251 229 236 206 212 183
+
+factory
+false
+0
+Rectangle -7500403 true true 76 194 285 270
+Rectangle -7500403 true true 36 95 59 231
+Rectangle -16777216 true false 90 210 270 240
+Line -7500403 true 90 195 90 255
+Line -7500403 true 120 195 120 255
+Line -7500403 true 150 195 150 240
+Line -7500403 true 180 195 180 255
+Line -7500403 true 210 210 210 240
+Line -7500403 true 240 210 240 240
+Line -7500403 true 90 225 270 225
+Circle -1 true false 37 73 32
+Circle -1 true false 55 38 54
+Circle -1 true false 96 21 42
+Circle -1 true false 105 40 32
+Circle -1 true false 129 19 42
+Rectangle -7500403 true true 14 228 78 270
 
 fish
 false
@@ -306,6 +410,23 @@ Polygon -7500403 true true 105 90 120 195 90 285 105 300 135 300 150 225 165 300
 Rectangle -7500403 true true 127 79 172 94
 Polygon -7500403 true true 195 90 240 150 225 180 165 105
 Polygon -7500403 true true 105 90 60 150 75 180 135 105
+
+person business
+false
+10
+Rectangle -1 true false 120 90 180 180
+Polygon -13345367 true true 135 90 150 105 135 180 150 195 165 180 150 105 165 90
+Polygon -13345367 true true 120 90 105 90 60 195 90 210 116 154 120 195 90 285 105 300 135 300 150 225 165 300 195 300 210 285 180 195 183 153 210 210 240 195 195 90 180 90 150 165
+Circle -1184463 true false 110 5 80
+Rectangle -1184463 true false 127 76 172 91
+Line -16777216 false 172 90 161 94
+Line -16777216 false 128 90 139 94
+Polygon -13345367 true true 195 225 195 300 270 270 270 195
+Rectangle -13791810 true false 180 225 195 300
+Polygon -14835848 true false 180 226 195 226 270 196 255 196
+Polygon -13345367 true true 209 202 209 216 244 202 243 188
+Line -16777216 false 180 90 150 165
+Line -16777216 false 120 90 150 165
 
 plant
 false
