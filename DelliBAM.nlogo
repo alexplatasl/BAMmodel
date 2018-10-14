@@ -10,7 +10,7 @@ firms-own[
   desired-production-Yd
   expected-demand-Dd
   desired-labor-force-Ld
-  current-numers-employees-L0
+  current-numbers-employees-L0
   number-of-vacancies-offered-V
   minimum-wage-W-hat
   wage-offered-Wb
@@ -35,23 +35,52 @@ banks-own[
   patrimonial-base-E
   interest-rate-r
   policy-rate-r-bar
-
 ]
 
 ; Setup procedures
 to setup
   clear-all
 
-  initialize-variables
   start-firms number-of-firms
   start-workers round (number-of-firms * 50)
   start-banks round (number-of-firms / 10)
+  initialize-variables
 
   reset-ticks
 end
 
 to initialize-variables
-
+  ask firms [
+    set production-Y 0
+    set labor-productivity-alpha 1
+    set desired-production-Yd 0
+    set expected-demand-Dd 0
+    set desired-labor-force-Ld 0
+    set current-numbers-employees-L0 0
+    set number-of-vacancies-offered-V 0
+    set minimum-wage-W-hat 0
+    set wage-offered-Wb 0
+    set net-worth-A 0
+    set loan-B 0
+    set trials-credit-H 0
+    set inventory-S 0
+    set individual-price-P 0
+    set minimum-price-Pl 0
+    set revenue-R 0
+    set benefits-pi 0
+  ]
+  ask workers [
+    set income 0
+    set savings 0
+    set wealth 0
+    set propensity-to-consume-c 1
+  ]
+  ask banks [
+    set total-amount-of-credit-C 0
+    set patrimonial-base-E 0
+    set interest-rate-r 0
+    set policy-rate-r-bar 0
+  ]
 end
 
 to start-firms [#firms]
