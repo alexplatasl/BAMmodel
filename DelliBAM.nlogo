@@ -4,9 +4,39 @@ breed[firms firm]
 breed[workers worker]
 breed[banks bank]
 
-firms-own[]
-workers-own[]
-banks-own[]
+firms-own[
+  production-Y
+  labor-productivity-alpha
+  desired-production-Yd
+  expected-demand-Dd
+  desired-labor-force-Ld
+  current-numers-employees-L0
+  number-of-vacancies-offered-V
+  minimum-wage-W-hat
+  wage-offered-Wb
+  net-worth-A
+  loan-B
+  trials-credit-H
+  inventory-S
+  individual-price-P
+  minimum-price-Pl
+  revenue-R
+  benefits-pi
+
+]
+workers-own[
+  income
+  savings
+  wealth
+  propensity-to-consume-c
+]
+banks-own[
+  total-amount-of-credit-C
+  patrimonial-base-E
+  interest-rate-r
+  policy-rate-r-bar
+
+]
 
 ; Setup procedures
 to setup
@@ -95,6 +125,16 @@ to firms-banks-survive
 end
 
 to replace-bankrupt
+
+end
+
+; utilities
+
+to-report average-market-price
+
+end
+
+to-report average-savings
 
 end
 @#$#@#$#@
@@ -230,6 +270,21 @@ production-shock-rho
 0.5
 0.2
 0.05
+1
+NIL
+HORIZONTAL
+
+SLIDER
+9
+262
+197
+295
+v
+v
+0
+1
+0.5
+1
 1
 NIL
 HORIZONTAL
