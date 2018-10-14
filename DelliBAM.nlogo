@@ -137,6 +137,31 @@ end
 to-report average-savings
 
 end
+
+; observation
+to-report logarithm-of-real-GDP
+
+end
+
+to-report unemployment-rate
+
+end
+
+to-report annual-inflation-rate
+
+end
+
+to-report average-real-interest-rate
+
+end
+
+to-report number-of-firms-which-go-bankrupt
+
+end
+
+to-report vacancy-rate
+
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
