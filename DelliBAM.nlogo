@@ -166,7 +166,7 @@ end
 ;;;;;;;;;; to labor-market  ;;;;;;;;;;
 to labor-market
   ask firms [
-    set desired-labor-force-Ld desired-production-Yd / labor-productivity-alpha; submodel 3
+    set desired-labor-force-Ld round (desired-production-Yd / labor-productivity-alpha); submodel 3
     set current-numbers-employees-L0 count my-employees; summodel 4
     set number-of-vacancies-offered-V max(list (desired-labor-force-Ld - current-numbers-employees-L0) 0 ); submodel 5
     if (ticks > 0 and ticks mod 4 = 0 )
@@ -184,18 +184,17 @@ to labor-market-opens
     if (not employed?)
     [
       set my-potential-firms n-of labor-market-M potential-firms
-      show max-one-of my-potential-firms [wage-offered-Wb]
       move-to max-one-of my-potential-firms [wage-offered-Wb]
     ]
   ]
 
-  ;ask firms [
-  ;  let i 0
-   ; let potential-workers workers with [my-potential-firms = myself]
+  ask firms [
+    let i 0
+    let potential-workers workers-here
 
-    ;set my-employees n-of number-of-vacancies-offered-V potential-workers
-
-  ;]
+    set my-employees n-of number-of-vacancies-offered-V potential-workers
+    set number-of-vacancies-offered-V number-of-vacancies-offered-V - count my-employees
+  ]
 
 end
 
