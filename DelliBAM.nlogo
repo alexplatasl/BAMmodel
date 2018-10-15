@@ -61,7 +61,7 @@ to initialize-variables
     set desired-production-Yd 0
     set expected-demand-De 0
     set desired-labor-force-Ld 0
-    set my-employees nobody
+    set my-employees no-turtles
     set current-numbers-employees-L0 0
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
@@ -77,6 +77,7 @@ to initialize-variables
   ]
   ask workers [
     set employed? false
+    set my-potential-firms no-turtles
     set contract 0
     set income 0
     set savings 0
@@ -181,17 +182,20 @@ to labor-market-opens
   let potential-firms firms with [number-of-vacancies-offered-V > 0]
   ask workers [
     if (not employed?)
-    [ set my-potential-firms sort-on [wage-offered-Wb] n-of labor-market-M potential-firms ]
+    [
+      set my-potential-firms n-of labor-market-M potential-firms
+      show max-one-of my-potential-firms [wage-offered-Wb]
+      move-to max-one-of my-potential-firms [wage-offered-Wb]
+    ]
   ]
 
-  ask firms [
-    let i 0
-    let potential-workers workers with [my-potential-firms = myself]
+  ;ask firms [
+  ;  let i 0
+   ; let potential-workers workers with [my-potential-firms = myself]
 
-    set my-employees n-of number-of-vacancies-offered-V potential-workers
+    ;set my-employees n-of number-of-vacancies-offered-V potential-workers
 
-  ]
-
+  ;]
 
 end
 
@@ -414,7 +418,7 @@ labor-market-M
 labor-market-M
 1
 6
-4.0
+3.0
 1
 1
 trials
