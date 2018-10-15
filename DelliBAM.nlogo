@@ -162,8 +162,9 @@ to labor-market
     set number-of-vacancies-offered-V max(list (desired-labor-force-Ld - current-numbers-employees-L0) 0 ); submodel 5
     if (ticks > 0 and ticks mod 4 = 0 )
     [set minimum-wage-W-hat minimum-wage-W-hat]; submodel 6
-    if (number-of-vacancies-offered-V = 0)
+    ifelse (number-of-vacancies-offered-V = 0)
     [set wage-offered-Wb max(list minimum-wage-W-hat wage-offered-Wb)]; submodel 7
+    [set wage-offered-Wb max(list minimum-wage-W-hat (wage-offered-Wb * (1 + wages-shock-xi)))]; submodels 8 and 9
   ]
 end
 
@@ -310,7 +311,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.0
+0.05
 0.05
 1
 NIL
@@ -325,7 +326,7 @@ interest-shock-phi
 interest-shock-phi
 0
 0.5
-0.0
+0.1
 0.05
 1
 NIL
@@ -340,7 +341,7 @@ price-shock-eta
 price-shock-eta
 0
 0.5
-0.0
+0.1
 0.05
 1
 NIL
@@ -355,7 +356,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.0
+0.1
 0.05
 1
 NIL
