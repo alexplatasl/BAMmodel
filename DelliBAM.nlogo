@@ -58,7 +58,7 @@ to initialize-variables
     set desired-labor-force-Ld 0
     set current-numbers-employees-L0 0
     set number-of-vacancies-offered-V 0
-    set minimum-wage-W-hat 0
+    set minimum-wage-W-hat 1
     set wage-offered-Wb 0
     set net-worth-A 0
     set loan-B 0
@@ -158,6 +158,12 @@ end
 to labor-market
   ask firms [
     set desired-labor-force-Ld desired-production-Yd / labor-productivity-alpha; submodel 3
+    ;set current-numbers-employees-L0 ; summodel 4
+    set number-of-vacancies-offered-V max(list (desired-labor-force-Ld - current-numbers-employees-L0) 0 ); submodel 5
+    if (ticks > 0 and ticks mod 4 = 0 )
+    [set minimum-wage-W-hat minimum-wage-W-hat]; submodel 6
+    if (number-of-vacancies-offered-V = 0)
+    [set wage-offered-Wb max(list minimum-wage-W-hat wage-offered-Wb)]; submodel 7
   ]
 end
 
