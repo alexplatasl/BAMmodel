@@ -179,32 +179,39 @@ to labor-market
 end
 
 to labor-market-opens
-
   let potential-firms firms with [number-of-vacancies-offered-V > 0]
   ask workers [
     if (not employed?)
     [
       set my-potential-firms n-of labor-market-M potential-firms
-      move-to max-one-of my-potential-firms [wage-offered-Wb]
     ]
   ]
 
-  ask firms [
+  while [
+    not empty? [my-potential-firms] of (workers with [not employed?]) and
+    (sum [number-of-vacancies-offered-V] of firms ) > 0
+  ][
+    ask firms [
+      ask workers [move-to max-one-of my-potential-firms [wage-offered-Wb]]
 
-    let potential-workers workers-here
-    let workers-hired n-of number-of-vacancies-offered-V potential-workers
-    set my-employees workers-hired
-    set number-of-vacancies-offered-V number-of-vacancies-offered-V - count my-employees
-    ask my-employees [
-      set color green
-      set employed? true
-      set contract 8
-      set my-firm firms-here
+      let potential-workers workers-here
+      let workers-hired n-of number-of-vacancies-offered-V potential-workers
+      set my-employees workers-hired
+      set number-of-vacancies-offered-V number-of-vacancies-offered-V - count my-employees
+      ask my-employees [
+        set color green
+        set employed? true
+        set contract random-poisson 10
+        set my-firm firms-here
+        set my-potential-firms no-turtles
+      ]
+    ]
+    ask workers with [not employed?] [
+      let best-firm max-one-of my-potential-firms [wage-offered-Wb]
+      set my-potential-firms my-potential-firms with [ self != best-firm]
+      show my-potential-firms
     ]
   ]
-
-
-
 end
 
 to credit-market
