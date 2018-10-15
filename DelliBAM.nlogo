@@ -10,6 +10,7 @@ firms-own[
   desired-production-Yd
   expected-demand-De
   desired-labor-force-Ld
+  my-employees
   current-numbers-employees-L0
   number-of-vacancies-offered-V
   minimum-wage-W-hat
@@ -25,6 +26,10 @@ firms-own[
 
 ]
 workers-own[
+  employed?
+  my-potential-firms
+  my-firm
+  contract
   income
   savings
   wealth
@@ -56,6 +61,7 @@ to initialize-variables
     set desired-production-Yd 0
     set expected-demand-De 0
     set desired-labor-force-Ld 0
+    set my-employees nobody
     set current-numbers-employees-L0 0
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
@@ -70,6 +76,8 @@ to initialize-variables
     set benefits-pi 0
   ]
   ask workers [
+    set employed? false
+    set contract 0
     set income 0
     set savings 0
     set wealth 0
@@ -158,7 +166,7 @@ end
 to labor-market
   ask firms [
     set desired-labor-force-Ld desired-production-Yd / labor-productivity-alpha; submodel 3
-    ;set current-numbers-employees-L0 ; summodel 4
+    set current-numbers-employees-L0 count my-employees; summodel 4
     set number-of-vacancies-offered-V max(list (desired-labor-force-Ld - current-numbers-employees-L0) 0 ); submodel 5
     if (ticks > 0 and ticks mod 4 = 0 )
     [set minimum-wage-W-hat minimum-wage-W-hat]; submodel 6
@@ -166,6 +174,25 @@ to labor-market
     [set wage-offered-Wb max(list minimum-wage-W-hat wage-offered-Wb)]; submodel 7
     [set wage-offered-Wb max(list minimum-wage-W-hat (wage-offered-Wb * (1 + wages-shock-xi)))]; submodels 8 and 9
   ]
+  labor-market-opens
+end
+
+to labor-market-opens
+  let potential-firms firms with [number-of-vacancies-offered-V > 0]
+  ask workers [
+    if (not employed?)
+    [ set my-potential-firms sort-on [wage-offered-Wb] n-of labor-market-M potential-firms ]
+  ]
+
+  ask firms [
+    let i 0
+    let potential-workers workers with [my-potential-firms = myself]
+
+    set my-employees n-of number-of-vacancies-offered-V potential-workers
+
+  ]
+
+
 end
 
 to credit-market
@@ -206,8 +233,9 @@ to-report logarithm-of-real-GDP
 
 end
 
-to-report unemployment-rate
-
+to unemployment-rate
+  let unemployed count workers with [not employed?]
+  plot unemployed / count workers
 end
 
 to-report annual-inflation-rate
@@ -376,6 +404,39 @@ v
 1
 NIL
 HORIZONTAL
+
+SLIDER
+9
+299
+198
+332
+labor-market-M
+labor-market-M
+1
+6
+4.0
+1
+1
+trials
+HORIZONTAL
+
+PLOT
+655
+10
+855
+130
+Unemployment rate
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "unemployment-rate"
 
 @#$#@#$#@
 ## WHAT IS IT?
