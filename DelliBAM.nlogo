@@ -8,7 +8,7 @@ firms-own[
   production-Y
   labor-productivity-alpha
   desired-production-Yd
-  expected-demand-Dd
+  expected-demand-De
   desired-labor-force-Ld
   current-numbers-employees-L0
   number-of-vacancies-offered-V
@@ -51,10 +51,10 @@ end
 
 to initialize-variables
   ask firms [
-    set production-Y 0
+    set production-Y random-poisson 4 + 4
     set labor-productivity-alpha 1
     set desired-production-Yd 0
-    set expected-demand-Dd 0
+    set expected-demand-De 0
     set desired-labor-force-Ld 0
     set current-numbers-employees-L0 0
     set number-of-vacancies-offered-V 0
@@ -63,9 +63,9 @@ to initialize-variables
     set net-worth-A 0
     set loan-B 0
     set trials-credit-H 0
-    set inventory-S 0
-    set individual-price-P 0
-    set minimum-price-Pl 0
+    set inventory-S one-of [0 1]
+    set individual-price-P random-poisson 4  + 4
+    set minimum-price-Pl 4
     set revenue-R 0
     set benefits-pi 0
   ]
@@ -114,6 +114,7 @@ to start-banks [#banks]
 end
 
 to go
+  if ticks >= 1 [stop]
   ; Process overview and scheduling
   firms-calculate-production
   labor-market
@@ -126,14 +127,40 @@ to go
 
   tick
 end
-
-to  firms-calculate-production
-
+;;;;;;;;;; to firms-calculate production ;;;;;;;;;;
+to firms-calculate-production
+  adapt-individual-price
+  adapt-expected-demand
+  ask firms [
+    set desired-production-Yd expected-demand-De; submodel 2
+    set production-Y desired-production-Yd; submodel 1
+  ]
 end
 
+to adapt-individual-price; submodel 27 y 28
+  ask firms [
+    if (inventory-S = 0 and individual-price-P <  average-market-price)
+    [set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 + price-shock-eta)))]
+    if (inventory-S > 0 and individual-price-P >= average-market-price)
+    [set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 - price-shock-eta)))]
+  ]
+end
+
+to adapt-expected-demand; submodel 29 y 30
+  ask firms [
+    if (inventory-S = 0 and individual-price-P >= average-market-price)
+    [set expected-demand-De production-Y * (1 + production-shock-rho)]
+    if (inventory-S > 0 and individual-price-P < average-market-price)
+    [set expected-demand-De production-Y * (1 - production-shock-rho)]
+  ]
+end
+;;;;;;;;;; to labor-market  ;;;;;;;;;;
 to labor-market
-
+  ask firms [
+    set desired-labor-force-Ld desired-production-Yd / labor-productivity-alpha; submodel 3
+  ]
 end
+
 to credit-market
 
 end
@@ -160,7 +187,7 @@ end
 ; utilities
 
 to-report average-market-price
-
+  report mean [individual-price-P] of firms
 end
 
 to-report average-savings
@@ -277,7 +304,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.1
+0.0
 0.05
 1
 NIL
@@ -292,7 +319,7 @@ interest-shock-phi
 interest-shock-phi
 0
 0.5
-0.2
+0.0
 0.05
 1
 NIL
@@ -307,7 +334,7 @@ price-shock-eta
 price-shock-eta
 0
 0.5
-0.2
+0.0
 0.05
 1
 NIL
@@ -322,7 +349,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.2
+0.0
 0.05
 1
 NIL
