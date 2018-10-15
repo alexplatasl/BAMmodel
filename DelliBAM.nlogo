@@ -179,6 +179,7 @@ to labor-market
 end
 
 to labor-market-opens
+
   let potential-firms firms with [number-of-vacancies-offered-V > 0]
   ask workers [
     if (not employed?)
@@ -189,12 +190,20 @@ to labor-market-opens
   ]
 
   ask firms [
-    let i 0
-    let potential-workers workers-here
 
-    set my-employees n-of number-of-vacancies-offered-V potential-workers
+    let potential-workers workers-here
+    let workers-hired n-of number-of-vacancies-offered-V potential-workers
+    set my-employees workers-hired
     set number-of-vacancies-offered-V number-of-vacancies-offered-V - count my-employees
+    ask my-employees [
+      set color green
+      set employed? true
+      set contract 8
+      set my-firm firms-here
+    ]
   ]
+
+
 
 end
 
