@@ -175,7 +175,18 @@ to labor-market
     [set wage-offered-Wb max(list minimum-wage-W-hat wage-offered-Wb)]; submodel 7
     [set wage-offered-Wb max(list minimum-wage-W-hat (wage-offered-Wb * (1 + wages-shock-xi)))]; submodels 8 and 9
   ]
-  labor-market-opens
+  labor-market-opens2
+end
+
+to labor-market-opens2
+  if (sum [number-of-vacancies-offered-V] of firms > 0) [
+    let potential-firms firms with [number-of-vacancies-offered-V > 0]
+    ask workers with [not employed?][
+      ifelse (any? [my-firm] of my-potential-firms)
+      [set my-potential-firms (turtle-set my-firm n-of (labor-market-M - 1 ) my-potential-firms)]
+      [set my-potential-firms n-of labor-market-M my-potential-firms]
+    ]
+  ]
 end
 
 to labor-market-opens
