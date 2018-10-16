@@ -78,6 +78,7 @@ to initialize-variables
   ask workers [
     set employed? false
     set my-potential-firms no-turtles
+    set my-firm nobody
     set contract 0
     set income 0
     set savings 0
@@ -175,41 +176,38 @@ to labor-market
     [set wage-offered-Wb max(list minimum-wage-W-hat wage-offered-Wb)]; submodel 7
     [set wage-offered-Wb max(list minimum-wage-W-hat (wage-offered-Wb * (1 + wages-shock-xi)))]; submodels 8 and 9
   ]
-  labor-market-opens2
-end
-
-to labor-market-opens2
-  if (sum [number-of-vacancies-offered-V] of firms > 0) [
-    let potential-firms firms with [number-of-vacancies-offered-V > 0]
-    ask workers with [not employed?][
-      ifelse (any? [my-firm] of my-potential-firms)
-      [set my-potential-firms (turtle-set my-firm n-of (labor-market-M - 1 ) my-potential-firms)]
-      [set my-potential-firms n-of labor-market-M my-potential-firms]
-    ]
-  ]
+  labor-market-opens
 end
 
 to labor-market-opens
-  let potential-firms firms with [number-of-vacancies-offered-V > 0]
-  ask workers [
-    if (not employed?)
-    [
-      set my-potential-firms n-of labor-market-M potential-firms
+  if (sum [number-of-vacancies-offered-V] of firms > 0) [
+    let potential-firms firms with [number-of-vacancies-offered-V > 0]
+    ask workers with [not employed?][
+      ifelse (not empty? [my-firm] of my-potential-firms)
+      [set my-potential-firms (turtle-set my-firm n-of (labor-market-M - 1 ) potential-firms)]
+      [set my-potential-firms n-of labor-market-M potential-firms]
     ]
   ]
 
-  while [
-    not empty? [my-potential-firms] of (workers with [not employed?]) and
-    (sum [number-of-vacancies-offered-V] of firms ) > 0
-  ][
-    ask firms [
-      ask workers [move-to max-one-of my-potential-firms [wage-offered-Wb]]
+  hiring-step labor-market-M
+  ask workers with [not employed?][
+    rt random 360
+    fd (random 4) + 2
+  ]
+end
 
-      let potential-workers workers-here
+to hiring-step [trials]
+  while [trials > 0]
+  [
+    ask workers with [not employed?][
+      move-to max-one-of my-potential-firms [wage-offered-Wb]
+    ]
+    ask firms with [number-of-vacancies-offered-V > 0 ][
+      let potential-workers workers-here with [not employed?]
       let workers-hired n-of number-of-vacancies-offered-V potential-workers
-      set my-employees workers-hired
-      set number-of-vacancies-offered-V number-of-vacancies-offered-V - count my-employees
-      ask my-employees [
+      set my-employees (turtle-set my-employees workers-hired)
+      set number-of-vacancies-offered-V number-of-vacancies-offered-V - count workers-hired
+      ask my-employees with [not employed?] [
         set color green
         set employed? true
         set contract random-poisson 10
@@ -217,10 +215,10 @@ to labor-market-opens
         set my-potential-firms no-turtles
       ]
     ]
-    ask workers with [not employed?] [
-      let best-firm max-one-of my-potential-firms [wage-offered-Wb]
-      set my-potential-firms my-potential-firms with [ self != best-firm]
-      show my-potential-firms
+    show trials
+    set trials trials - 1
+    ask workers with [not employed? and any? my-potential-firms][
+      set my-potential-firms min-n-of trials my-potential-firms [wage-offered-Wb]
     ]
   ]
 end
