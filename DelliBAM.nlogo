@@ -16,8 +16,8 @@ firms-own[
   minimum-wage-W-hat
   wage-offered-Wb
   net-worth-A
+  total-payroll-W
   loan-B
-  trials-credit-H
   inventory-S
   individual-price-P
   minimum-price-Pl
@@ -47,8 +47,8 @@ to setup
   clear-all
 
   start-firms number-of-firms
-  start-workers round (number-of-firms * 50)
-  start-banks round (number-of-firms / 10)
+  start-workers round (number-of-firms * 5)
+  start-banks max (list credit-market-H round (number-of-firms / 10))
   initialize-variables
 
   reset-ticks
@@ -66,9 +66,9 @@ to initialize-variables
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
     set wage-offered-Wb 0
-    set net-worth-A 0
+    set net-worth-A random-poisson 4 + 2
+    set total-payroll-W 0
     set loan-B 0
-    set trials-credit-H 0
     set inventory-S one-of [0 1]
     set individual-price-P random-poisson 4  + 4
     set minimum-price-Pl 4
@@ -159,9 +159,9 @@ end
 to adapt-expected-demand; submodel 29 y 30
   ask firms [
     if (inventory-S = 0 and individual-price-P >= average-market-price)
-    [set expected-demand-De production-Y * (1 + production-shock-rho)]
+    [set expected-demand-De round ( production-Y * (1 + production-shock-rho))]
     if (inventory-S > 0 and individual-price-P < average-market-price)
-    [set expected-demand-De production-Y * (1 - production-shock-rho)]
+    [set expected-demand-De round (production-Y * (1 - production-shock-rho))]
   ]
 end
 ;;;;;;;;;; to labor-market  ;;;;;;;;;;
@@ -192,7 +192,7 @@ to labor-market-opens
   hiring-step labor-market-M
   ask workers with [not employed?][
     rt random 360
-    fd (random 4) + 2
+    fd (random 4) + 1
   ]
 end
 
@@ -204,7 +204,8 @@ to hiring-step [trials]
     ]
     ask firms with [number-of-vacancies-offered-V > 0 ][
       let potential-workers workers-here with [not employed?]
-      let workers-hired n-of number-of-vacancies-offered-V potential-workers
+      let quantity count potential-workers
+      let workers-hired n-of (min list quantity number-of-vacancies-offered-V) potential-workers
       set my-employees (turtle-set my-employees workers-hired)
       set number-of-vacancies-offered-V number-of-vacancies-offered-V - count workers-hired
       ask my-employees with [not employed?] [
@@ -215,7 +216,6 @@ to hiring-step [trials]
         set my-potential-firms no-turtles
       ]
     ]
-    show trials
     set trials trials - 1
     ask workers with [not employed? and any? my-potential-firms][
       set my-potential-firms min-n-of trials my-potential-firms [wage-offered-Wb]
@@ -224,6 +224,12 @@ to hiring-step [trials]
 end
 
 to credit-market
+  ;net-worth-A
+  ;total-payroll-W
+  ;loan-B
+  ask firms with [production-Y > 0][
+    show (word "Net worth " net-worth-A "     Wage " wage-offered-Wb)
+  ]
 
 end
 
@@ -344,7 +350,7 @@ NIL
 0
 
 SLIDER
-9
+3
 79
 195
 112
@@ -359,7 +365,7 @@ NIL
 HORIZONTAL
 
 SLIDER
-9
+3
 115
 195
 148
@@ -374,7 +380,7 @@ NIL
 HORIZONTAL
 
 SLIDER
-9
+3
 152
 196
 185
@@ -389,7 +395,7 @@ NIL
 HORIZONTAL
 
 SLIDER
-9
+3
 188
 197
 221
@@ -404,7 +410,7 @@ NIL
 HORIZONTAL
 
 SLIDER
-9
+3
 225
 197
 258
@@ -419,7 +425,7 @@ NIL
 HORIZONTAL
 
 SLIDER
-9
+3
 262
 197
 295
@@ -434,7 +440,7 @@ NIL
 HORIZONTAL
 
 SLIDER
-9
+3
 299
 198
 332
@@ -459,12 +465,27 @@ NIL
 0.0
 10.0
 0.0
-10.0
+1.0
 true
 false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "unemployment-rate"
+
+SLIDER
+3
+334
+199
+367
+credit-market-H
+credit-market-H
+1
+5
+2.0
+1
+1
+trials
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
