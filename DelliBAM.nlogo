@@ -18,6 +18,8 @@ firms-own[
   net-worth-A
   total-payroll-W
   loan-B
+  my-potential-banks
+  my-bank
   inventory-S
   individual-price-P
   minimum-price-Pl
@@ -38,8 +40,9 @@ workers-own[
 banks-own[
   total-amount-of-credit-C
   patrimonial-base-E
+  operational-interest-rate
+  my-borrowing-firms
   interest-rate-r
-  policy-rate-r-bar
 ]
 
 ; Setup procedures
@@ -69,6 +72,8 @@ to initialize-variables
     set net-worth-A random-poisson 4 + 2
     set total-payroll-W 0
     set loan-B 0
+    set my-potential-banks no-turtles
+    set my-bank no-turtles
     set inventory-S one-of [0 1]
     set individual-price-P random-poisson 4  + 4
     set minimum-price-Pl 4
@@ -88,14 +93,14 @@ to initialize-variables
   ask banks [
     set total-amount-of-credit-C 0
     set patrimonial-base-E random-poisson 100 + 10
+    set operational-interest-rate 0
     set interest-rate-r 0
-    set policy-rate-r-bar 0
   ]
 end
 
 to start-firms [#firms]
   create-firms #firms [
-    setxy random-xcor * 0.9 random-ycor * 0.9
+    setxy random-pxcor * 0.9 random-pycor * 0.9
     set color blue
     set size 1.2
     set shape "factory"
@@ -105,7 +110,7 @@ end
 
 to start-workers [#workers]
   create-workers #workers [
-    setxy random-xcor random-ycor
+    setxy random-pxcor random-pycor
     set color yellow
     set size 1 / log number-of-firms 3
     set shape "person"
@@ -115,7 +120,7 @@ end
 
 to start-banks [#banks]
   create-banks #banks[
-    setxy random-xcor * 0.9 random-ycor * 0.9
+    setxy random-pxcor * 0.9 random-pycor * 0.9
     set color red
     set size 1.5
     set shape "house"
@@ -222,22 +227,47 @@ to hiring-step [trials]
     ]
   ]
 end
-
+;;;;;;;;;; to credit-market  ;;;;;;;;;;
 to credit-market
+  ask banks [
+    set total-amount-of-credit-C patrimonial-base-E / v; submodel 12
+    set operational-interest-rate random-float interest-shock-phi
+  ]
+
   ask firms with [production-Y > 0][
     set total-payroll-W count my-employees * wage-offered-Wb
     if (total-payroll-W > net-worth-A)[
       set loan-B max (list (total-payroll-W - net-worth-A) 0); submodel 10
+      if (loan-B > 0)[
+        set shape "person business"
+      ]
     ]
   ]
-  ;total-amount-of-credit-C
-  ;patrimonial-base-E
-  ask banks [
-    set total-amount-of-credit-C patrimonial-base-E / v
-  ]
-
+  credit-market-opens
 end
 
+to credit-market-opens
+  ask firms with [loan-B > 0][
+    set my-potential-banks n-of credit-market-H banks
+  ]
+  credit-step credit-market-H
+end
+
+to credit-step [trials]
+  while [trials > 0][
+    ask firms with [loan-B > 0][
+      move-to min-one-of my-potential-banks [operational-interest-rate]
+    ]
+    ask banks [
+      set my-borrowing-firms firms-here
+      ; find function to sort agentset an report an agenset
+      show [loan-B] of my-borrowing-firms / [net-worth-A] of my-borrowing-firms
+    ] link
+    set trials trials - 1
+  ]
+end
+
+;;;;;;;;;; to firms-produce  ;;;;;;;;;;
 to firms-produce
 
 end
@@ -265,6 +295,10 @@ end
 
 to-report average-savings
 
+end
+
+to-report interest-rate-policy-rbar
+  report 0.07
 end
 
 ; observation
