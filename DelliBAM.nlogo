@@ -48,7 +48,7 @@ to setup
 
   start-firms number-of-firms
   start-workers round (number-of-firms * 5)
-  start-banks max (list credit-market-H round (number-of-firms / 10))
+  start-banks max (list (credit-market-H + 1) round (number-of-firms / 10))
   initialize-variables
 
   reset-ticks
@@ -224,11 +224,11 @@ to hiring-step [trials]
 end
 
 to credit-market
-  ;net-worth-A
-  ;total-payroll-W
-  ;loan-B
   ask firms with [production-Y > 0][
-    show (word "Net worth " net-worth-A "     Wage " wage-offered-Wb)
+    set total-payroll-W count my-employees * wage-offered-Wb
+    if (total-payroll-W > net-worth-A)[
+      set loan-B max (list (total-payroll-W - net-worth-A) 0); submodel 10
+    ]
   ]
 
 end
@@ -291,11 +291,11 @@ end
 GRAPHICS-WINDOW
 210
 10
-647
-448
+642
+443
 -1
 -1
-13.0
+8.0
 1
 10
 1
@@ -305,15 +305,15 @@ GRAPHICS-WINDOW
 0
 0
 1
--16
-16
--16
-16
+-26
+26
+-26
+26
 0
 0
 1
 ticks
-30.0
+60.0
 
 BUTTON
 22
