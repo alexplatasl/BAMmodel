@@ -190,7 +190,7 @@ to labor-market-opens
     ask workers with [not employed?][
       ifelse (not empty? [my-firm] of my-potential-firms)
       [set my-potential-firms (turtle-set my-firm n-of (labor-market-M - 1 ) potential-firms)]
-      [set my-potential-firms n-of labor-market-M potential-firms]
+      [set my-potential-firms n-of max list labor-market-M count potential-firms potential-firms]
     ]
   ]
 
@@ -260,9 +260,16 @@ to credit-step [trials]
     ]
     ask banks [
       set my-borrowing-firms firms-here
-      ; find function to sort agentset an report an agenset
-      show [loan-B] of my-borrowing-firms / [net-worth-A] of my-borrowing-firms
-    ] link
+      if any? my-borrowing-firms
+      [
+        ask first sort-on [net-worth-A] my-borrowing-firms
+        [
+          show net-worth-A
+          ; find function to sort agentset an report an agenset
+          ;; show [loan-B] of my-borrowing-firms / [net-worth-A] of my-borrowing-firms
+        ]
+      ]
+    ] ;; link
     set trials trials - 1
   ]
 end
