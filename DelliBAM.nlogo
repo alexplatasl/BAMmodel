@@ -87,7 +87,7 @@ to initialize-variables
   ]
   ask banks [
     set total-amount-of-credit-C 0
-    set patrimonial-base-E 0
+    set patrimonial-base-E random-poisson 100 + 10
     set interest-rate-r 0
     set policy-rate-r-bar 0
   ]
@@ -229,6 +229,11 @@ to credit-market
     if (total-payroll-W > net-worth-A)[
       set loan-B max (list (total-payroll-W - net-worth-A) 0); submodel 10
     ]
+  ]
+  ;total-amount-of-credit-C
+  ;patrimonial-base-E
+  ask banks [
+    set total-amount-of-credit-C patrimonial-base-E / v
   ]
 
 end
