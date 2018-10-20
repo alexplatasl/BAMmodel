@@ -20,12 +20,15 @@ firms-own[
   loan-B
   my-potential-banks
   my-bank
+  amount-of-Interest-to-pay
   inventory-S
   individual-price-P
   minimum-price-Pl
   revenue-R
   benefits-pi
-
+  ; for visual representation
+  x-position
+  y-position
 ]
 workers-own[
   employed?
@@ -100,7 +103,9 @@ end
 
 to start-firms [#firms]
   create-firms #firms [
-    setxy random-pxcor * 0.9 random-pycor * 0.9
+    set x-position random-pxcor * 0.9
+    set y-position random-pycor * 0.9
+    setxy x-position y-position
     set color blue
     set size 1.2
     set shape "factory"
@@ -228,10 +233,10 @@ to hiring-step [trials]
   ]
 end
 ;;;;;;;;;; to credit-market  ;;;;;;;;;;
-to credit-market
+to credit-market; observer-procedure
   ask banks [
     set total-amount-of-credit-C patrimonial-base-E / v; submodel 12
-    set operational-interest-rate random-float interest-shock-phi
+    set operational-interest-rate random-float interest-shock-phi; part of submodel 14
   ]
 
   ask firms with [production-Y > 0][
@@ -246,15 +251,15 @@ to credit-market
   credit-market-opens
 end
 
-to credit-market-opens
+to credit-market-opens; observer procedure
   ask firms with [loan-B > 0][
     set my-potential-banks n-of credit-market-H banks
   ]
-  credit-step credit-market-H
+  borrowing-step credit-market-H
 end
 
-to credit-step [trials]
-  while [trials > 0][
+to borrowing-step [trials]; observer procedure
+  while [trials > 0][ ; submodel 20
     ask firms with [loan-B > 0][
       move-to min-one-of my-potential-banks [operational-interest-rate]
     ]
@@ -262,15 +267,33 @@ to credit-step [trials]
       set my-borrowing-firms firms-here
       if any? my-borrowing-firms
       [
-        ask first sort-on [net-worth-A] my-borrowing-firms
-        [
-          show net-worth-A
-          ; find function to sort agentset an report an agenset
-          ;; show [loan-B] of my-borrowing-firms / [net-worth-A] of my-borrowing-firms
-        ]
+        lending-step my-borrowing-firms
       ]
-    ] ;; link
+    ]
     set trials trials - 1
+  ]
+end
+
+to lending-step [#borrowing-firms]; banks procedure
+  while [any? #borrowing-firms and total-amount-of-credit-C > 0][
+    let my-best-borrower max-one-of #borrowing-firms [net-worth-A]
+    let leverage-of-borrower [loan-B] of my-best-borrower / [net-worth-A] of my-best-borrower; submodel 19
+    ;submodel 17
+    let contractual-interest interest-rate-policy-rbar * (1 + ([operational-interest-rate] of self * leverage-of-borrower))
+    let the-lender-bank self
+    let loan min (list [loan-B] of my-best-borrower total-amount-of-credit-C); part of submodel 14
+
+    ask my-best-borrower [
+      set my-bank the-lender-bank
+      set amount-of-Interest-to-pay loan * ( 1 + contractual-interest )
+      set net-worth-A net-worth-A + loan
+      set loan-B loan-B - loan
+      setxy [x-position] of my-best-borrower [y-position] of my-best-borrower
+      set shape "factory"
+    ]
+
+    let count-borrowers count #borrowing-firms
+    set #borrowing-firms min-n-of (count-borrowers - 1) #borrowing-firms [net-worth-A]
   ]
 end
 
