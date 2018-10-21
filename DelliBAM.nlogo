@@ -13,6 +13,7 @@ firms-own[
   my-employees
   current-numbers-employees-L0
   number-of-vacancies-offered-V
+  minimum-wage-W-hat
   wage-offered-Wb
   net-worth-A
   total-payroll-W
@@ -22,7 +23,6 @@ firms-own[
   amount-of-Interest-to-pay
   inventory-S
   individual-price-P
-  minimum-price-Pl
   revenue-R
   benefits-pi
   ; for visual representation
@@ -70,6 +70,7 @@ to initialize-variables
     set my-employees no-turtles
     set current-numbers-employees-L0 0
     set number-of-vacancies-offered-V 0
+    set minimum-wage-W-hat 1
     set wage-offered-Wb 0
     set net-worth-A random-poisson 4 + 2
     set total-payroll-W 0
@@ -78,7 +79,6 @@ to initialize-variables
     set my-bank no-turtles
     set inventory-S one-of [0 1]
     set individual-price-P random-poisson 4  + 4
-    set minimum-price-Pl 4
     set revenue-R 0
     set benefits-pi 0
   ]
@@ -109,7 +109,6 @@ to start-firms [#firms]
     set size 1.2
     set shape "factory"
   ]
-
 end
 
 to start-workers [#workers]
@@ -119,7 +118,6 @@ to start-workers [#workers]
     set size 1 / log number-of-firms 3
     set shape "person"
   ]
-
 end
 
 to start-banks [#banks]
@@ -129,7 +127,6 @@ to start-banks [#banks]
     set size 1.5
     set shape "house"
   ]
-
 end
 
 to go
@@ -146,31 +143,40 @@ to go
 
   tick
 end
+
 ;;;;;;;;;; to firms-calculate production ;;;;;;;;;;
 to firms-calculate-production
   adapt-individual-price
   adapt-expected-demand
   ask firms [
     set desired-production-Yd expected-demand-De; submodel 2
-    set production-Y desired-production-Yd; submodel 1
   ]
 end
 
 to adapt-individual-price; submodel 27 y 28
   ask firms [
+    let minimum-price-Pl (total-payroll-W + amount-of-Interest-to-pay) /  production-Y
     if (inventory-S = 0 and individual-price-P <  average-market-price)
-    [set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 + price-shock-eta)))]
+    [
+      set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 + price-shock-eta)))
+    ]
     if (inventory-S > 0 and individual-price-P >= average-market-price)
-    [set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 - price-shock-eta)))]
+    [
+      set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 - price-shock-eta)))
+    ]
   ]
 end
 
 to adapt-expected-demand; submodel 29 y 30
   ask firms [
     if (inventory-S = 0 and individual-price-P >= average-market-price)
-    [set expected-demand-De round ( production-Y * (1 + production-shock-rho))]
+    [
+      set expected-demand-De round ( production-Y * (1 + production-shock-rho))
+    ]
     if (inventory-S > 0 and individual-price-P < average-market-price)
-    [set expected-demand-De round (production-Y * (1 - production-shock-rho))]
+    [
+      set expected-demand-De round (production-Y * (1 - production-shock-rho))
+    ]
   ]
 end
 ;;;;;;;;;; to labor-market  ;;;;;;;;;;
@@ -321,14 +327,16 @@ end
 ;;;;;;;;;; to firms-produce  ;;;;;;;;;;
 to firms-produce
   ask firms [
-    set production-Y labor-productivity-alpha * count my-employees
+    set production-Y labor-productivity-alpha * count my-employees; submodel 1
     set inventory-S production-Y
   ]
 end
 
+;;;;;;;;;; to goods-market  ;;;;;;;;;;
 to goods-market
 
 end
+
 to firms-pay
 
 end
@@ -353,10 +361,6 @@ end
 
 to-report interest-rate-policy-rbar
   report 0.07
-end
-
-to-report minimum-wage-W-hat
-  report 1
 end
 
 ; observation
