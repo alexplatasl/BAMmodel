@@ -13,7 +13,6 @@ firms-own[
   my-employees
   current-numbers-employees-L0
   number-of-vacancies-offered-V
-  minimum-wage-W-hat
   wage-offered-Wb
   net-worth-A
   total-payroll-W
@@ -71,7 +70,6 @@ to initialize-variables
     set my-employees no-turtles
     set current-numbers-employees-L0 0
     set number-of-vacancies-offered-V 0
-    set minimum-wage-W-hat 1
     set wage-offered-Wb 0
     set net-worth-A random-poisson 4 + 2
     set total-payroll-W 0
@@ -355,6 +353,10 @@ end
 
 to-report interest-rate-policy-rbar
   report 0.07
+end
+
+to-report minimum-wage-W-hat
+  report 1
 end
 
 ; observation
