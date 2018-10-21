@@ -39,6 +39,7 @@ workers-own[
   savings
   wealth
   propensity-to-consume-c
+  my-wage
 ]
 banks-own[
   total-amount-of-credit-C
@@ -216,11 +217,14 @@ to hiring-step [trials]
       let potential-workers workers-here with [not employed?]
       let quantity count potential-workers
       let workers-hired n-of (min list quantity number-of-vacancies-offered-V) potential-workers
+      let wage-employees wage-offered-Wb
       set my-employees (turtle-set my-employees workers-hired)
       set number-of-vacancies-offered-V number-of-vacancies-offered-V - count workers-hired
+      set total-payroll-W total-payroll-W + (count workers-hired * wage-offered-Wb)
       ask my-employees with [not employed?] [
         set color green
         set employed? true
+        set my-wage wage-employees
         set contract random-poisson 10
         set my-firm firms-here
         set my-potential-firms no-turtles
@@ -240,7 +244,6 @@ to credit-market; observer-procedure
   ]
 
   ask firms with [production-Y > 0][
-    set total-payroll-W count my-employees * wage-offered-Wb
     if (total-payroll-W > net-worth-A)[
       set loan-B max (list (total-payroll-W - net-worth-A) 0); submodel 10
       if (loan-B > 0)[
@@ -249,6 +252,7 @@ to credit-market; observer-procedure
     ]
   ]
   credit-market-opens
+  firing-step
 end
 
 to credit-market-opens; observer procedure
@@ -294,6 +298,25 @@ to lending-step [#borrowing-firms]; banks procedure
 
     let count-borrowers count #borrowing-firms
     set #borrowing-firms min-n-of (count-borrowers - 1) #borrowing-firms [net-worth-A]
+  ]
+end
+
+to firing-step
+  ask firms with [loan-B > 0][
+    while [total-payroll-W  > net-worth-A][
+      let expensive-worker max-one-of my-employees [my-wage]
+      set my-employees min-n-of (count my-employees - 1) my-employees [my-wage]
+      set total-payroll-W total-payroll-W - [my-wage] of expensive-worker
+      ask expensive-worker[
+        set color yellow
+        set employed? false
+        set my-wage 0
+        set contract 0
+        set my-firm no-turtles
+        rt random 360
+        fd (random 4) + 1
+      ]
+    ]
   ]
 end
 
