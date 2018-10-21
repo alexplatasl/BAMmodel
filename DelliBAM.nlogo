@@ -1,4 +1,5 @@
 ; Bottom-up Adaptive Macroeconomics
+extensions [palette]
 
 breed[firms firm]
 breed[workers worker]
@@ -115,7 +116,7 @@ to start-workers [#workers]
   create-workers #workers [
     setxy random-pxcor random-pycor
     set color yellow
-    set size 1 / log number-of-firms 3
+    set size 1 / log number-of-firms 10
     set shape "person"
   ]
 end
@@ -208,6 +209,10 @@ to labor-market-opens
   ask workers with [not employed?][
     rt random 360
     fd (random 4) + 1
+  ]
+  ask firms [
+    set label count my-employees
+    set color palette:scale-gradient [[68 1 84] [33 144 140] [253 231 37]] net-worth-A 0 max [net-worth-A] of firms
   ]
 end
 
@@ -337,6 +342,7 @@ to goods-market
 
 end
 
+;;;;;;;;;; to firms-pay  ;;;;;;;;;;
 to firms-pay
 
 end
@@ -398,7 +404,7 @@ GRAPHICS-WINDOW
 -1
 8.0
 1
-10
+8
 1
 1
 1
