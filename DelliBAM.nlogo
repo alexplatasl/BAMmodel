@@ -322,7 +322,10 @@ end
 
 ;;;;;;;;;; to firms-produce  ;;;;;;;;;;
 to firms-produce
-
+  ask firms [
+    set production-Y labor-productivity-alpha * count my-employees
+    set inventory-S production-Y
+  ]
 end
 
 to goods-market
