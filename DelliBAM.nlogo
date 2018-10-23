@@ -334,6 +334,10 @@ to firms-produce
   ask firms [
     set production-Y labor-productivity-alpha * count my-employees; submodel 1
     set inventory-S production-Y
+    set net-worth-A net-worth-A - total-payroll-W
+  ]
+  ask workers with [employed?][
+    set income my-wage
   ]
 end
 
