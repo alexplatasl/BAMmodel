@@ -35,11 +35,13 @@ workers-own[
   my-potential-firms
   my-firm
   contract
+  my-wage
   income
   savings
   wealth
   propensity-to-consume-c
-  my-wage
+  my-stores
+  my-large-store
 ]
 banks-own[
   total-amount-of-credit-C
@@ -92,6 +94,8 @@ to initialize-variables
     set savings random-poisson 4 + 4
     set wealth 0
     set propensity-to-consume-c 1
+    set my-stores no-turtles
+    set my-large-store no-turtles
   ]
   ask banks [
     set total-amount-of-credit-C 0
@@ -201,7 +205,7 @@ to labor-market-opens
     ask workers with [not employed?][
       ifelse (not empty? [my-firm] of my-potential-firms)
       [set my-potential-firms (turtle-set my-firm n-of (labor-market-M - 1 ) potential-firms)]
-      [set my-potential-firms n-of max list labor-market-M count potential-firms potential-firms]
+      [set my-potential-firms n-of (max list labor-market-M count potential-firms) potential-firms]
     ]
   ]
 
@@ -333,25 +337,49 @@ end
 to firms-produce
   ask firms [
     set production-Y labor-productivity-alpha * count my-employees; submodel 1
-    set inventory-S production-Y
+    set inventory-S production-Y * individual-price-P
     set net-worth-A net-worth-A - total-payroll-W
   ]
   ask workers with [employed?][
     set income my-wage
+    set contract contract - 1
+    if (contract = 0)[
+      set employed? false
+      set color yellow
+      set my-wage 0
+      rt random 360
+      fd (random 4) + 1
+    ]
   ]
 end
 
 ;;;;;;;;;; to goods-market  ;;;;;;;;;;
 to goods-market
+  show (word "Initial inventory "[inventory-S] of firms)
   let average-savings mean [savings] of workers
   ask workers[
     set wealth income + savings
     set propensity-to-consume-c 1 / (1 + (fn-tanh (average-savings / savings)) ^ beta)
     set savings savings + (1 - propensity-to-consume-c) * income
     let money-to-consume propensity-to-consume-c * wealth
+    set my-stores (turtle-set my-large-store n-of (goods-market-Z - count my-large-store) firms)
+    buying-step goods-market-Z money-to-consume
   ]
+  show (word "Final inventory "[inventory-S] of firms)
 end
 
+to buying-step [trials money]; workers procedure
+  while [trials > 0 and money > 0][
+    let my-cheapest-store min-one-of my-stores [individual-price-P]
+    let posible-goods-to-buy min list money [inventory-S] of my-cheapest-store
+    set money money - posible-goods-to-buy
+    ask my-cheapest-store [
+      set inventory-S inventory-S - posible-goods-to-buy
+    ]
+    set trials trials - 1
+    set my-cheapest-store max-n-of trials my-stores [individual-price-P]
+  ]
+end
 ;;;;;;;;;; to firms-pay  ;;;;;;;;;;
 to firms-pay
 
@@ -609,9 +637,24 @@ SLIDER
 338
 198
 371
+goods-market-Z
+goods-market-Z
+1
+6
+3.0
+1
+1
+trials
+HORIZONTAL
+
+SLIDER
+3
+374
+198
+407
 beta
 beta
-0
+0.05
 2
 1.0
 0.05
