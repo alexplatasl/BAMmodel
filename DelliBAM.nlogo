@@ -320,7 +320,7 @@ to lending-step [#borrowing-firms]; banks procedure
 end
 
 to firing-step
-  ask firms with [loan-B > 0][
+  ask firms with [loan-B > 0 and any? my-employees][
     while [total-payroll-W  > net-worth-A][
       let expensive-worker max-one-of my-employees [my-wage]
       set my-employees min-n-of (count my-employees - 1) my-employees [my-wage]
@@ -483,6 +483,14 @@ end
 ; observation
 to-report logarithm-of-real-GDP
 
+end
+
+to-report logarithm-net-value-A
+  histogram [net-worth-A] of firms
+end
+
+to-report logarithm-wealth
+  histogram [color] of firms
 end
 
 to unemployment-rate
@@ -675,7 +683,7 @@ HORIZONTAL
 PLOT
 655
 10
-855
+858
 130
 Unemployment rate
 NIL
@@ -749,6 +757,44 @@ dividends-delta
 1
 NIL
 HORIZONTAL
+
+PLOT
+862
+10
+1065
+130
+Net worth distribution
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+false
+false
+"" ""
+PENS
+"default" 1.0 1 -16777216 true ";set-histogram-num-bars 10\nset-plot-pen-interval 0.2\nset-plot-x-range floor min [log net-worth-A 10] of firms ceiling max [log net-worth-A 10] of firms\n;set-plot-y-range 0 number-of-firms" "histogram  [log net-worth-A 10] of firms"
+
+PLOT
+1068
+10
+1271
+130
+Net worth of firms
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot mean [net-worth-A] of firms"
+"pen-1" 1.0 2 -2674135 true "" "plot min [net-worth-A] of firms"
+"pen-2" 1.0 0 -13840069 true "" "plot max [net-worth-A] of firms"
 
 @#$#@#$#@
 ## WHAT IS IT?
