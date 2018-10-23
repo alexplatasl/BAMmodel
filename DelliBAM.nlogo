@@ -21,11 +21,14 @@ firms-own[
   loan-B
   my-potential-banks
   my-bank
+  my-interest-rate
   amount-of-Interest-to-pay
   inventory-S
   individual-price-P
   revenue-R
-  benefits-pi
+  gross-profits
+  net-profits
+  retained-profits-pi
   ; for visual representation
   x-position
   y-position
@@ -83,7 +86,7 @@ to initialize-variables
     set inventory-S one-of [0 1]
     set individual-price-P random-poisson 4  + 4
     set revenue-R 0
-    set benefits-pi 0
+    set retained-profits-pi 0
   ]
   ask workers [
     set employed? false
@@ -302,6 +305,7 @@ to lending-step [#borrowing-firms]; banks procedure
 
     ask my-best-borrower [
       set my-bank the-lender-bank
+      set my-interest-rate contractual-interest
       set amount-of-Interest-to-pay loan * ( 1 + contractual-interest )
       set net-worth-A net-worth-A + loan
       set loan-B loan-B - loan
@@ -355,7 +359,6 @@ end
 
 ;;;;;;;;;; to goods-market  ;;;;;;;;;;
 to goods-market
-  show (word "Initial inventory "[inventory-S] of firms)
   let average-savings mean [savings] of workers
   ask workers[
     set wealth income + savings
@@ -365,15 +368,6 @@ to goods-market
     set my-stores (turtle-set my-large-store n-of (goods-market-Z - count my-large-store) firms)
     set my-large-store max-one-of my-stores [production-Y]
     buying-step goods-market-Z money-to-consume
-  ]
-  show (word "Final inventory "[inventory-S] of firms)
-  ask firms [
-    set revenue-R individual-price-P * production-Y
-    let gross-profits revenue-R - ( total-payroll-W + amount-of-Interest-to-pay)
-    if (gross-profits > 0)[
-      let retained-profits (1 - dividends-delta) * gross-profits
-      set net-worth-A net-worth-A + retained-profits
-    ]
   ]
 end
 
@@ -391,11 +385,29 @@ to buying-step [trials money]; workers procedure
 end
 ;;;;;;;;;; to firms-pay  ;;;;;;;;;;
 to firms-pay
-
+  ask firms [
+    set revenue-R individual-price-P * production-Y
+    set gross-profits revenue-R - ( total-payroll-W )
+    ifelse (gross-profits > amount-of-Interest-to-pay)[; submodel 42
+      ask my-bank [
+        set patrimonial-base-E patrimonial-base-E + amount-of-Interest-to-pay
+      ]
+    ][
+      ask my-bank [
+        set patrimonial-base-E patrimonial-base-E - (loan-B / net-worth-A) * net-worth-A
+      ]
+    ]
+    set net-profits gross-profits - amount-of-Interest-to-pay
+    if (net-profits > 0)[
+      set retained-profits-pi (1 - dividends-delta ) * net-profits
+    ]
+  ]
 end
 
 to firms-banks-survive
-
+  ask firms [
+    set net-worth-A net-worth-A + retained-profits-pi
+  ]
 end
 
 to replace-bankrupt
