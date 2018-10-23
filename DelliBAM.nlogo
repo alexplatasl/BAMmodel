@@ -139,7 +139,7 @@ to start-banks [#banks]
 end
 
 to go
-  if ticks >= 2 [stop]
+  if ticks >= 100 [stop]
   ; Process overview and scheduling
   firms-calculate-production
   labor-market
@@ -164,7 +164,7 @@ end
 
 to adapt-individual-price; submodel 27 y 28
   ask firms [
-    let minimum-price-Pl (total-payroll-W + amount-of-Interest-to-pay) / production-Y
+    let minimum-price-Pl ifelse-value (production-Y > 0)[( total-payroll-W + amount-of-Interest-to-pay ) / production-Y] [0]
     if (inventory-S = 0 and individual-price-P <  average-market-price)
     [
       set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 + price-shock-eta)))
@@ -225,9 +225,9 @@ to labor-market-opens
 end
 
 to hiring-step [trials]
-  while [trials > 0 and any? my-potential-firms]
+  while [trials > 0]
   [
-    ask workers with [not employed?][
+    ask workers with [not employed? and any? my-potential-firms][
       move-to max-one-of my-potential-firms [wage-offered-Wb]
     ]
     ask firms with [number-of-vacancies-offered-V > 0 ][
@@ -395,7 +395,7 @@ to firms-pay
         set patrimonial-base-E patrimonial-base-E + principal-and-Interest
       ]
     ][
-      let bank-financing loan-B / net-worth-A
+      let bank-financing ifelse-value (net-worth-A != 0 ) [loan-B / net-worth-A][1]
       let bad-debt-amount bank-financing * net-worth-A
       ask my-bank [
         set patrimonial-base-E patrimonial-base-E - bad-debt-amount
@@ -412,7 +412,6 @@ to firms-banks-survive
   ask firms [
     set net-worth-A net-worth-A + retained-profits-pi
     if (net-worth-A < 0)[
-      show (word "Oh no! I go bankrupt")
       ask my-bank [
         set bad-debt-BD bad-debt-BD + 1
       ]
@@ -447,8 +446,14 @@ to replace-bankrupt
 
   if (count banks < number-of-firms / 10)[
     let needed-banks (number-of-firms / 10) - count banks
-    ask banks [
-      ;clone-banks needed-banks one-of banks
+    let this-bank one-of banks
+    ask this-bank [
+      let me nobody
+      hatch-banks needed-banks [
+        set me self
+        rt random 360
+        fd (random 10) + 1
+      ]
     ]
   ]
 end
@@ -473,18 +478,6 @@ to-report fn-incumbent-firms
   let ordered-firms sort-on [net-worth-A] firms
   let list-incumbent-firms sublist ordered-firms lower upper
   report (turtle-set list-incumbent-firms)
-end
-
-to-report clone-banks [q-banks this-bank]
-  let me nobody
-  ask this-bank[
-    hatch-banks q-banks [
-      set me self
-      rt random 360
-      fd (random 10) + 1
-    ]
-  ]
-  report me
 end
 
 ; observation
@@ -583,7 +576,7 @@ number-of-firms
 number-of-firms
 10
 200
-0.0
+20.0
 5
 1
 NIL
@@ -598,7 +591,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.0
+0.05
 0.05
 1
 NIL
@@ -613,7 +606,7 @@ interest-shock-phi
 interest-shock-phi
 0
 0.5
-0.0
+0.1
 0.05
 1
 NIL
@@ -628,7 +621,7 @@ price-shock-eta
 price-shock-eta
 0
 0.5
-0.0
+0.1
 0.05
 1
 NIL
@@ -643,7 +636,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.0
+0.1
 0.05
 1
 NIL
@@ -673,7 +666,7 @@ labor-market-M
 labor-market-M
 1
 6
-0.0
+4.0
 1
 1
 trials
@@ -706,7 +699,7 @@ credit-market-H
 credit-market-H
 1
 5
-0.0
+2.0
 1
 1
 trials
@@ -721,7 +714,7 @@ goods-market-Z
 goods-market-Z
 1
 6
-0.0
+2.0
 1
 1
 trials
@@ -736,7 +729,7 @@ beta
 beta
 0.05
 2
-0.0
+0.95
 0.05
 1
 NIL
@@ -751,7 +744,7 @@ dividends-delta
 dividends-delta
 0
 1
-0.0
+0.15
 0.05
 1
 NIL
