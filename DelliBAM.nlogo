@@ -366,6 +366,14 @@ to goods-market
     buying-step goods-market-Z money-to-consume
   ]
   show (word "Final inventory "[inventory-S] of firms)
+  ask firms [
+    set revenue-R individual-price-P * production-Y
+    let gross-profits revenue-R - ( total-payroll-W + amount-of-Interest-to-pay)
+    if (gross-profits > 0)[
+      let retained-profits (1 - dividends-delta) * gross-profits
+      set net-worth-A net-worth-A + retained-profits
+    ]
+  ]
 end
 
 to buying-step [trials money]; workers procedure
@@ -657,6 +665,21 @@ beta
 0.05
 2
 1.0
+0.05
+1
+NIL
+HORIZONTAL
+
+SLIDER
+3
+410
+198
+443
+dividends-delta
+dividends-delta
+0
+1
+0.25
 0.05
 1
 NIL
