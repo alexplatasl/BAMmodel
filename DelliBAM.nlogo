@@ -52,6 +52,7 @@ banks-own[
   operational-interest-rate
   my-borrowing-firms
   interest-rate-r
+  bad-debt-BD
 ]
 
 ; Setup procedures
@@ -71,7 +72,7 @@ to initialize-variables
     set production-Y random-poisson 4 + 4
     set labor-productivity-alpha 1
     set desired-production-Yd 0
-    set expected-demand-De 0
+    set expected-demand-De 1
     set desired-labor-force-Ld 0
     set my-employees no-turtles
     set current-numbers-employees-L0 0
@@ -138,7 +139,7 @@ to start-banks [#banks]
 end
 
 to go
-  if ticks >= 1 [stop]
+  if ticks >= 2 [stop]
   ; Process overview and scheduling
   firms-calculate-production
   labor-market
@@ -163,7 +164,7 @@ end
 
 to adapt-individual-price; submodel 27 y 28
   ask firms [
-    let minimum-price-Pl (total-payroll-W + amount-of-Interest-to-pay) /  production-Y
+    let minimum-price-Pl (total-payroll-W + amount-of-Interest-to-pay) / production-Y
     if (inventory-S = 0 and individual-price-P <  average-market-price)
     [
       set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 + price-shock-eta)))
@@ -208,7 +209,7 @@ to labor-market-opens
     ask workers with [not employed?][
       ifelse (not empty? [my-firm] of my-potential-firms)
       [set my-potential-firms (turtle-set my-firm n-of (labor-market-M - 1 ) potential-firms)]
-      [set my-potential-firms n-of (max list labor-market-M count potential-firms) potential-firms]
+      [set my-potential-firms n-of (min (list labor-market-M count potential-firms)) potential-firms]
     ]
   ]
 
@@ -224,7 +225,7 @@ to labor-market-opens
 end
 
 to hiring-step [trials]
-  while [trials > 0]
+  while [trials > 0 and any? my-potential-firms]
   [
     ask workers with [not employed?][
       move-to max-one-of my-potential-firms [wage-offered-Wb]
@@ -248,7 +249,7 @@ to hiring-step [trials]
     ]
     set trials trials - 1
     ask workers with [not employed? and any? my-potential-firms][
-      set my-potential-firms min-n-of trials my-potential-firms [wage-offered-Wb]
+      set my-potential-firms min-n-of min (list trials count my-potential-firms) my-potential-firms [wage-offered-Wb]
     ]
   ]
 end
@@ -365,7 +366,7 @@ to goods-market
     set propensity-to-consume-c 1 / (1 + (fn-tanh (average-savings / savings)) ^ beta)
     set savings savings + (1 - propensity-to-consume-c) * income
     let money-to-consume propensity-to-consume-c * wealth
-    set my-stores (turtle-set my-large-store n-of (goods-market-Z - count my-large-store) firms)
+    set my-stores (turtle-set my-large-store n-of (goods-market-Z - count (turtle-set my-large-store)) firms)
     set my-large-store max-one-of my-stores [production-Y]
     buying-step goods-market-Z money-to-consume
   ]
@@ -388,13 +389,16 @@ to firms-pay
   ask firms [
     set revenue-R individual-price-P * production-Y
     set gross-profits revenue-R - ( total-payroll-W )
+    let principal-and-Interest amount-of-Interest-to-pay
     ifelse (gross-profits > amount-of-Interest-to-pay)[; submodel 42
       ask my-bank [
-        set patrimonial-base-E patrimonial-base-E + amount-of-Interest-to-pay
+        set patrimonial-base-E patrimonial-base-E + principal-and-Interest
       ]
     ][
+      let bank-financing loan-B / net-worth-A
+      let bad-debt-amount bank-financing * net-worth-A
       ask my-bank [
-        set patrimonial-base-E patrimonial-base-E - (loan-B / net-worth-A) * net-worth-A
+        set patrimonial-base-E patrimonial-base-E - bad-debt-amount
       ]
     ]
     set net-profits gross-profits - amount-of-Interest-to-pay
@@ -407,11 +411,46 @@ end
 to firms-banks-survive
   ask firms [
     set net-worth-A net-worth-A + retained-profits-pi
+    if (net-worth-A < 0)[
+      show (word "Oh no! I go bankrupt")
+      ask my-bank [
+        set bad-debt-BD bad-debt-BD + 1
+      ]
+      die
+    ]
   ]
+  ask banks with [patrimonial-base-E < 0][die]
 end
 
 to replace-bankrupt
+  if (count firms < number-of-firms)[
+    let incumbent-firms fn-incumbent-firms
+    create-firms (number-of-firms - count firms) [
+      set x-position random-pxcor * 0.9
+      set y-position random-pycor * 0.9
+      setxy x-position y-position
+      set color blue
+      set size 1.2
+      set shape "factory"
+      ;-----------------
+      set production-Y mean [production-Y] of incumbent-firms
+      set labor-productivity-alpha 1
+      set my-employees no-turtles
+      set minimum-wage-W-hat 1
+      set net-worth-A mean [net-worth-A] of incumbent-firms
+      set my-potential-banks no-turtles
+      set my-bank no-turtles
+      set inventory-S one-of [0 1]
+      set individual-price-P mean [individual-price-P] of incumbent-firms
+    ]
+  ]
 
+  if (count banks < number-of-firms / 10)[
+    let needed-banks (number-of-firms / 10) - count banks
+    ask banks [
+      ;clone-banks needed-banks one-of banks
+    ]
+  ]
 end
 
 ; utilities
@@ -426,6 +465,26 @@ end
 
 to-report interest-rate-policy-rbar
   report 0.07
+end
+
+to-report fn-incumbent-firms
+  let lower count firms * 0.05
+  let upper count firms * 0.95
+  let ordered-firms sort-on [net-worth-A] firms
+  let list-incumbent-firms sublist ordered-firms lower upper
+  report (turtle-set list-incumbent-firms)
+end
+
+to-report clone-banks [q-banks this-bank]
+  let me nobody
+  ask this-bank[
+    hatch-banks q-banks [
+      set me self
+      rt random 360
+      fd (random 10) + 1
+    ]
+  ]
+  report me
 end
 
 ; observation
@@ -524,7 +583,7 @@ number-of-firms
 number-of-firms
 10
 200
-10.0
+0.0
 5
 1
 NIL
@@ -539,7 +598,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.05
+0.0
 0.05
 1
 NIL
@@ -554,7 +613,7 @@ interest-shock-phi
 interest-shock-phi
 0
 0.5
-0.1
+0.0
 0.05
 1
 NIL
@@ -569,7 +628,7 @@ price-shock-eta
 price-shock-eta
 0
 0.5
-0.1
+0.0
 0.05
 1
 NIL
@@ -584,7 +643,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.1
+0.0
 0.05
 1
 NIL
@@ -614,7 +673,7 @@ labor-market-M
 labor-market-M
 1
 6
-3.0
+0.0
 1
 1
 trials
@@ -647,7 +706,7 @@ credit-market-H
 credit-market-H
 1
 5
-2.0
+0.0
 1
 1
 trials
@@ -662,7 +721,7 @@ goods-market-Z
 goods-market-Z
 1
 6
-3.0
+0.0
 1
 1
 trials
@@ -677,7 +736,7 @@ beta
 beta
 0.05
 2
-1.0
+0.0
 0.05
 1
 NIL
@@ -692,7 +751,7 @@ dividends-delta
 dividends-delta
 0
 1
-0.25
+0.0
 0.05
 1
 NIL
