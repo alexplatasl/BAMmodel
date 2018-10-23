@@ -363,6 +363,7 @@ to goods-market
     set savings savings + (1 - propensity-to-consume-c) * income
     let money-to-consume propensity-to-consume-c * wealth
     set my-stores (turtle-set my-large-store n-of (goods-market-Z - count my-large-store) firms)
+    set my-large-store max-one-of my-stores [production-Y]
     buying-step goods-market-Z money-to-consume
   ]
   show (word "Final inventory "[inventory-S] of firms)
