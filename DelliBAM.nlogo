@@ -584,7 +584,7 @@ number-of-firms
 number-of-firms
 10
 200
-20.0
+100.0
 5
 1
 NIL
@@ -770,18 +770,18 @@ NIL
 10.0
 0.0
 10.0
-false
+true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true ";set-histogram-num-bars 10\nset-plot-pen-interval 0.2\nset-plot-x-range floor min [log net-worth-A 10] of firms ceiling max [log net-worth-A 10] of firms\n;set-plot-y-range 0 number-of-firms" "histogram  [log net-worth-A 10] of firms"
+"default" 1.0 1 -16777216 true "set-histogram-num-bars 10" "set-histogram-num-bars 10\nset-plot-x-range floor min [net-worth-A] of firms ceiling max [net-worth-A] of firms\nhistogram  [net-worth-A] of firms"
 
 PLOT
 1068
 10
 1271
 130
-Net worth of firms
+log (Net worth) of firms
 NIL
 NIL
 0.0
@@ -792,9 +792,9 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot mean [net-worth-A] of firms"
-"pen-1" 1.0 2 -2674135 true "" "plot min [net-worth-A] of firms"
-"pen-2" 1.0 0 -13840069 true "" "plot max [net-worth-A] of firms"
+"default" 1.0 0 -16777216 true "" "set-plot-y-range 0 ceiling log max [net-worth-A] of firms 10\nplot log mean [net-worth-A] of firms 10"
+"pen-1" 1.0 2 -2674135 true "set-plot-pen-mode 2" "plot log min [net-worth-A] of firms 10"
+"pen-2" 1.0 2 -13840069 true "set-plot-pen-mode 2" "plot log max [net-worth-A] of firms 10"
 
 @#$#@#$#@
 ## WHAT IS IT?
