@@ -89,7 +89,7 @@ to initialize-variables
     set my-firm nobody
     set contract 0
     set income 0
-    set savings 0
+    set savings random-poisson 4 + 4
     set wealth 0
     set propensity-to-consume-c 1
   ]
@@ -343,7 +343,13 @@ end
 
 ;;;;;;;;;; to goods-market  ;;;;;;;;;;
 to goods-market
-
+  let average-savings mean [savings] of workers
+  ask workers[
+    set wealth income + savings
+    set propensity-to-consume-c 1 / (1 + (fn-tanh (average-savings / savings)) ^ beta)
+    set savings savings + (1 - propensity-to-consume-c) * income
+    let money-to-consume propensity-to-consume-c * wealth
+  ]
 end
 
 ;;;;;;;;;; to firms-pay  ;;;;;;;;;;
@@ -365,8 +371,8 @@ to-report average-market-price
   report mean [individual-price-P] of firms
 end
 
-to-report average-savings
-
+to-report fn-tanh [a]
+  report (exp (2 * a) - 1) / (exp (2 * a) + 1)
 end
 
 to-report interest-rate-policy-rbar
@@ -427,10 +433,10 @@ ticks
 60.0
 
 BUTTON
-22
-29
-95
-62
+21
+10
+94
+43
 NIL
 setup
 NIL
@@ -444,10 +450,10 @@ NIL
 1
 
 BUTTON
-102
-29
-165
-62
+101
+10
+164
+43
 NIL
 go
 T
@@ -461,10 +467,10 @@ NIL
 0
 
 SLIDER
-3
-79
-195
-112
+2
+48
+194
+81
 number-of-firms
 number-of-firms
 10
@@ -476,40 +482,40 @@ NIL
 HORIZONTAL
 
 SLIDER
-3
-115
+2
+84
+194
+117
+wages-shock-xi
+wages-shock-xi
+0
+0.5
+0.05
+0.05
+1
+NIL
+HORIZONTAL
+
+SLIDER
+2
+121
 195
-148
-wages-shock-xi
-wages-shock-xi
+154
+interest-shock-phi
+interest-shock-phi
 0
 0.5
-0.05
+0.1
 0.05
 1
 NIL
 HORIZONTAL
 
 SLIDER
-3
-152
+2
+157
 196
-185
-interest-shock-phi
-interest-shock-phi
-0
-0.5
-0.1
-0.05
-1
-NIL
-HORIZONTAL
-
-SLIDER
-3
-188
-197
-221
+190
 price-shock-eta
 price-shock-eta
 0
@@ -521,10 +527,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-3
-225
-197
-258
+2
+194
+196
+227
 production-shock-rho
 production-shock-rho
 0
@@ -536,10 +542,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-3
-262
-197
-295
+2
+231
+196
+264
 v
 v
 0
@@ -551,10 +557,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-3
-299
-198
-332
+2
+268
+197
+301
 labor-market-M
 labor-market-M
 1
@@ -584,10 +590,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "unemployment-rate"
 
 SLIDER
-3
-334
-199
-367
+2
+303
+198
+336
 credit-market-H
 credit-market-H
 1
@@ -596,6 +602,21 @@ credit-market-H
 1
 1
 trials
+HORIZONTAL
+
+SLIDER
+2
+338
+198
+371
+beta
+beta
+0
+2
+1.0
+0.05
+1
+NIL
 HORIZONTAL
 
 @#$#@#$#@
