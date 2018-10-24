@@ -111,7 +111,7 @@ to initialize-variables
     set operational-interest-rate 0
     set interest-rate-r 0
   ]
-  set average-price-list array:from-list n-values 4 [0]
+  set average-price-list array:from-list n-values 4 [6]
 end
 
 to start-firms [#firms]
@@ -521,6 +521,12 @@ to unemployment-rate
   plot unemployed / count workers
 end
 
+to plot-month-inflation
+  let actual-price array:item average-price-list (ticks mod 4)
+  let previous-price array:item average-price-list ((ticks - 1) mod 4)
+  plot ((actual-price - previous-price) / actual-price) * 100
+end
+
 to-report fn-annual-inflation-rate
   let annual-prices array:to-list average-price-list
   report (reduce * annual-prices) - 1
@@ -839,6 +845,25 @@ PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [propensity-to-consume-c] of workers"
 "pen-1" 1.0 2 -2674135 true "" "plot min [propensity-to-consume-c] of workers"
 "pen-2" 1.0 2 -13345367 true "" "plot max [propensity-to-consume-c] of workers"
+
+PLOT
+862
+133
+1066
+253
+Month inflation
+NIL
+NIL
+0.0
+10.0
+0.0
+1.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot-month-inflation"
+"pen-1" 1.0 2 -5987164 true "" "plot 0"
 
 @#$#@#$#@
 ## WHAT IS IT?
