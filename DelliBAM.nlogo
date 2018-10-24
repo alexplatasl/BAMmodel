@@ -710,7 +710,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "unemployment-rate"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nunemployment-rate"
 
 SLIDER
 2
@@ -806,9 +806,29 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-y-range 0 ceiling log max [net-worth-A] of firms 10\nplot log mean [net-worth-A] of firms 10"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 ceiling log max [net-worth-A] of firms 10\nplot log mean [net-worth-A] of firms 10"
 "pen-1" 1.0 2 -2674135 true "set-plot-pen-mode 2" "plot log min [net-worth-A] of firms 10"
 "pen-2" 1.0 2 -13840069 true "set-plot-pen-mode 2" "plot log max [net-worth-A] of firms 10"
+
+PLOT
+655
+133
+858
+253
+Propensity to consume
+NIL
+NIL
+0.0
+10.0
+0.0
+1.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [propensity-to-consume-c] of workers"
+"pen-1" 1.0 2 -2674135 true "" "plot min [propensity-to-consume-c] of workers"
+"pen-2" 1.0 2 -13345367 true "" "plot max [propensity-to-consume-c] of workers"
 
 @#$#@#$#@
 ## WHAT IS IT?
