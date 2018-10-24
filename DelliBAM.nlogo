@@ -1,9 +1,13 @@
 ; Bottom-up Adaptive Macroeconomics
-extensions [palette]
+extensions [palette array]
 
 breed[firms firm]
 breed[workers worker]
 breed[banks bank]
+
+globals [
+  average-price-list
+]
 
 firms-own[
   production-Y
@@ -69,7 +73,7 @@ end
 
 to initialize-variables
   ask firms [
-    set production-Y random-poisson 4 + 4
+    set production-Y fn-truncated-normal 6 2
     set labor-productivity-alpha 1
     set desired-production-Yd 0
     set expected-demand-De 1
@@ -79,13 +83,13 @@ to initialize-variables
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
     set wage-offered-Wb 0
-    set net-worth-A random-poisson 4 + 2
+    set net-worth-A fn-truncated-normal 6 2
     set total-payroll-W 0
     set loan-B 0
     set my-potential-banks no-turtles
     set my-bank no-turtles
     set inventory-S one-of [0 1]
-    set individual-price-P random-poisson 4  + 4
+    set individual-price-P fn-truncated-normal 6 2
     set revenue-R 0
     set retained-profits-pi 0
   ]
@@ -95,7 +99,7 @@ to initialize-variables
     set my-firm nobody
     set contract 0
     set income 0
-    set savings random-poisson 4 + 4
+    set savings fn-truncated-normal 6 2
     set wealth 0
     set propensity-to-consume-c 1
     set my-stores no-turtles
@@ -107,6 +111,7 @@ to initialize-variables
     set operational-interest-rate 0
     set interest-rate-r 0
   ]
+  set average-price-list array:from-list n-values 4 [0]
 end
 
 to start-firms [#firms]
@@ -160,6 +165,7 @@ to firms-calculate-production
   ask firms [
     set desired-production-Yd expected-demand-De; submodel 2
   ]
+  array:set average-price-list (ticks mod 4) mean [individual-price-P] of firms
 end
 
 to adapt-individual-price; submodel 27 y 28
@@ -195,10 +201,16 @@ to labor-market
     set current-numbers-employees-L0 count my-employees; summodel 4
     set number-of-vacancies-offered-V max(list (desired-labor-force-Ld - current-numbers-employees-L0) 0 ); submodel 5
     if (ticks > 0 and ticks mod 4 = 0 )
-    [set minimum-wage-W-hat minimum-wage-W-hat]; submodel 6
+    [
+      set minimum-wage-W-hat minimum-wage-W-hat; submodel 6
+    ]
     ifelse (number-of-vacancies-offered-V = 0)
-    [set wage-offered-Wb max(list minimum-wage-W-hat wage-offered-Wb)]; submodel 7
-    [set wage-offered-Wb max(list minimum-wage-W-hat (wage-offered-Wb * (1 + wages-shock-xi)))]; submodels 8 and 9
+    [
+      set wage-offered-Wb max(list minimum-wage-W-hat wage-offered-Wb); submodel 7
+    ]
+    [
+      set wage-offered-Wb max(list minimum-wage-W-hat (wage-offered-Wb * (1 + wages-shock-xi))); submodels 8 and 9
+    ]
   ]
   labor-market-opens
 end
@@ -435,7 +447,7 @@ to replace-bankrupt
       set production-Y mean [production-Y] of incumbent-firms
       set labor-productivity-alpha 1
       set my-employees no-turtles
-      set minimum-wage-W-hat 1
+      set minimum-wage-W-hat minimum-wage-W-hat
       set net-worth-A mean [net-worth-A] of incumbent-firms
       set my-potential-banks no-turtles
       set my-bank no-turtles
@@ -468,6 +480,10 @@ to-report fn-tanh [a]
   report (exp (2 * a) - 1) / (exp (2 * a) + 1)
 end
 
+to-report fn-minimum-wage-W-hat
+  report 1
+end
+
 to-report interest-rate-policy-rbar
   report 0.07
 end
@@ -480,17 +496,14 @@ to-report fn-incumbent-firms
   report (turtle-set list-incumbent-firms)
 end
 
+to-report fn-truncated-normal [ m sd ]
+  let normal-value random-normal m sd
+  report ifelse-value (normal-value > (m - sd)) [normal-value][m - sd]
+end
+
 ; observation
 to-report logarithm-of-real-GDP
 
-end
-
-to-report logarithm-net-value-A
-  histogram [net-worth-A] of firms
-end
-
-to-report logarithm-wealth
-  histogram [color] of firms
 end
 
 to unemployment-rate
@@ -498,8 +511,9 @@ to unemployment-rate
   plot unemployed / count workers
 end
 
-to-report annual-inflation-rate
-
+to-report fn-annual-inflation-rate
+  let annual-prices array:to-list average-price-list
+  report (reduce * annual-prices) - 1
 end
 
 to-report average-real-interest-rate
