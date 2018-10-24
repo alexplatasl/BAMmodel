@@ -389,6 +389,7 @@ to buying-step [trials money]; workers procedure
     let my-cheapest-store min-one-of my-stores [individual-price-P]
     let posible-goods-to-buy min list money [inventory-S] of my-cheapest-store
     set money money - posible-goods-to-buy
+    set wealth wealth - posible-goods-to-buy
     ask my-cheapest-store [
       set inventory-S inventory-S - posible-goods-to-buy
     ]
@@ -426,6 +427,15 @@ to firms-banks-survive
     if (net-worth-A < 0)[
       ask my-bank [
         set bad-debt-BD bad-debt-BD + 1
+      ]
+      ask my-employees [
+        set color yellow
+        set employed? false
+        set my-wage 0
+        set contract 0
+        set my-firm no-turtles
+        rt random 360
+        fd (random 4) + 1
       ]
       die
     ]
@@ -749,10 +759,10 @@ SLIDER
 407
 beta
 beta
-0.05
-2
-0.95
-0.05
+0.01
+1
+0.87
+0.01
 1
 NIL
 HORIZONTAL
@@ -765,9 +775,9 @@ SLIDER
 dividends-delta
 dividends-delta
 0
-1
+0.5
 0.15
-0.05
+0.01
 1
 NIL
 HORIZONTAL
