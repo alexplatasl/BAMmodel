@@ -628,8 +628,8 @@ SLIDER
 number-of-firms
 number-of-firms
 10
-200
-100.0
+1000
+160.0
 5
 1
 NIL
