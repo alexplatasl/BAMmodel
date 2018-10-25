@@ -413,8 +413,10 @@ to firms-pay
     ][
       let bank-financing ifelse-value (net-worth-A != 0 ) [loan-B / net-worth-A][1]
       let bad-debt-amount bank-financing * net-worth-A
-      ask my-bank [
-        set patrimonial-base-E patrimonial-base-E - bad-debt-amount
+      if is-bank? my-bank [
+        ask my-bank [
+          set patrimonial-base-E patrimonial-base-E - bad-debt-amount
+        ]
       ]
     ]
     set net-profits gross-profits - amount-of-Interest-to-pay
