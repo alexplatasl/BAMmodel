@@ -1,3 +1,5 @@
+; run out of memory
+
 ; Bottom-up Adaptive Macroeconomics
 extensions [palette array]
 
@@ -823,7 +825,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "set-histogram-num-bars 10" "set-histogram-num-bars 10\nset-plot-x-range floor min [net-worth-A] of firms ceiling max [net-worth-A] of firms\nhistogram  [net-worth-A] of firms"
+"default" 1.0 1 -16777216 true "set-histogram-num-bars 8" "set-histogram-num-bars 8\nset-plot-x-range floor min [net-worth-A] of firms ceiling max [net-worth-A] of firms\nhistogram  [net-worth-A] of firms"
 
 PLOT
 1068
