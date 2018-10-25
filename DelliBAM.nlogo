@@ -332,8 +332,8 @@ to lending-step [#borrowing-firms]; banks procedure
 end
 
 to firing-step
-  ask firms with [loan-B > 0 and count my-employees > 1][
-    while [total-payroll-W  > net-worth-A][
+  ask firms with [loan-B > 0][
+    while [total-payroll-W  > net-worth-A and count my-employees > 1][
       let expensive-worker max-one-of my-employees [my-wage]
       show count my-employees
       set my-employees min-n-of (count my-employees - 1) my-employees [my-wage]
@@ -405,8 +405,10 @@ to firms-pay
     set gross-profits revenue-R - ( total-payroll-W )
     let principal-and-Interest amount-of-Interest-to-pay
     ifelse (gross-profits > amount-of-Interest-to-pay)[; submodel 42
-      ask my-bank [
-        set patrimonial-base-E patrimonial-base-E + principal-and-Interest
+      if is-bank? my-bank [ ; Check why a dead bank is arriving here!
+        ask my-bank [
+          set patrimonial-base-E patrimonial-base-E + principal-and-Interest
+        ]
       ]
     ][
       let bank-financing ifelse-value (net-worth-A != 0 ) [loan-B / net-worth-A][1]
@@ -629,7 +631,7 @@ number-of-firms
 number-of-firms
 10
 1000
-160.0
+100.0
 5
 1
 NIL
