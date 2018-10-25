@@ -144,7 +144,7 @@ to start-banks [#banks]
 end
 
 to go
-  if ticks >= 100 [stop]
+  if ticks >= 1000 [stop]
   ; Process overview and scheduling
   firms-calculate-production
   labor-market
@@ -332,9 +332,10 @@ to lending-step [#borrowing-firms]; banks procedure
 end
 
 to firing-step
-  ask firms with [loan-B > 0 and any? my-employees][
+  ask firms with [loan-B > 0 and count my-employees > 1][
     while [total-payroll-W  > net-worth-A][
       let expensive-worker max-one-of my-employees [my-wage]
+      show count my-employees
       set my-employees min-n-of (count my-employees - 1) my-employees [my-wage]
       set total-payroll-W total-payroll-W - [my-wage] of expensive-worker
       ask expensive-worker[
@@ -521,10 +522,24 @@ to unemployment-rate
   plot unemployed / count workers
 end
 
-to plot-month-inflation
+to plot-quarterly-inflation
   let actual-price array:item average-price-list (ticks mod 4)
   let previous-price array:item average-price-list ((ticks - 1) mod 4)
   plot ((actual-price - previous-price) / actual-price) * 100
+end
+
+to plot-annualized-inflation
+  let i 0
+  let quarter-inflation 0
+  let yearly-inflation array:from-list n-values 4 [1]
+  while [i < 4][
+    let actual-price array:item average-price-list (i mod 4)
+    let previous-price array:item average-price-list ((i - 1) mod 4)
+    set quarter-inflation ((actual-price - previous-price) / actual-price)
+    array:set yearly-inflation i quarter-inflation
+    set i i + 1
+  ]
+  plot (reduce * array:to-list yearly-inflation)
 end
 
 to-report fn-annual-inflation-rate
@@ -569,7 +584,7 @@ GRAPHICS-WINDOW
 0
 1
 ticks
-60.0
+120.0
 
 BUTTON
 21
@@ -851,7 +866,7 @@ PLOT
 133
 1066
 253
-Month inflation
+Quarterly inflation
 NIL
 NIL
 0.0
@@ -862,8 +877,26 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot-month-inflation"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot-quarterly-inflation"
 "pen-1" 1.0 2 -5987164 true "" "plot 0"
+
+PLOT
+1069
+133
+1269
+253
+Annualized inflation
+NIL
+NIL
+0.0
+10.0
+0.0
+0.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot-annualized-inflation"
 
 @#$#@#$#@
 ## WHAT IS IT?
