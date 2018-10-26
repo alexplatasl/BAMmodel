@@ -109,9 +109,10 @@ to initialize-variables
   ]
   ask banks [
     set total-amount-of-credit-C 0
-    set patrimonial-base-E random-poisson 100 + 10
+    set patrimonial-base-E random-poisson 10000 + 10
     set operational-interest-rate 0
     set interest-rate-r 0
+    set my-borrowing-firms no-turtles
   ]
   set average-price-list array:from-list n-values 4 [6]
 end
@@ -337,7 +338,6 @@ to firing-step
   ask firms with [loan-B > 0][
     while [total-payroll-W  > net-worth-A and count my-employees > 1][
       let expensive-worker max-one-of my-employees [my-wage]
-      show count my-employees
       set my-employees min-n-of (count my-employees - 1) my-employees [my-wage]
       set total-payroll-W total-payroll-W - [my-wage] of expensive-worker
       ask expensive-worker[
@@ -378,7 +378,7 @@ to goods-market
   let average-savings mean [savings] of workers
   ask workers[
     set wealth income + savings
-    set propensity-to-consume-c 1 / (1 + (fn-tanh (average-savings / savings)) ^ beta)
+    set propensity-to-consume-c 1 / (1 + (fn-tanh (savings / average-savings)) ^ beta)
     set savings savings + (1 - propensity-to-consume-c) * income
     let money-to-consume propensity-to-consume-c * wealth
     set my-stores (turtle-set my-large-store n-of (goods-market-Z - count (turtle-set my-large-store)) firms)
@@ -428,6 +428,7 @@ to firms-pay
   ]
 end
 
+;;;;;;;;;; to firms-banks-survive ;;;;;;;;;;
 to firms-banks-survive
   ask firms [
     set net-worth-A net-worth-A + retained-profits-pi
@@ -447,7 +448,12 @@ to firms-banks-survive
       die
     ]
   ]
-  ask banks with [patrimonial-base-E < 0][die]
+  ask banks with [patrimonial-base-E < 0][
+    ask my-borrowing-firms [
+      set my-bank no-turtles
+    ]
+    die
+  ]
 end
 
 to replace-bankrupt
@@ -482,6 +488,7 @@ to replace-bankrupt
         set me self
         rt random 360
         fd (random 10) + 1
+        set my-borrowing-firms no-turtles
       ]
     ]
   ]
@@ -534,18 +541,22 @@ to plot-quarterly-inflation
   plot ((actual-price - previous-price) / actual-price) * 100
 end
 
-to plot-annualized-inflation
+to-report annualized-inflation
   let i 0
   let quarter-inflation 0
   let yearly-inflation array:from-list n-values 4 [1]
   while [i < 4][
     let actual-price array:item average-price-list (i mod 4)
     let previous-price array:item average-price-list ((i - 1) mod 4)
-    set quarter-inflation ((actual-price - previous-price) / actual-price)
+    set quarter-inflation ((actual-price - previous-price) / actual-price) + 1
     array:set yearly-inflation i quarter-inflation
     set i i + 1
   ]
-  plot (reduce * array:to-list yearly-inflation)
+  report ((reduce * array:to-list yearly-inflation) - 1)
+end
+
+to plot-annualized-inflation
+  plot annualized-inflation * 100
 end
 
 to-report fn-annual-inflation-rate
@@ -748,6 +759,7 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nunemployment-rate"
+"pen-1" 1.0 0 -7500403 true "" "plot 0"
 
 SLIDER
 2
@@ -825,7 +837,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "set-histogram-num-bars 8" "set-histogram-num-bars 8\nset-plot-x-range floor min [net-worth-A] of firms ceiling max [net-worth-A] of firms\nhistogram  [net-worth-A] of firms"
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars 8\nset-plot-x-range floor min [net-worth-A] of firms ceiling max [net-worth-A] of firms\nhistogram  [net-worth-A] of firms"
 
 PLOT
 1068
@@ -897,12 +909,13 @@ NIL
 0.0
 10.0
 0.0
-0.0
+1.0
 true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot-annualized-inflation"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
+"pen-1" 1.0 0 -7500403 true "" "plot 0"
 
 @#$#@#$#@
 ## WHAT IS IT?
