@@ -406,22 +406,21 @@ to firms-pay
     set revenue-R individual-price-P * production-Y
     set gross-profits revenue-R - ( total-payroll-W )
     let principal-and-Interest amount-of-Interest-to-pay
-    ifelse (gross-profits > amount-of-Interest-to-pay)[; submodel 42
-      if is-bank? my-bank [ ; Check why a dead bank is arriving here!
+    if (amount-of-Interest-to-pay > 0)[
+      ifelse (gross-profits > amount-of-Interest-to-pay)[; submodel 42
         ask my-bank [
           set patrimonial-base-E patrimonial-base-E + principal-and-Interest
         ]
-      ]
-    ][
-      let bank-financing ifelse-value (net-worth-A != 0 ) [loan-B / net-worth-A][1]
-      let bad-debt-amount bank-financing * net-worth-A
-      if is-bank? my-bank [
+      ][
+        let bank-financing ifelse-value (net-worth-A != 0 ) [loan-B / net-worth-A][1]
+        let bad-debt-amount bank-financing * net-worth-A
         ask my-bank [
           set patrimonial-base-E patrimonial-base-E - bad-debt-amount
         ]
       ]
     ]
     set net-profits gross-profits - amount-of-Interest-to-pay
+    set amount-of-Interest-to-pay 0
     if (net-profits > 0)[
       set retained-profits-pi (1 - dividends-delta ) * net-profits
     ]
@@ -450,6 +449,7 @@ to firms-banks-survive
   ]
   ask banks with [patrimonial-base-E < 0][
     ask my-borrowing-firms [
+      set my-potential-banks no-turtles
       set my-bank no-turtles
     ]
     die
@@ -552,11 +552,11 @@ to-report annualized-inflation
     array:set yearly-inflation i quarter-inflation
     set i i + 1
   ]
-  report ((reduce * array:to-list yearly-inflation) - 1)
+  report (reduce * array:to-list yearly-inflation)
 end
 
 to plot-annualized-inflation
-  plot annualized-inflation * 100
+  plot (annualized-inflation - 1) * 100
 end
 
 to-report fn-annual-inflation-rate
@@ -721,8 +721,8 @@ v
 v
 0
 1
-0.5
-1
+0.23
+0.01
 1
 NIL
 HORIZONTAL
@@ -748,7 +748,7 @@ PLOT
 858
 130
 Unemployment rate
-NIL
+Quarter
 NIL
 0.0
 10.0
@@ -827,7 +827,7 @@ PLOT
 1065
 130
 Net worth distribution
-NIL
+log money
 NIL
 0.0
 10.0
@@ -837,7 +837,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "set-histogram-num-bars 8\nset-plot-x-range floor min [net-worth-A] of firms ceiling max [net-worth-A] of firms\nhistogram  [net-worth-A] of firms"
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-x-range floor min [log net-worth-A 10] of firms ceiling max [log net-worth-A 10] of firms\nhistogram  [log net-worth-A 10] of firms"
 
 PLOT
 1068
@@ -845,7 +845,7 @@ PLOT
 1271
 130
 log (Net worth) of firms
-NIL
+Quarter
 NIL
 0.0
 10.0
@@ -865,7 +865,7 @@ PLOT
 858
 253
 Propensity to consume
-NIL
+Quarter
 NIL
 0.0
 10.0
@@ -885,7 +885,7 @@ PLOT
 1066
 253
 Quarterly inflation
-NIL
+Quarter
 NIL
 0.0
 10.0
@@ -904,18 +904,18 @@ PLOT
 1269
 253
 Annualized inflation
-NIL
+Year
 NIL
 0.0
 10.0
-0.0
+-1.0
 1.0
 true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
-"pen-1" 1.0 0 -7500403 true "" "plot 0"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
+"pen-1" 1.0 0 -7500403 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[plot 0]"
 
 @#$#@#$#@
 ## WHAT IS IT?
