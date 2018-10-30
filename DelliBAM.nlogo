@@ -1300,6 +1300,46 @@ NetLogo 6.0.4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="exp-01" repetitions="500" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>count workers with [not employed?] / count workers</metric>
+    <enumeratedValueSet variable="credit-market-H">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="number-of-firms">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="production-shock-rho">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="v">
+      <value value="0.23"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="price-shock-eta">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="beta">
+      <value value="0.87"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="dividends-delta">
+      <value value="0.15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="wages-shock-xi">
+      <value value="0.05"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="labor-market-M">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="interest-shock-phi">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="goods-market-Z">
+      <value value="2"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
