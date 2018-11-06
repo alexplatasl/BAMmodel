@@ -1,5 +1,3 @@
-; run out of memory
-
 ; Bottom-up Adaptive Macroeconomics
 extensions [palette array]
 
@@ -562,11 +560,6 @@ to plot-annualized-inflation
   plot (annualized-inflation - 1) * 100
 end
 
-to-report fn-annual-inflation-rate
-  let annual-prices array:to-list average-price-list
-  report (reduce * annual-prices) - 1
-end
-
 to-report average-real-interest-rate
 
 end
@@ -664,7 +657,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.1
+0.05
 0.05
 1
 NIL
