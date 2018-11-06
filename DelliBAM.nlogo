@@ -471,7 +471,7 @@ to replace-bankrupt
       set labor-productivity-alpha 1
       set my-employees no-turtles
       set minimum-wage-W-hat minimum-wage-W-hat
-      set net-worth-A mean [net-worth-A] of incumbent-firms
+      set net-worth-A size-replacing-firms * mean [net-worth-A] of incumbent-firms
       set my-potential-banks no-turtles
       set my-bank no-turtles
       set inventory-S one-of [0 1]
@@ -661,7 +661,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.05
+0.1
 0.05
 1
 NIL
@@ -785,7 +785,7 @@ goods-market-Z
 goods-market-Z
 1
 6
-2.0
+3.0
 1
 1
 trials
@@ -895,7 +895,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot-quarterly-inflation"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -10 10\nplot-quarterly-inflation"
 "pen-1" 1.0 2 -5987164 true "" "plot 0"
 
 PLOT
@@ -914,8 +914,33 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nset-plot-y-range -10 10\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
 "pen-1" 1.0 0 -7500403 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[plot 0]"
+
+TEXTBOX
+7
+451
+157
+469
+Scaling parameter
+12
+0.0
+1
+
+SLIDER
+4
+470
+198
+503
+size-replacing-firms
+size-replacing-firms
+0.2
+1
+0.33
+0.01
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
