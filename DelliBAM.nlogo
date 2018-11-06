@@ -537,8 +537,8 @@ to plot-nominal-GDP
 end
 
 to-report logarithm-of-households-consumption
-  let product [production-Y] of firms * [individual-price-P] of firms
-  let consumption product - [inventory-S] of firms
+  let output sum [production-Y * individual-price-P] of firms
+  let consumption output - sum [inventory-S] of firms
   report ln consumption
 end
 
@@ -766,7 +766,8 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nunemployment-rate"
-"pen-1" 1.0 0 -7500403 true "" "plot 0"
+"pen-1" 1.0 2 -7500403 true "" "plot 0"
+"pen-2" 1.0 2 -2674135 true "" "plot 0.1"
 
 SLIDER
 2
@@ -943,7 +944,7 @@ size-replacing-firms
 size-replacing-firms
 0.2
 1
-0.33
+0.26
 0.01
 1
 NIL
@@ -966,6 +967,24 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot-nominal-GDP"
+
+PLOT
+862
+256
+1066
+376
+Ln of consumption
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot logarithm-of-households-consumption"
 
 @#$#@#$#@
 ## WHAT IS IT?
