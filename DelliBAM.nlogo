@@ -845,7 +845,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-x-range floor min [log net-worth-A 10] of firms ceiling max [log net-worth-A 10] of firms\nhistogram  [log net-worth-A 10] of firms"
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count fn-incumbent-firms\nset-plot-x-range floor min [log net-worth-A 10] of fn-incumbent-firms ceiling max [log net-worth-A 10] of fn-incumbent-firms\nhistogram  [log net-worth-A 10] of fn-incumbent-firms"
 
 PLOT
 1068
@@ -944,7 +944,7 @@ size-replacing-firms
 size-replacing-firms
 0.2
 1
-0.26
+1.0
 0.01
 1
 NIL
@@ -1007,10 +1007,10 @@ PENS
 "pen-2" 1.0 0 -13345367 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln max [individual-price-P] of firms"
 
 PLOT
-657
-382
-857
-502
+655
+379
+858
+499
 Ln Wage offered
 NIL
 NIL
