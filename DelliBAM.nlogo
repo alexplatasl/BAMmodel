@@ -527,8 +527,19 @@ to-report fn-truncated-normal [ m sd ]
 end
 
 ; observation
-to-report logarithm-of-real-GDP
+to-report logarithm-of-nominal-GDP
+  let output sum [production-Y * individual-price-P] of firms
+  report ln output
+end
 
+to plot-nominal-GDP
+  plot logarithm-of-nominal-GDP
+end
+
+to-report logarithm-of-households-consumption
+  let product [production-Y] of firms * [individual-price-P] of firms
+  let consumption product - [inventory-S] of firms
+  report ln consumption
 end
 
 to unemployment-rate
@@ -937,6 +948,24 @@ size-replacing-firms
 1
 NIL
 HORIZONTAL
+
+PLOT
+655
+256
+858
+376
+log nominal GDP
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot-nominal-GDP"
 
 @#$#@#$#@
 ## WHAT IS IT?
