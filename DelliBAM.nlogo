@@ -954,7 +954,7 @@ PLOT
 256
 858
 376
-log nominal GDP
+Ln nominal GDP
 NIL
 NIL
 0.0
@@ -965,7 +965,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot-nominal-GDP"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot-nominal-GDP"
 
 @#$#@#$#@
 ## WHAT IS IT?
