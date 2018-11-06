@@ -82,7 +82,7 @@ to initialize-variables
     set current-numbers-employees-L0 0
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
-    set wage-offered-Wb 0
+    set wage-offered-Wb minimum-wage-W-hat
     set net-worth-A fn-truncated-normal 6 2
     set total-payroll-W 0
     set loan-B 0
@@ -903,7 +903,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -10 10\nplot-quarterly-inflation"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -15 10\nplot-quarterly-inflation"
 "pen-1" 1.0 2 -5987164 true "" "plot 0"
 
 PLOT
@@ -985,6 +985,46 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot logarithm-of-households-consumption"
+
+PLOT
+1069
+256
+1269
+376
+Ln Price of firms
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln average-market-price"
+"pen-1" 1.0 2 -2674135 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln min [individual-price-P] of firms"
+"pen-2" 1.0 0 -13345367 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln max [individual-price-P] of firms"
+
+PLOT
+657
+382
+857
+502
+Ln Wage offered
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln mean [wage-offered-Wb] of firms"
+"pen-1" 1.0 0 -2674135 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln min [wage-offered-Wb] of firms"
+"pen-2" 1.0 0 -13345367 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln max [wage-offered-Wb] of firms"
 
 @#$#@#$#@
 ## WHAT IS IT?
