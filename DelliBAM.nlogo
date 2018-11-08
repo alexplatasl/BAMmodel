@@ -197,13 +197,14 @@ to adapt-expected-demand; submodel 29 y 30
 end
 ;;;;;;;;;; to labor-market  ;;;;;;;;;;
 to labor-market
+  let law-minimum-wage ifelse-value (ticks > 0 and ticks mod 4 = 0 )[fn-minimum-wage-W-hat][[minimum-wage-W-hat] of firms]
   ask firms [
     set desired-labor-force-Ld round (desired-production-Yd / labor-productivity-alpha); submodel 3
     set current-numbers-employees-L0 count my-employees; summodel 4
     set number-of-vacancies-offered-V max(list (desired-labor-force-Ld - current-numbers-employees-L0) 0 ); submodel 5
     if (ticks > 0 and ticks mod 4 = 0 )
     [
-      set minimum-wage-W-hat minimum-wage-W-hat; submodel 6
+      set minimum-wage-W-hat law-minimum-wage; submodel 6
     ]
     ifelse (number-of-vacancies-offered-V = 0)
     [
@@ -377,8 +378,8 @@ to goods-market
   ask workers[
     set wealth income + savings
     set propensity-to-consume-c 1 / (1 + (fn-tanh (savings / average-savings)) ^ beta)
-    set savings savings + (1 - propensity-to-consume-c) * income
     let money-to-consume propensity-to-consume-c * wealth
+    set savings savings + ((1 - propensity-to-consume-c) * wealth)
     set my-stores (turtle-set my-large-store n-of (goods-market-Z - count (turtle-set my-large-store)) firms)
     set my-large-store max-one-of my-stores [production-Y]
     buying-step goods-market-Z money-to-consume
@@ -390,7 +391,6 @@ to buying-step [trials money]; workers procedure
     let my-cheapest-store min-one-of my-stores [individual-price-P]
     let posible-goods-to-buy min list money [inventory-S] of my-cheapest-store
     set money money - posible-goods-to-buy
-    set wealth wealth - posible-goods-to-buy
     ask my-cheapest-store [
       set inventory-S inventory-S - posible-goods-to-buy
     ]
@@ -471,8 +471,9 @@ to replace-bankrupt
       set production-Y mean [production-Y] of incumbent-firms
       set labor-productivity-alpha 1
       set my-employees no-turtles
-      set minimum-wage-W-hat minimum-wage-W-hat
-      set net-worth-A size-replacing-firms * mean [net-worth-A] of incumbent-firms
+      set minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
+      set wage-offered-Wb random-float (1 - size-replacing-firms) * mean [wage-offered-Wb] of incumbent-firms
+      set net-worth-A random-float (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
       set my-potential-banks no-turtles
       set my-bank no-turtles
       set inventory-S one-of [0 1]
@@ -506,7 +507,8 @@ to-report fn-tanh [a]
 end
 
 to-report fn-minimum-wage-W-hat
-  report 1
+  let currently-minimum-w min [minimum-wage-W-hat] of firms
+  report 1.04 * currently-minimum-w
 end
 
 to-report interest-rate-policy-rbar
@@ -584,9 +586,9 @@ to-report vacancy-rate
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+269
 10
-642
+701
 443
 -1
 -1
@@ -669,7 +671,7 @@ wages-shock-xi
 0
 0.5
 0.05
-0.05
+0.01
 1
 NIL
 HORIZONTAL
@@ -684,7 +686,7 @@ interest-shock-phi
 0
 0.5
 0.1
-0.05
+0.01
 1
 NIL
 HORIZONTAL
@@ -699,7 +701,7 @@ price-shock-eta
 0
 0.5
 0.1
-0.05
+0.01
 1
 NIL
 HORIZONTAL
@@ -714,7 +716,7 @@ production-shock-rho
 0
 0.5
 0.1
-0.05
+0.01
 1
 NIL
 HORIZONTAL
@@ -742,7 +744,7 @@ SLIDER
 labor-market-M
 labor-market-M
 1
-6
+10
 4.0
 1
 1
@@ -750,9 +752,9 @@ trials
 HORIZONTAL
 
 PLOT
-655
+708
 10
-858
+911
 130
 Unemployment rate
 Quarter
@@ -777,7 +779,7 @@ SLIDER
 credit-market-H
 credit-market-H
 1
-5
+10
 2.0
 1
 1
@@ -792,8 +794,8 @@ SLIDER
 goods-market-Z
 goods-market-Z
 1
-6
-3.0
+10
+10.0
 1
 1
 trials
@@ -830,9 +832,9 @@ NIL
 HORIZONTAL
 
 PLOT
-862
+915
 10
-1065
+1118
 130
 Net worth distribution
 log money
@@ -848,9 +850,9 @@ PENS
 "default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count fn-incumbent-firms\nset-plot-x-range floor min [log net-worth-A 10] of fn-incumbent-firms ceiling max [log net-worth-A 10] of fn-incumbent-firms\nhistogram  [log net-worth-A 10] of fn-incumbent-firms"
 
 PLOT
-1068
+1121
 10
-1271
+1324
 130
 log (Net worth) of firms
 Quarter
@@ -868,9 +870,9 @@ PENS
 "pen-2" 1.0 2 -13840069 true "set-plot-pen-mode 2" "plot log max [net-worth-A] of firms 10"
 
 PLOT
-655
+708
 133
-858
+911
 253
 Propensity to consume
 Quarter
@@ -888,9 +890,9 @@ PENS
 "pen-2" 1.0 2 -13345367 true "" "plot max [propensity-to-consume-c] of workers"
 
 PLOT
-862
+915
 133
-1066
+1119
 253
 Quarterly inflation
 Quarter
@@ -903,13 +905,13 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -15 10\nplot-quarterly-inflation"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -5 5\nplot-quarterly-inflation"
 "pen-1" 1.0 2 -5987164 true "" "plot 0"
 
 PLOT
-1069
+1122
 133
-1269
+1322
 253
 Annualized inflation
 Year
@@ -922,15 +924,15 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nset-plot-y-range -10 10\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
 "pen-1" 1.0 0 -7500403 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[plot 0]"
 
 TEXTBOX
 7
 451
-157
-469
-Scaling parameter
+192
+481
+Random scaling parameter
 12
 0.0
 1
@@ -942,18 +944,18 @@ SLIDER
 503
 size-replacing-firms
 size-replacing-firms
+0.05
+0.5
 0.2
-1
-1.0
 0.01
 1
 NIL
 HORIZONTAL
 
 PLOT
-655
+708
 256
-858
+911
 376
 Ln nominal GDP
 NIL
@@ -969,9 +971,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot-nominal-GDP"
 
 PLOT
-862
+915
 256
-1066
+1119
 376
 Ln of consumption
 NIL
@@ -987,9 +989,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot logarithm-of-households-consumption"
 
 PLOT
-1069
+1122
 256
-1269
+1322
 376
 Ln Price of firms
 NIL
@@ -1007,9 +1009,9 @@ PENS
 "pen-2" 1.0 0 -13345367 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln max [individual-price-P] of firms"
 
 PLOT
-655
+708
 379
-858
+911
 499
 Ln Wage offered
 NIL
@@ -1025,6 +1027,116 @@ PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln mean [wage-offered-Wb] of firms"
 "pen-1" 1.0 0 -2674135 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln min [wage-offered-Wb] of firms"
 "pen-2" 1.0 0 -13345367 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln max [wage-offered-Wb] of firms"
+
+TEXTBOX
+216
+61
+260
+79
+100
+12
+5.0
+1
+
+TEXTBOX
+199
+16
+273
+34
+Init values
+12
+5.0
+1
+
+TEXTBOX
+216
+99
+290
+117
+0.05
+12
+5.0
+1
+
+TEXTBOX
+217
+138
+268
+156
+0.10
+12
+5.0
+1
+
+TEXTBOX
+217
+173
+282
+191
+0.10
+12
+5.0
+1
+
+TEXTBOX
+217
+211
+290
+229
+0.10
+12
+5.0
+1
+
+TEXTBOX
+221
+287
+282
+305
+4
+12
+5.0
+1
+
+TEXTBOX
+222
+320
+277
+338
+2
+12
+5.0
+1
+
+TEXTBOX
+221
+353
+271
+371
+2
+12
+5.0
+1
+
+TEXTBOX
+220
+391
+292
+409
+0.87
+12
+5.0
+1
+
+TEXTBOX
+219
+428
+293
+446
+0.15
+12
+5.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
