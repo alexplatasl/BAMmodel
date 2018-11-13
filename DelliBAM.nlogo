@@ -514,7 +514,7 @@ end
 
 to-report fn-minimum-wage-W-hat
   let currently-minimum-w min [minimum-wage-W-hat] of firms
-  report 1.04 * currently-minimum-w
+  report max (list 1 annualized-inflation) * currently-minimum-w
 end
 
 to-report interest-rate-policy-rbar
@@ -789,7 +789,7 @@ SLIDER
 goods-market-Z
 goods-market-Z
 1
-10
+15
 10.0
 1
 1
@@ -842,7 +842,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-x-range floor min [log net-worth-A 10] of fn-incumbent-firms ceiling max [log net-worth-A 10] of fn-incumbent-firms\nhistogram  [log net-worth-A 10] of fn-incumbent-firms"
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor min [log net-worth-A 10] of fn-incumbent-firms ceiling max [log net-worth-A 10] of fn-incumbent-firms\nhistogram  [log net-worth-A 10] of fn-incumbent-firms"
 
 PLOT
 1121
@@ -1132,6 +1132,24 @@ TEXTBOX
 12
 5.0
 1
+
+PLOT
+915
+380
+1119
+500
+Wealth distribution
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count workers\nset-plot-y-range 0 ceiling sqrt count workers\nset-plot-x-range floor min [log wealth 10] of workers ceiling max [log wealth 10] of workers\nhistogram  [log wealth 10] of workers"
 
 @#$#@#$#@
 ## WHAT IS IT?
