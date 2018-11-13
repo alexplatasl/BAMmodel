@@ -630,9 +630,9 @@ ticks
 120.0
 
 BUTTON
-21
+26
 10
-94
+99
 43
 NIL
 setup
@@ -647,9 +647,9 @@ NIL
 1
 
 BUTTON
-101
+106
 10
-164
+169
 43
 NIL
 go
@@ -696,7 +696,7 @@ HORIZONTAL
 SLIDER
 2
 121
-195
+194
 154
 interest-shock-phi
 interest-shock-phi
@@ -711,7 +711,7 @@ HORIZONTAL
 SLIDER
 2
 157
-196
+194
 190
 price-shock-eta
 price-shock-eta
@@ -726,7 +726,7 @@ HORIZONTAL
 SLIDER
 2
 194
-196
+194
 227
 production-shock-rho
 production-shock-rho
@@ -741,7 +741,7 @@ HORIZONTAL
 SLIDER
 2
 231
-196
+194
 264
 v
 v
@@ -756,7 +756,7 @@ HORIZONTAL
 SLIDER
 2
 268
-197
+194
 301
 labor-market-M
 labor-market-M
@@ -791,7 +791,7 @@ PENS
 SLIDER
 2
 303
-198
+194
 336
 credit-market-H
 credit-market-H
@@ -806,7 +806,7 @@ HORIZONTAL
 SLIDER
 2
 338
-198
+194
 371
 goods-market-Z
 goods-market-Z
@@ -819,9 +819,9 @@ trials
 HORIZONTAL
 
 SLIDER
-3
+2
 374
-198
+194
 407
 beta
 beta
@@ -834,9 +834,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-3
+2
 410
-198
+194
 443
 dividends-delta
 dividends-delta
@@ -851,7 +851,7 @@ HORIZONTAL
 PLOT
 977
 10
-1251
+1243
 130
 Net worth distribution
 log money
@@ -867,9 +867,9 @@ PENS
 "default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor min [log net-worth-A 10] of fn-incumbent-firms ceiling max [log net-worth-A 10] of fn-incumbent-firms\nhistogram  [log net-worth-A 10] of fn-incumbent-firms"
 
 PLOT
-1254
+1246
 10
-1526
+1512
 130
 log (Net worth) of firms
 Quarter
@@ -909,7 +909,7 @@ PENS
 PLOT
 977
 133
-1251
+1243
 253
 Quarterly inflation
 Quarter
@@ -926,9 +926,9 @@ PENS
 "pen-1" 1.0 2 -5987164 true "" "plot 0"
 
 PLOT
-1254
+1246
 133
-1525
+1512
 253
 Annualized inflation
 Year
@@ -955,9 +955,9 @@ Random scaling parameter
 1
 
 SLIDER
-4
+2
 470
-198
+194
 503
 size-replacing-firms
 size-replacing-firms
@@ -991,7 +991,7 @@ PENS
 PLOT
 977
 256
-1251
+1243
 376
 Ln of consumption
 NIL
@@ -1007,9 +1007,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot logarithm-of-households-consumption"
 
 PLOT
-1254
+1246
 256
-1526
+1512
 376
 Ln Price of firms
 NIL
@@ -1043,8 +1043,8 @@ true
 "" ""
 PENS
 "mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln mean [wage-offered-Wb] of firms"
-"min" 1.0 0 -2674135 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln min [wage-offered-Wb] of firms"
-"max" 1.0 0 -13345367 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln max [wage-offered-Wb] of firms"
+"min" 1.0 0 -2674135 true "" "plot ln min [wage-offered-Wb] of firms"
+"max" 1.0 0 -13345367 true "" "plot ln max [wage-offered-Wb] of firms"
 
 TEXTBOX
 216
@@ -1159,7 +1159,7 @@ TEXTBOX
 PLOT
 977
 380
-1251
+1243
 500
 Wealth distribution
 NIL
@@ -1173,6 +1173,24 @@ false
 "" ""
 PENS
 "default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count workers\nset-plot-y-range 0 ceiling sqrt count workers\nset-plot-x-range floor min [log wealth 10] of workers ceiling max [log wealth 10] of workers\nhistogram  [log wealth 10] of workers with [wealth > 0]"
+
+PLOT
+1246
+381
+1513
+501
+Size of firms
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor min [log production-Y 10] of fn-incumbent-firms ceiling max [log production-Y 10] of fn-incumbent-firms\nhistogram  [log production-Y 10] of fn-incumbent-firms"
 
 @#$#@#$#@
 ## WHAT IS IT?
