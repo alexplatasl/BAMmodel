@@ -7,6 +7,7 @@ breed[banks bank]
 
 globals [
   average-price-list
+  quarter-inflation-list
 ]
 
 firms-own[
@@ -113,6 +114,7 @@ to initialize-variables
     set my-borrowing-firms no-turtles
   ]
   set average-price-list array:from-list n-values 4 [6]
+  set quarter-inflation-list array:from-list n-values 4 [0]
 end
 
 to start-firms [#firms]
@@ -167,6 +169,10 @@ to firms-calculate-production
     set desired-production-Yd expected-demand-De; submodel 2
   ]
   array:set average-price-list (ticks mod 4) mean [individual-price-P] of firms
+  let actual-price array:item average-price-list (ticks mod 4)
+  let previous-price array:item average-price-list ((ticks - 1) mod 4)
+  let quarter-inflation ((actual-price - previous-price) / previous-price) * 100
+  array:set quarter-inflation-list (ticks mod 4) quarter-inflation
 end
 
 to adapt-individual-price; submodel 27 y 28
@@ -379,7 +385,7 @@ to goods-market
     set wealth income + savings
     set propensity-to-consume-c 1 / (1 + (fn-tanh (savings / average-savings)) ^ beta)
     let money-to-consume propensity-to-consume-c * wealth
-    set savings savings + ((1 - propensity-to-consume-c) * wealth)
+    set savings ((1 - propensity-to-consume-c) * wealth)
     set my-stores (turtle-set my-large-store n-of (goods-market-Z - count (turtle-set my-large-store)) firms)
     set my-large-store max-one-of my-stores [production-Y]
     buying-step goods-market-Z money-to-consume
@@ -549,10 +555,9 @@ to unemployment-rate
   plot unemployed / count workers
 end
 
-to plot-quarterly-inflation
-  let actual-price array:item average-price-list (ticks mod 4)
-  let previous-price array:item average-price-list ((ticks - 1) mod 4)
-  plot ((actual-price - previous-price) / actual-price) * 100
+to-report quarterly-inflation
+  let q-inflation array:item quarter-inflation-list (ticks mod 4)
+  report q-inflation
 end
 
 to-report annualized-inflation
@@ -567,6 +572,7 @@ to-report annualized-inflation
     set i i + 1
   ]
   report (reduce * array:to-list yearly-inflation)
+
 end
 
 to plot-annualized-inflation
@@ -905,7 +911,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -5 5\nplot-quarterly-inflation"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -5 5\nplot quarterly-inflation"
 "pen-1" 1.0 2 -5987164 true "" "plot 0"
 
 PLOT
