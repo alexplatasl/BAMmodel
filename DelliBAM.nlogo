@@ -90,7 +90,7 @@ to initialize-variables
     set my-potential-banks no-turtles
     set my-bank no-turtles
     set inventory-S one-of [0 1]
-    set individual-price-P fn-truncated-normal 6 2
+    set individual-price-P fn-truncated-normal base-price 2
     set revenue-R 0
     set retained-profits-pi 0
   ]
@@ -147,7 +147,7 @@ to start-banks [#banks]
 end
 
 to go
-  if ticks >= 1000 [stop]
+  if (ticks >= 1000 or (ticks > 500 and fn-unemployment-rate > 0.5)) [stop]
   ; Process overview and scheduling
   firms-calculate-production
   labor-market
@@ -535,19 +535,37 @@ to-report fn-truncated-normal [ m sd ]
 end
 
 ; observation
-to-report logarithm-of-nominal-GDP
+to-report nominal-GDP
   let output sum [production-Y * individual-price-P] of firms
-  report ln output
+  report output
 end
 
 to plot-nominal-GDP
-  plot logarithm-of-nominal-GDP
+  plot ln nominal-GDP
+end
+
+to-report CPI
+  let base base-price
+  let current array:item average-price-list (ticks mod 4)
+  report (current / base) * 100
+end
+
+to-report real-GDP
+  report nominal-GDP / CPI
+end
+
+to plot-real-GDP
+  plot ln real-GDP
 end
 
 to-report logarithm-of-households-consumption
   let output sum [production-Y * individual-price-P] of firms
   let consumption output - sum [inventory-S] of firms
   report ln consumption
+end
+
+to-report fn-unemployment-rate
+  report count workers with [not employed?] / count workers
 end
 
 to unemployment-rate
@@ -566,6 +584,10 @@ end
 
 to plot-annualized-inflation
   plot (annualized-inflation - 1) * 100
+end
+
+to-report base-price
+  report 6
 end
 
 to-report average-real-interest-rate
@@ -749,7 +771,7 @@ HORIZONTAL
 PLOT
 708
 10
-911
+974
 130
 Unemployment rate
 Quarter
@@ -790,7 +812,7 @@ goods-market-Z
 goods-market-Z
 1
 15
-10.0
+14.0
 1
 1
 trials
@@ -827,9 +849,9 @@ NIL
 HORIZONTAL
 
 PLOT
-915
+977
 10
-1118
+1251
 130
 Net worth distribution
 log money
@@ -845,9 +867,9 @@ PENS
 "default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor min [log net-worth-A 10] of fn-incumbent-firms ceiling max [log net-worth-A 10] of fn-incumbent-firms\nhistogram  [log net-worth-A 10] of fn-incumbent-firms"
 
 PLOT
-1121
+1254
 10
-1324
+1526
 130
 log (Net worth) of firms
 Quarter
@@ -857,17 +879,17 @@ NIL
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 ceiling log max [net-worth-A] of firms 10\nplot log mean [net-worth-A] of firms 10"
-"pen-1" 1.0 2 -2674135 true "set-plot-pen-mode 2" "plot log min [net-worth-A] of firms 10"
-"pen-2" 1.0 2 -13840069 true "set-plot-pen-mode 2" "plot log max [net-worth-A] of firms 10"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 ceiling log max [net-worth-A] of firms 10\nplot log mean [net-worth-A] of firms 10"
+"min" 1.0 2 -2674135 true "set-plot-pen-mode 2" "plot log min [net-worth-A] of firms 10"
+"max" 1.0 2 -13840069 true "set-plot-pen-mode 2" "plot log max [net-worth-A] of firms 10"
 
 PLOT
 708
 133
-911
+974
 253
 Propensity to consume
 Quarter
@@ -877,17 +899,17 @@ NIL
 0.0
 1.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [propensity-to-consume-c] of workers"
-"pen-1" 1.0 2 -2674135 true "" "plot min [propensity-to-consume-c] of workers"
-"pen-2" 1.0 2 -13345367 true "" "plot max [propensity-to-consume-c] of workers"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [propensity-to-consume-c] of workers"
+"min" 1.0 2 -2674135 true "" "plot min [propensity-to-consume-c] of workers"
+"max" 1.0 2 -13345367 true "" "plot max [propensity-to-consume-c] of workers"
 
 PLOT
-915
+977
 133
-1119
+1251
 253
 Quarterly inflation
 Quarter
@@ -904,9 +926,9 @@ PENS
 "pen-1" 1.0 2 -5987164 true "" "plot 0"
 
 PLOT
-1122
+1254
 133
-1322
+1525
 253
 Annualized inflation
 Year
@@ -919,7 +941,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nset-plot-y-range -5 10\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nset-plot-y-range -5 8\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
 "pen-1" 1.0 0 -7500403 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[plot 0]"
 
 TEXTBOX
@@ -950,9 +972,9 @@ HORIZONTAL
 PLOT
 708
 256
-911
+974
 376
-Ln nominal GDP
+Ln nominal - real GDP
 NIL
 NIL
 0.0
@@ -960,15 +982,16 @@ NIL
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot-nominal-GDP"
+"Nom." 1.0 2 -12030287 true "" "set-plot-x-range 0 (ticks + 5)\nplot-nominal-GDP"
+"Real" 1.0 0 -8053223 true "" "plot-real-GDP"
 
 PLOT
-915
+977
 256
-1119
+1251
 376
 Ln of consumption
 NIL
@@ -984,9 +1007,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot logarithm-of-households-consumption"
 
 PLOT
-1122
+1254
 256
-1322
+1526
 376
 Ln Price of firms
 NIL
@@ -996,17 +1019,17 @@ NIL
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln average-market-price"
-"pen-1" 1.0 2 -2674135 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln min [individual-price-P] of firms"
-"pen-2" 1.0 0 -13345367 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln max [individual-price-P] of firms"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln average-market-price"
+"min" 1.0 2 -2674135 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln min [individual-price-P] of firms"
+"max" 1.0 0 -13345367 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln max [individual-price-P] of firms"
 
 PLOT
 708
 379
-911
+974
 499
 Ln Wage offered
 NIL
@@ -1014,14 +1037,14 @@ NIL
 0.0
 10.0
 0.0
-10.0
+1.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln mean [wage-offered-Wb] of firms"
-"pen-1" 1.0 0 -2674135 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln min [wage-offered-Wb] of firms"
-"pen-2" 1.0 0 -13345367 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln max [wage-offered-Wb] of firms"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln mean [wage-offered-Wb] of firms"
+"min" 1.0 0 -2674135 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln min [wage-offered-Wb] of firms"
+"max" 1.0 0 -13345367 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln max [wage-offered-Wb] of firms"
 
 TEXTBOX
 216
@@ -1134,9 +1157,9 @@ TEXTBOX
 1
 
 PLOT
-915
+977
 380
-1119
+1251
 500
 Wealth distribution
 NIL
@@ -1149,7 +1172,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count workers\nset-plot-y-range 0 ceiling sqrt count workers\nset-plot-x-range floor min [log wealth 10] of workers ceiling max [log wealth 10] of workers\nhistogram  [log wealth 10] of workers"
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count workers\nset-plot-y-range 0 ceiling sqrt count workers\nset-plot-x-range floor min [log wealth 10] of workers ceiling max [log wealth 10] of workers\nhistogram  [log wealth 10] of workers with [wealth > 0]"
 
 @#$#@#$#@
 ## WHAT IS IT?
