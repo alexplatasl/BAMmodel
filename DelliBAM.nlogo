@@ -561,18 +561,7 @@ to-report quarterly-inflation
 end
 
 to-report annualized-inflation
-  let i 0
-  let quarter-inflation 0
-  let yearly-inflation array:from-list n-values 4 [1]
-  while [i < 4][
-    let actual-price array:item average-price-list (i mod 4)
-    let previous-price array:item average-price-list ((i - 1) mod 4)
-    set quarter-inflation ((actual-price - previous-price) / actual-price) + 1
-    array:set yearly-inflation i quarter-inflation
-    set i i + 1
-  ]
-  report (reduce * array:to-list yearly-inflation)
-
+  report reduce * map [i -> (i / 100) + 1] array:to-list quarter-inflation-list
 end
 
 to plot-annualized-inflation
@@ -853,7 +842,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count fn-incumbent-firms\nset-plot-x-range floor min [log net-worth-A 10] of fn-incumbent-firms ceiling max [log net-worth-A 10] of fn-incumbent-firms\nhistogram  [log net-worth-A 10] of fn-incumbent-firms"
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-x-range floor min [log net-worth-A 10] of fn-incumbent-firms ceiling max [log net-worth-A 10] of fn-incumbent-firms\nhistogram  [log net-worth-A 10] of fn-incumbent-firms"
 
 PLOT
 1121
@@ -930,7 +919,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nset-plot-y-range -5 10\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
 "pen-1" 1.0 0 -7500403 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[plot 0]"
 
 TEXTBOX
