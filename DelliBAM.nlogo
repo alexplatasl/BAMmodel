@@ -38,6 +38,7 @@ firms-own[
   x-position
   y-position
 ]
+
 workers-own[
   employed?
   my-potential-firms
@@ -51,6 +52,7 @@ workers-own[
   my-stores
   my-large-store
 ]
+
 banks-own[
   total-amount-of-credit-C
   patrimonial-base-E
