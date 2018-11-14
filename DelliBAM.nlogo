@@ -1577,6 +1577,35 @@ NetLogo 6.0.4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <steppedValueSet variable="credit-market-H" first="2" step="1" last="4"/>
+    <enumeratedValueSet variable="number-of-firms">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="v">
+      <value value="0.23"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="production-shock-rho" first="0.05" step="0.02" last="0.15"/>
+    <steppedValueSet variable="labor-market-M" first="2" step="1" last="4"/>
+    <steppedValueSet variable="wages-shock-xi" first="0.05" step="0.02" last="0.15"/>
+    <enumeratedValueSet variable="dividends-delta">
+      <value value="0.15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="beta">
+      <value value="0.87"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="price-shock-eta" first="0.05" step="0.02" last="0.15"/>
+    <steppedValueSet variable="interest-shock-phi" first="0.05" step="0.02" last="0.15"/>
+    <steppedValueSet variable="goods-market-Z" first="2" step="1" last="6"/>
+    <enumeratedValueSet variable="size-replacing-firms">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
