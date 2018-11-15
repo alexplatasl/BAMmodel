@@ -398,13 +398,13 @@ end
 to buying-step [trials money]; workers procedure
   while [trials > 0 and money > 0][
     let my-cheapest-store min-one-of my-stores [individual-price-P]
-    let posible-goods-to-buy min list money [inventory-S] of my-cheapest-store
-    set money money - posible-goods-to-buy
+    let possible-goods-to-buy min list money [inventory-S] of my-cheapest-store
+    set money money - possible-goods-to-buy
     ask my-cheapest-store [
-      set inventory-S inventory-S - posible-goods-to-buy
+      set inventory-S inventory-S - possible-goods-to-buy
     ]
     set trials trials - 1
-    set my-stores max-n-of trials my-stores [individual-price-P]
+    set my-stores max-n-of trials my-stores [individual-price-P]; eliminate cheap-store of my-stores with sets
   ]
   if (money > 0)[
     set savings savings + money
@@ -765,7 +765,7 @@ labor-market-M
 labor-market-M
 1
 10
-2.0
+3.0
 1
 1
 trials
@@ -1194,6 +1194,24 @@ false
 "" ""
 PENS
 "default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor min [log production-Y 10] of fn-incumbent-firms ceiling max [log production-Y 10] of fn-incumbent-firms\nhistogram  [log production-Y 10] of fn-incumbent-firms"
+
+PLOT
+1516
+10
+1716
+130
+Log Production of firms
+NIL
+NIL
+0.0
+10.0
+0.0
+1.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [log production-Y 10] of fn-incumbent-firms"
 
 @#$#@#$#@
 ## WHAT IS IT?
