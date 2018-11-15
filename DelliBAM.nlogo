@@ -441,7 +441,7 @@ end
 to firms-banks-survive
   ask firms [
     set net-worth-A net-worth-A + retained-profits-pi
-    if (net-worth-A < 0)[
+    if (net-worth-A <= 0)[
       ask my-bank [
         set bad-debt-BD bad-debt-BD + 1
       ]
