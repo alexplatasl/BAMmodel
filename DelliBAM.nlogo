@@ -735,7 +735,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.06
+0.08
 0.01
 1
 NIL
@@ -1590,24 +1590,18 @@ NetLogo 6.0.4
     <enumeratedValueSet variable="v">
       <value value="0.23"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="production-shock-rho" first="0.05" step="0.01" last="0.15"/>
-    <steppedValueSet variable="labor-market-M" first="2" step="1" last="4"/>
-    <enumeratedValueSet variable="wages-shock-xi">
-      <value value="0.05"/>
-    </enumeratedValueSet>
+    <steppedValueSet variable="production-shock-rho" first="0.05" step="0.02" last="0.15"/>
+    <steppedValueSet variable="labor-market-M" first="2" step="1" last="5"/>
+    <steppedValueSet variable="wages-shock-xi" first="0.05" step="0.02" last="0.15"/>
     <enumeratedValueSet variable="dividends-delta">
       <value value="0.15"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="beta">
       <value value="0.87"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="price-shock-eta">
-      <value value="0.1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="interest-shock-phi">
-      <value value="0.1"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="goods-market-Z" first="2" step="1" last="4"/>
+    <steppedValueSet variable="price-shock-eta" first="0.05" step="0.02" last="0.15"/>
+    <steppedValueSet variable="interest-shock-phi" first="0.05" step="0.02" last="0.15"/>
+    <steppedValueSet variable="goods-market-Z" first="2" step="1" last="6"/>
     <enumeratedValueSet variable="size-replacing-firms">
       <value value="0.2"/>
     </enumeratedValueSet>
