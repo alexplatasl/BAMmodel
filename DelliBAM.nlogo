@@ -735,7 +735,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.08
+0.09
 0.01
 1
 NIL
@@ -765,7 +765,7 @@ labor-market-M
 labor-market-M
 1
 10
-3.0
+4.0
 1
 1
 trials
@@ -800,7 +800,7 @@ credit-market-H
 credit-market-H
 1
 10
-3.0
+2.0
 1
 1
 trials
