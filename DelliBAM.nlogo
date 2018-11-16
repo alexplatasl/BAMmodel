@@ -20,13 +20,15 @@ firms-own[
   my-employees                         ; an agent set of current employees.
   current-numbers-employees-L0         ; number of current employees.
   number-of-vacancies-offered-V        ; max of desired labor force - current labor force and 0.
-  minimum-wage-W-hat
-  wage-offered-Wb
-  net-worth-A
-  total-payroll-W
-  loan-B
-  my-potential-banks
-  my-bank
+  minimum-wage-W-hat                   ; mandatory minimum wage set by law
+  wage-offered-Wb                      ; contractual wage: if no vacancies the max of previous wage
+                                       ; and minimum wage; otherwise previous wage is also pondered
+                                       ; by an idiosyncratic shock, e.g., 1 + wage-shock-xi
+  net-worth-A                          ; previous net worth + profits - dividends (profits * 1 - profits-delta)
+  total-payroll-W                      ; the desired wage bill
+  loan-B                               ; max of desired wage bill - net worth and 0
+  my-potential-banks                   ; credit-market-H < number of banks (less than firms/10)
+  my-bank                              ; the current bank of the firm
   my-interest-rate
   amount-of-Interest-to-pay
   inventory-S
@@ -41,9 +43,9 @@ firms-own[
 ]
 
 workers-own[
-  employed?                           ; a boolean, true iff the agent is employed.
+  employed?                   ; a boolean, true iff the agent is employed.
   my-potential-firms
-  my-firm
+  my-firm                     ; the current firm if employed.
   contract
   my-wage
   income
@@ -55,7 +57,7 @@ workers-own[
 ]
 
 banks-own[
-  total-amount-of-credit-C
+  total-amount-of-credit-C    ; a multiple of its equity base in terms of capital req. coeff (buy default v= 0.23).
   patrimonial-base-E
   operational-interest-rate
   my-borrowing-firms
