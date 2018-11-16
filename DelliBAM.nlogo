@@ -12,14 +12,14 @@ globals [
 ]
 
 firms-own[
-  production-Y
-  labor-productivity-alpha
+  production-Y                         ; labor * labor productiviy
+  labor-productivity-alpha             ; labor productivity > 0
   desired-production-Yd
   expected-demand-De
-  desired-labor-force-Ld
+  desired-labor-force-Ld               ; desired production / labor productivity
   my-employees
   current-numbers-employees-L0
-  number-of-vacancies-offered-V
+  number-of-vacancies-offered-V        ; max of desired labor force - current labor force and 0
   minimum-wage-W-hat
   wage-offered-Wb
   net-worth-A
