@@ -47,7 +47,7 @@ workers-own[
   my-potential-firms
   my-firm                     ; the current firm if employed.
   contract
-  my-wage
+  my-wage                     ; current wage
   income
   savings
   wealth
@@ -57,6 +57,8 @@ workers-own[
 ]
 
 banks-own[
+  ;  I don't see the repayment schedule represented here (eq. 3.6, p. 53)
+  ; where is r-hat represented (eq. 3.7, p. 53)
   total-amount-of-credit-C    ; a multiple of its equity base in terms of capital req. coeff (buy default v= 0.23).
   patrimonial-base-E
   operational-interest-rate
