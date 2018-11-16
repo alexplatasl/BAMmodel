@@ -4,11 +4,11 @@ extensions [palette array] ; arrays are used to enhance performance.
 
 breed[firms firm]          ; the firms in the simulation, 500 by default.
 breed[workers worker]      ; the workers or households, 5 * number of firms by default.
-breed[banks bank]          ; the banks, max of credit-market-h + 1 and number of firms / 10
+breed[banks bank]          ; the banks, max of credit-market-h + 1 and number of firms / 10 by default.
 
 globals [
-  quarters-average-price    ; an array storing the average price for the last 4 quarters.
-  quarters-inflation        ; an array storing the inflation for the last 4 quarters.
+  quarters-average-price   ; an array storing the average price for the last 4 quarters.
+  quarters-inflation       ; an array storing the inflation for the last 4 quarters.
 ]
 
 firms-own[
@@ -116,7 +116,7 @@ to initialize-variables
     set interest-rate-r 0
     set my-borrowing-firms no-turtles
   ]
-  set quarters-average-price array:from-list n-values 4 [6]
+  set quarters-average-price array:from-list n-values 4 [base-price]
   set quarters-inflation array:from-list n-values 4 [0]
 end
 
