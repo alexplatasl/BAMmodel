@@ -17,9 +17,9 @@ firms-own[
   desired-production-Yd
   expected-demand-De
   desired-labor-force-Ld               ; desired production / labor productivity
-  my-employees
-  current-numbers-employees-L0
-  number-of-vacancies-offered-V        ; max of desired labor force - current labor force and 0
+  my-employees                         ; an agent set of current employees.
+  current-numbers-employees-L0         ; number of current employees.
+  number-of-vacancies-offered-V        ; max of desired labor force - current labor force and 0.
   minimum-wage-W-hat
   wage-offered-Wb
   net-worth-A
@@ -41,7 +41,7 @@ firms-own[
 ]
 
 workers-own[
-  employed?
+  employed?                           ; a boolean, true iff the agent is employed.
   my-potential-firms
   my-firm
   contract
