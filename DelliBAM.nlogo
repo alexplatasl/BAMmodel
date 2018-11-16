@@ -31,7 +31,7 @@ firms-own[
   my-bank                              ; the current bank of the firm
   my-interest-rate
   amount-of-Interest-to-pay
-  inventory-S
+  inventory-S                          ; inventory of unsold goods
   individual-price-P
   revenue-R
   gross-profits
