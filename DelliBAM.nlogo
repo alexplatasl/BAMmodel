@@ -1,13 +1,14 @@
 ; Bottom-up Adaptive Macroeconomics
-extensions [palette array]
 
-breed[firms firm]
-breed[workers worker]
-breed[banks bank]
+extensions [palette array] ; arrays are used to enhance performance.
+
+breed[firms firm]          ; the firms in the simulation, 500 by default.
+breed[workers worker]      ; the workers or households, 5 * number of firms by default.
+breed[banks bank]          ; the banks, max of credit-market-h + 1 and number of firms / 10
 
 globals [
-  quarter-average-price    ; an array storing the average price for the last 4 quarters.
-  quarter-inflation-list
+  quarters-average-price    ; an array storing the average price for the last 4 quarters.
+  quarters-inflation        ; an array storing the inflation for the last 4 quarters.
 ]
 
 firms-own[
@@ -115,8 +116,8 @@ to initialize-variables
     set interest-rate-r 0
     set my-borrowing-firms no-turtles
   ]
-  set quarter-average-price array:from-list n-values 4 [6]
-  set quarter-inflation-list array:from-list n-values 4 [0]
+  set quarters-average-price array:from-list n-values 4 [6]
+  set quarters-inflation array:from-list n-values 4 [0]
 end
 
 to start-firms [#firms]
@@ -170,11 +171,11 @@ to firms-calculate-production
   ask firms [
     set desired-production-Yd expected-demand-De; submodel 2
   ]
-  array:set quarter-average-price (ticks mod 4) mean [individual-price-P] of firms
-  let actual-price array:item quarter-average-price (ticks mod 4)
-  let previous-price array:item quarter-average-price ((ticks - 1) mod 4)
+  array:set quarters-average-price (ticks mod 4) mean [individual-price-P] of firms
+  let actual-price array:item quarters-average-price (ticks mod 4)
+  let previous-price array:item quarters-average-price ((ticks - 1) mod 4)
   let quarter-inflation ((actual-price - previous-price) / previous-price) * 100
-  array:set quarter-inflation-list (ticks mod 4) quarter-inflation
+  array:set quarters-inflation (ticks mod 4) quarter-inflation
 end
 
 to adapt-individual-price; submodel 27 y 28
@@ -549,7 +550,7 @@ end
 
 to-report CPI
   let base base-price
-  let current array:item quarter-average-price (ticks mod 4)
+  let current array:item quarters-average-price (ticks mod 4)
   report (current / base) * 100
 end
 
@@ -577,12 +578,12 @@ to unemployment-rate
 end
 
 to-report quarterly-inflation
-  let q-inflation array:item quarter-inflation-list (ticks mod 4)
+  let q-inflation array:item quarters-inflation (ticks mod 4)
   report q-inflation
 end
 
 to-report annualized-inflation
-  report reduce * map [i -> (i / 100) + 1] array:to-list quarter-inflation-list
+  report reduce * map [i -> (i / 100) + 1] array:to-list quarters-inflation
 end
 
 to plot-annualized-inflation
