@@ -6,7 +6,7 @@ breed[workers worker]
 breed[banks bank]
 
 globals [
-  average-price-list
+  quarter-average-price    ; an array storing the average price for the last 4 quarters.
   quarter-inflation-list
 ]
 
@@ -115,7 +115,7 @@ to initialize-variables
     set interest-rate-r 0
     set my-borrowing-firms no-turtles
   ]
-  set average-price-list array:from-list n-values 4 [6]
+  set quarter-average-price array:from-list n-values 4 [6]
   set quarter-inflation-list array:from-list n-values 4 [0]
 end
 
@@ -170,9 +170,9 @@ to firms-calculate-production
   ask firms [
     set desired-production-Yd expected-demand-De; submodel 2
   ]
-  array:set average-price-list (ticks mod 4) mean [individual-price-P] of firms
-  let actual-price array:item average-price-list (ticks mod 4)
-  let previous-price array:item average-price-list ((ticks - 1) mod 4)
+  array:set quarter-average-price (ticks mod 4) mean [individual-price-P] of firms
+  let actual-price array:item quarter-average-price (ticks mod 4)
+  let previous-price array:item quarter-average-price ((ticks - 1) mod 4)
   let quarter-inflation ((actual-price - previous-price) / previous-price) * 100
   array:set quarter-inflation-list (ticks mod 4) quarter-inflation
 end
@@ -549,7 +549,7 @@ end
 
 to-report CPI
   let base base-price
-  let current array:item average-price-list (ticks mod 4)
+  let current array:item quarter-average-price (ticks mod 4)
   report (current / base) * 100
 end
 
