@@ -82,7 +82,7 @@ end
 
 to initialize-variables
   ask firms [
-    set production-Y fn-truncated-normal 6 2
+    set production-Y round fn-truncated-normal 6 2
     set labor-productivity-alpha 1
     set desired-production-Yd 0
     set expected-demand-De 1
@@ -155,7 +155,9 @@ to start-banks [#banks]
 end
 
 to go
-  if (ticks >= 1000 or (ticks > 500 and fn-unemployment-rate > 0.5)) [stop]
+  if (ticks >= 1000
+    or (ticks > 600 and fn-unemployment-rate > 0.5)
+  ) [stop]
   ; Process overview and scheduling
   firms-calculate-production
   labor-market
@@ -184,13 +186,14 @@ to firms-calculate-production
 end
 
 to adapt-individual-price; submodel 27 y 28
+  let avg-market-price average-market-price
   ask firms [
-    let minimum-price-Pl ifelse-value (production-Y > 0)[( total-payroll-W + amount-of-Interest-to-pay ) / production-Y] [0]
-    if (inventory-S = 0 and individual-price-P <  average-market-price)
+    let minimum-price-Pl ifelse-value (production-Y > 0)[( total-payroll-W + amount-of-Interest-to-pay ) / production-Y] [avg-market-price]
+    if (inventory-S = 0 and individual-price-P <  avg-market-price)
     [
       set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 + price-shock-eta)))
     ]
-    if (inventory-S > 0 and individual-price-P >= average-market-price)
+    if (inventory-S > 0 and individual-price-P >= avg-market-price)
     [
       set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 - price-shock-eta)))
     ]
@@ -198,12 +201,13 @@ to adapt-individual-price; submodel 27 y 28
 end
 
 to adapt-expected-demand; submodel 29 y 30
+  let avg-market-price average-market-price
   ask firms [
-    if (inventory-S = 0 and individual-price-P >= average-market-price)
+    if (inventory-S = 0 and individual-price-P >= avg-market-price)
     [
       set expected-demand-De round ( production-Y * (1 + production-shock-rho))
     ]
-    if (inventory-S > 0 and individual-price-P < average-market-price)
+    if (inventory-S > 0 and individual-price-P < avg-market-price)
     [
       set expected-demand-De round (production-Y * (1 - production-shock-rho))
     ]
@@ -696,7 +700,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.05
+0.06
 0.01
 1
 NIL
@@ -711,7 +715,7 @@ interest-shock-phi
 interest-shock-phi
 0
 0.5
-0.1
+0.06
 0.01
 1
 NIL
@@ -726,7 +730,7 @@ price-shock-eta
 price-shock-eta
 0
 0.5
-0.1
+0.05
 0.01
 1
 NIL
@@ -741,7 +745,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.09
+0.06
 0.01
 1
 NIL
@@ -806,7 +810,7 @@ credit-market-H
 credit-market-H
 1
 10
-2.0
+1.0
 1
 1
 trials
@@ -1603,32 +1607,14 @@ NetLogo 6.0.4
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+  <experiment name="experiment" repetitions="15" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <metric>ticks</metric>
-    <steppedValueSet variable="credit-market-H" first="2" step="1" last="4"/>
-    <enumeratedValueSet variable="number-of-firms">
-      <value value="100"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="v">
-      <value value="0.23"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="production-shock-rho" first="0.05" step="0.02" last="0.15"/>
-    <steppedValueSet variable="labor-market-M" first="2" step="1" last="5"/>
-    <steppedValueSet variable="wages-shock-xi" first="0.05" step="0.02" last="0.15"/>
-    <enumeratedValueSet variable="dividends-delta">
-      <value value="0.15"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="beta">
-      <value value="0.87"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="price-shock-eta" first="0.05" step="0.02" last="0.15"/>
-    <steppedValueSet variable="interest-shock-phi" first="0.05" step="0.02" last="0.15"/>
-    <steppedValueSet variable="goods-market-Z" first="2" step="1" last="6"/>
-    <enumeratedValueSet variable="size-replacing-firms">
-      <value value="0.2"/>
-    </enumeratedValueSet>
+    <steppedValueSet variable="production-shock-rho" first="0.04" step="0.01" last="0.07"/>
+    <steppedValueSet variable="wages-shock-xi" first="0.04" step="0.01" last="0.07"/>
+    <steppedValueSet variable="price-shock-eta" first="0.04" step="0.01" last="0.07"/>
+    <steppedValueSet variable="interest-shock-phi" first="0.04" step="0.01" last="0.07"/>
   </experiment>
 </experiments>
 @#$#@#$#@
