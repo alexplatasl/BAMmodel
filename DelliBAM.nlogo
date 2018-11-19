@@ -57,8 +57,9 @@ workers-own[
 ]
 
 banks-own[
-  ;  I don't see the repayment schedule represented here (eq. 3.6, p. 53)
-  ; where is r-hat represented (eq. 3.7, p. 53)
+  ;  Repayment schedule (eq. 3.6, p. 53) is represented in firms-pay procedure as in p.50:
+  ; "If gross profits are high enough, they “validate” debt commitments, i.e. firms pay back both the principal and the interest to the bank"
+  ; r-bar (instead r-hat) (eq. 3.7, p. 53) is represented as a reporter (interest-rate-policy-rbar)
   total-amount-of-credit-C    ; a multiple of its equity base in terms of capital req. coeff (buy default v= 0.23).
   patrimonial-base-E
   operational-interest-rate
