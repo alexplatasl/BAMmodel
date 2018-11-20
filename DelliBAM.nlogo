@@ -82,7 +82,7 @@ end
 
 to initialize-variables
   ask firms [
-    set production-Y round random-normal 6 2
+    set production-Y round random-normal 6 1
     set labor-productivity-alpha 1
     set desired-production-Yd 0
     set expected-demand-De 1
@@ -92,13 +92,13 @@ to initialize-variables
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
     set wage-offered-Wb minimum-wage-W-hat
-    set net-worth-A random-normal 6 2
+    set net-worth-A random-normal 6 1
     set total-payroll-W 0
     set loan-B 0
     set my-potential-banks no-turtles
     set my-bank no-turtles
     set inventory-S one-of [0 1]
-    set individual-price-P random-normal base-price 2
+    set individual-price-P random-normal base-price 1
     set revenue-R 0
     set retained-profits-pi 0
   ]
@@ -108,7 +108,7 @@ to initialize-variables
     set my-firm nobody
     set contract 0
     set income 0
-    set savings random-normal 6 2
+    set savings random-normal 6 1
     set wealth 0
     set propensity-to-consume-c 1
     set my-stores no-turtles
@@ -700,7 +700,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.07
+0.05
 0.01
 1
 NIL
@@ -715,7 +715,7 @@ interest-shock-phi
 interest-shock-phi
 0
 0.5
-0.07
+0.1
 0.01
 1
 NIL
@@ -730,7 +730,7 @@ price-shock-eta
 price-shock-eta
 0
 0.5
-0.07
+0.1
 0.01
 1
 NIL
@@ -745,7 +745,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.07
+0.1
 0.01
 1
 NIL
