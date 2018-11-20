@@ -82,7 +82,7 @@ end
 
 to initialize-variables
   ask firms [
-    set production-Y round fn-truncated-normal 6 2
+    set production-Y round random-normal 6 2
     set labor-productivity-alpha 1
     set desired-production-Yd 0
     set expected-demand-De 1
@@ -92,13 +92,13 @@ to initialize-variables
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
     set wage-offered-Wb minimum-wage-W-hat
-    set net-worth-A fn-truncated-normal 6 2
+    set net-worth-A random-normal 6 2
     set total-payroll-W 0
     set loan-B 0
     set my-potential-banks no-turtles
     set my-bank no-turtles
     set inventory-S one-of [0 1]
-    set individual-price-P fn-truncated-normal base-price 2
+    set individual-price-P random-normal base-price 2
     set revenue-R 0
     set retained-profits-pi 0
   ]
@@ -108,7 +108,7 @@ to initialize-variables
     set my-firm nobody
     set contract 0
     set income 0
-    set savings fn-truncated-normal 6 2
+    set savings random-normal 6 2
     set wealth 0
     set propensity-to-consume-c 1
     set my-stores no-turtles
@@ -896,7 +896,7 @@ true
 "" ""
 PENS
 "mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 ceiling log max [net-worth-A] of firms 10\nplot log mean [net-worth-A] of firms 10"
-"min" 1.0 2 -2674135 true "set-plot-pen-mode 2" "plot log min [net-worth-A] of firms 10"
+"min" 1.0 0 -2674135 true "" "plot log min [net-worth-A] of firms 10"
 "max" 1.0 2 -13840069 true "set-plot-pen-mode 2" "plot log max [net-worth-A] of firms 10"
 
 PLOT
