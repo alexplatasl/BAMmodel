@@ -700,7 +700,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.06
+0.07
 0.01
 1
 NIL
@@ -715,7 +715,7 @@ interest-shock-phi
 interest-shock-phi
 0
 0.5
-0.06
+0.07
 0.01
 1
 NIL
@@ -730,7 +730,7 @@ price-shock-eta
 price-shock-eta
 0
 0.5
-0.05
+0.07
 0.01
 1
 NIL
@@ -745,7 +745,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.06
+0.07
 0.01
 1
 NIL
@@ -868,7 +868,7 @@ PLOT
 130
 Net worth distribution
 log money
-NIL
+freq
 0.0
 10.0
 0.0
@@ -988,7 +988,7 @@ PLOT
 974
 376
 Ln nominal - real GDP
-NIL
+Quater
 NIL
 0.0
 10.0
@@ -1007,7 +1007,7 @@ PLOT
 1243
 376
 Ln of consumption
-NIL
+Quarter
 NIL
 0.0
 10.0
@@ -1025,7 +1025,7 @@ PLOT
 1512
 376
 Ln Price of firms
-NIL
+Quarter
 NIL
 0.0
 10.0
@@ -1045,7 +1045,7 @@ PLOT
 974
 499
 Ln Wage offered
-NIL
+Quarter
 NIL
 0.0
 10.0
@@ -1175,8 +1175,8 @@ PLOT
 1243
 500
 Wealth distribution
-NIL
-NIL
+log wealth
+freq
 0.0
 10.0
 0.0
@@ -1193,8 +1193,8 @@ PLOT
 1513
 501
 Size of firms
-NIL
-NIL
+log Production
+freq
 0.0
 10.0
 0.0
@@ -1211,7 +1211,7 @@ PLOT
 1716
 130
 Log Production of firms
-NIL
+Quarter
 NIL
 0.0
 10.0
