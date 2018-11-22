@@ -159,7 +159,7 @@ end
 to go
   if (ticks >= 1000
     or (ticks > 600 and fn-unemployment-rate > 0.5)
-    or (ticks > 600 and abs annualized-inflation > 0.25)
+    ;or (ticks > 600 and abs annualized-inflation > 0.25)
   ) [stop]
   ; Process overview and scheduling
   firms-calculate-production
@@ -938,7 +938,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -5 5\nplot quarterly-inflation"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -5 10\nplot quarterly-inflation"
 "pen-1" 1.0 2 -5987164 true "" "plot 0"
 
 PLOT
