@@ -1226,7 +1226,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [log production-Y 10] of fn-incumbent-firms"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot log mean [production-Y] of fn-incumbent-firms 10"
 
 SLIDER
 3
