@@ -82,7 +82,7 @@ end
 
 to initialize-variables
   ask firms [
-    set production-Y ceiling fn-truncated-normal 6 1
+    set production-Y ceiling fn-truncated-normal base-production 1
     set labor-productivity-alpha 1
     set desired-production-Yd 0
     set expected-demand-De 1
@@ -92,7 +92,7 @@ to initialize-variables
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
     set wage-offered-Wb minimum-wage-W-hat
-    set net-worth-A fn-truncated-normal 6 1
+    set net-worth-A fn-truncated-normal base-net-worth 10
     set total-payroll-W 0
     set loan-B 0
     set my-potential-banks no-turtles
@@ -108,7 +108,7 @@ to initialize-variables
     set my-firm nobody
     set contract 0
     set income 0
-    set savings fn-truncated-normal 6 1
+    set savings fn-truncated-normal base-savings 1
     set wealth 0
     set propensity-to-consume-c 1
     set my-stores no-turtles
@@ -532,7 +532,7 @@ to-report fn-minimum-wage-W-hat
 end
 
 to-report interest-rate-policy-rbar
-  report 0.045
+  report 0.07
 end
 
 to-report fn-incumbent-firms
@@ -600,9 +600,9 @@ to plot-annualized-inflation
   plot (annualized-inflation - 1) * 100
 end
 
-to-report base-price
-  report 6
-end
+;to-report base-price
+;  report 6
+;end
 
 to-report average-real-interest-rate
 
@@ -1224,6 +1224,66 @@ false
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [log production-Y 10] of fn-incumbent-firms"
 
+SLIDER
+3
+531
+196
+564
+base-production
+base-production
+1
+100
+6.0
+1
+1
+units
+HORIZONTAL
+
+SLIDER
+4
+567
+196
+600
+base-price
+base-price
+1
+100
+6.0
+1
+1
+$
+HORIZONTAL
+
+SLIDER
+4
+603
+196
+636
+base-savings
+base-savings
+2
+70
+7.0
+1
+1
+$
+HORIZONTAL
+
+SLIDER
+4
+639
+196
+672
+base-net-worth
+base-net-worth
+2
+100
+7.0
+1
+1
+$
+HORIZONTAL
+
 @#$#@#$#@
 ## WHAT IS IT?
 
@@ -1614,10 +1674,19 @@ NetLogo 6.0.4
     <metric>ticks</metric>
     <metric>count workers with [not employed?] / count workers</metric>
     <metric>annualized-inflation</metric>
-    <steppedValueSet variable="wages-shock-xi" first="0.04" step="0.01" last="0.07"/>
-    <steppedValueSet variable="interest-shock-phi" first="0.08" step="0.01" last="0.11"/>
-    <steppedValueSet variable="price-shock-eta" first="0.08" step="0.01" last="0.11"/>
-    <steppedValueSet variable="production-shock-rho" first="0.08" step="0.01" last="0.11"/>
+    <steppedValueSet variable="wages-shock-xi" first="0.07" step="0.01" last="0.08"/>
+    <steppedValueSet variable="interest-shock-phi" first="0.07" step="0.01" last="0.08"/>
+    <steppedValueSet variable="price-shock-eta" first="0.07" step="0.01" last="0.08"/>
+    <steppedValueSet variable="production-shock-rho" first="0.07" step="0.01" last="0.08"/>
+  </experiment>
+  <experiment name="baseVariables" repetitions="2" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <steppedValueSet variable="base-price" first="1" step="1" last="7"/>
+    <steppedValueSet variable="base-savings" first="1" step="1" last="7"/>
+    <steppedValueSet variable="base-net-worth" first="1" step="1" last="7"/>
+    <steppedValueSet variable="base-production" first="1" step="1" last="7"/>
   </experiment>
 </experiments>
 @#$#@#$#@
