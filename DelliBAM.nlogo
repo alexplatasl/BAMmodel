@@ -390,6 +390,10 @@ to firms-produce
       fd (random 4) + 1
     ]
   ]
+  ; firing employees with expired contract
+  ask firms [
+    set my-employees my-employees with [contract > 0]
+  ]
 end
 
 ;;;;;;;;;; to goods-market  ;;;;;;;;;;
@@ -684,10 +688,10 @@ SLIDER
 81
 number-of-firms
 number-of-firms
-10
+2
 1000
-100.0
-5
+4.0
+2
 1
 NIL
 HORIZONTAL
