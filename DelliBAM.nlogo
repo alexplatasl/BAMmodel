@@ -174,8 +174,8 @@ end
 
 ;;;;;;;;;; to firms-calculate production ;;;;;;;;;;
 to firms-calculate-production
-  adapt-individual-price
   adapt-expected-demand
+  adapt-individual-price
   ask firms [
     set desired-production-Yd expected-demand-De; submodel 2
   ]
@@ -532,7 +532,7 @@ end
 
 to-report fn-minimum-wage-W-hat
   let currently-minimum-w min [minimum-wage-W-hat] of firms
-  report max (list 1 annualized-inflation) * currently-minimum-w
+  report (1 + annualized-inflation) * currently-minimum-w
 end
 
 to-report interest-rate-policy-rbar
@@ -690,7 +690,7 @@ number-of-firms
 number-of-firms
 2
 1000
-4.0
+100.0
 2
 1
 NIL
@@ -1208,7 +1208,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor min [log production-Y 10] of fn-incumbent-firms ceiling max [log production-Y 10] of fn-incumbent-firms\nhistogram  [log production-Y 10] of fn-incumbent-firms"
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor ln min [production-Y] of fn-incumbent-firms ceiling ln max [production-Y] of fn-incumbent-firms\nhistogram map ln [production-Y] of fn-incumbent-firms"
 
 PLOT
 1516
@@ -1267,7 +1267,7 @@ base-savings
 base-savings
 2
 70
-7.0
+6.0
 1
 1
 $
@@ -1282,7 +1282,7 @@ base-net-worth
 base-net-worth
 2
 100
-7.0
+6.0
 1
 1
 $
