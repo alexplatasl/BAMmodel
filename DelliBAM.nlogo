@@ -529,7 +529,7 @@ end
 
 to-report fn-minimum-wage-W-hat
   let currently-minimum-w min [minimum-wage-W-hat] of firms
-  report (1 + annualized-inflation) * currently-minimum-w
+  report annualized-inflation * currently-minimum-w
 end
 
 to-report interest-rate-policy-rbar
