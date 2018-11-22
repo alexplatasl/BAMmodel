@@ -532,7 +532,7 @@ to-report fn-minimum-wage-W-hat
 end
 
 to-report interest-rate-policy-rbar
-  report 0.07
+  report 0.045
 end
 
 to-report fn-incumbent-firms
@@ -1608,14 +1608,16 @@ NetLogo 6.0.4
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="experiment" repetitions="15" runMetricsEveryStep="true">
+  <experiment name="experiment" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <metric>ticks</metric>
-    <steppedValueSet variable="production-shock-rho" first="0.04" step="0.01" last="0.07"/>
+    <metric>count workers with [not employed?] / count workers</metric>
+    <metric>annualized-inflation</metric>
     <steppedValueSet variable="wages-shock-xi" first="0.04" step="0.01" last="0.07"/>
-    <steppedValueSet variable="price-shock-eta" first="0.04" step="0.01" last="0.07"/>
-    <steppedValueSet variable="interest-shock-phi" first="0.04" step="0.01" last="0.07"/>
+    <steppedValueSet variable="interest-shock-phi" first="0.08" step="0.01" last="0.11"/>
+    <steppedValueSet variable="price-shock-eta" first="0.08" step="0.01" last="0.11"/>
+    <steppedValueSet variable="production-shock-rho" first="0.08" step="0.01" last="0.11"/>
   </experiment>
 </experiments>
 @#$#@#$#@
