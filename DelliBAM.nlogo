@@ -1683,10 +1683,10 @@ NetLogo 6.0.4
     <setup>setup</setup>
     <go>go</go>
     <metric>ticks</metric>
-    <steppedValueSet variable="base-price" first="1" step="1" last="7"/>
-    <steppedValueSet variable="base-savings" first="1" step="1" last="7"/>
-    <steppedValueSet variable="base-net-worth" first="1" step="1" last="7"/>
-    <steppedValueSet variable="base-production" first="1" step="1" last="7"/>
+    <steppedValueSet variable="base-price" first="1" step="1" last="10"/>
+    <steppedValueSet variable="base-savings" first="1" step="1" last="10"/>
+    <steppedValueSet variable="base-net-worth" first="1" step="1" last="10"/>
+    <steppedValueSet variable="base-production" first="1" step="1" last="10"/>
   </experiment>
 </experiments>
 @#$#@#$#@
