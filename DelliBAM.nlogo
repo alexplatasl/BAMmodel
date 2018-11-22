@@ -66,6 +66,7 @@ banks-own[
   my-borrowing-firms
   interest-rate-r
   bad-debt-BD
+  bankrupt?
 ]
 
 ; Setup procedures
@@ -120,6 +121,7 @@ to initialize-variables
     set operational-interest-rate 0
     set interest-rate-r 0
     set my-borrowing-firms no-turtles
+    set bankrupt? false
   ]
   set quarters-average-price array:from-list n-values 4 [base-price]
   set quarters-inflation array:from-list n-values 4 [0]
@@ -477,7 +479,7 @@ to firms-banks-survive
       set my-potential-banks no-turtles
       set my-bank no-turtles
     ]
-    die
+    set bankrupt? true
   ]
 end
 
@@ -505,18 +507,13 @@ to replace-bankrupt
     ]
   ]
 
-  if (count banks < number-of-firms / 10)[
-    let needed-banks (number-of-firms / 10) - count banks
-    let this-bank one-of banks
-    ask this-bank [
-      let me nobody
-      hatch-banks needed-banks [
-        set me self
-        rt random 360
-        fd (random 10) + 1
-        set my-borrowing-firms no-turtles
-      ]
-    ]
+  ask banks with [bankrupt?][
+    set total-amount-of-credit-C 0
+    set patrimonial-base-E random-poisson 10000 + 10
+    set operational-interest-rate 0
+    set interest-rate-r 0
+    set my-borrowing-firms no-turtles
+    set bankrupt? false
   ]
 end
 
