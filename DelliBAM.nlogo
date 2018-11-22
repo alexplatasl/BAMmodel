@@ -528,8 +528,9 @@ to-report fn-tanh [a]
 end
 
 to-report fn-minimum-wage-W-hat
-  let currently-minimum-w min [minimum-wage-W-hat] of firms
-  report annualized-inflation * currently-minimum-w
+  ;let currently-minimum-w min [minimum-wage-W-hat] of firms
+  ;report annualized-inflation * currently-minimum-w
+  report 1
 end
 
 to-report interest-rate-policy-rbar
@@ -702,7 +703,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.05
+0.01
 0.01
 1
 NIL
@@ -956,7 +957,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nset-plot-y-range -5 8\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nset-plot-y-range -2 16\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
 "pen-1" 1.0 0 -7500403 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[plot 0]"
 
 TEXTBOX
