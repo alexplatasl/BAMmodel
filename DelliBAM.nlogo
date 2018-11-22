@@ -82,7 +82,7 @@ end
 
 to initialize-variables
   ask firms [
-    set production-Y round random-normal 6 1
+    set production-Y ceiling fn-truncated-normal 6 1
     set labor-productivity-alpha 1
     set desired-production-Yd 0
     set expected-demand-De 1
@@ -92,13 +92,13 @@ to initialize-variables
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
     set wage-offered-Wb minimum-wage-W-hat
-    set net-worth-A random-normal 6 1
+    set net-worth-A fn-truncated-normal 6 1
     set total-payroll-W 0
     set loan-B 0
     set my-potential-banks no-turtles
     set my-bank no-turtles
     set inventory-S one-of [0 1]
-    set individual-price-P random-normal base-price 1
+    set individual-price-P fn-truncated-normal base-price 1
     set revenue-R 0
     set retained-profits-pi 0
   ]
@@ -108,7 +108,7 @@ to initialize-variables
     set my-firm nobody
     set contract 0
     set income 0
-    set savings random-normal 6 1
+    set savings fn-truncated-normal 6 1
     set wealth 0
     set propensity-to-consume-c 1
     set my-stores no-turtles
@@ -545,7 +545,7 @@ end
 
 to-report fn-truncated-normal [ m sd ]
   let normal-value random-normal m sd
-  report ifelse-value (normal-value > (m - sd)) [normal-value][m - sd]
+  report ifelse-value (normal-value > (m - sd)) [normal-value][max list 1 (m - sd)]
 end
 
 ; observation
