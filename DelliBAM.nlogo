@@ -157,6 +157,7 @@ end
 to go
   if (ticks >= 1000
     or (ticks > 600 and fn-unemployment-rate > 0.5)
+    or (ticks > 600 and abs annualized-inflation > 0.25)
   ) [stop]
   ; Process overview and scheduling
   firms-calculate-production
@@ -522,7 +523,7 @@ to-report average-market-price
 end
 
 to-report fn-tanh [a]
-  report (exp (2 * a) - 1) / (exp (2 * a) + 1)
+  report ifelse-value (a < 354.391)[(exp (2 * a) - 1) / (exp (2 * a) + 1)][0.135335283]
 end
 
 to-report fn-minimum-wage-W-hat
