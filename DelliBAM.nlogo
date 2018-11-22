@@ -206,11 +206,11 @@ to adapt-expected-demand; submodel 29 y 30
   ask firms [
     if (inventory-S = 0 and individual-price-P >= avg-market-price)
     [
-      set expected-demand-De round ( production-Y * (1 + production-shock-rho))
+      set expected-demand-De ceiling ( production-Y * (1 + production-shock-rho))
     ]
     if (inventory-S > 0 and individual-price-P < avg-market-price)
     [
-      set expected-demand-De round (production-Y * (1 - production-shock-rho))
+      set expected-demand-De ceiling (production-Y * (1 - production-shock-rho))
     ]
   ]
 end
