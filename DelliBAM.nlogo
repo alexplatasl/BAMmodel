@@ -82,7 +82,7 @@ end
 
 to initialize-variables
   ask firms [
-    set production-Y ceiling fn-truncated-normal base-production 1
+    set production-Y 1 + random-poisson base-production
     set labor-productivity-alpha 1
     set desired-production-Yd 0
     set expected-demand-De 1
@@ -92,13 +92,13 @@ to initialize-variables
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
     set wage-offered-Wb minimum-wage-W-hat
-    set net-worth-A fn-truncated-normal base-net-worth 10
+    set net-worth-A 1 + random-poisson base-net-worth
     set total-payroll-W 0
     set loan-B 0
     set my-potential-banks no-turtles
     set my-bank no-turtles
     set inventory-S one-of [0 1]
-    set individual-price-P fn-truncated-normal base-price 1
+    set individual-price-P 1 + random-poisson base-price
     set revenue-R 0
     set retained-profits-pi 0
   ]
@@ -108,7 +108,7 @@ to initialize-variables
     set my-firm nobody
     set contract 0
     set income 0
-    set savings fn-truncated-normal base-savings 1
+    set savings 1 + random-poisson base-savings
     set wealth 0
     set propensity-to-consume-c 1
     set my-stores no-turtles
