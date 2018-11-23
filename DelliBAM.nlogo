@@ -158,7 +158,7 @@ end
 
 to go
   if (ticks >= 1000
-    or (ticks > 600 and fn-unemployment-rate > 0.5)
+    ;or (ticks > 600 and fn-unemployment-rate > 0.5)
     ;or (ticks > 600 and abs annualized-inflation > 0.25)
   ) [stop]
   ; Process overview and scheduling
@@ -472,6 +472,7 @@ to firms-banks-survive
         fd (random 4) + 1
       ]
       die
+      show (word "Some firm died")
     ]
   ]
   ask banks with [patrimonial-base-E < 0][
@@ -530,7 +531,6 @@ end
 to-report fn-minimum-wage-W-hat
   let currently-minimum-w min [minimum-wage-W-hat] of firms
   report annualized-inflation * currently-minimum-w
-  ;report 0.001
 end
 
 to-report interest-rate-policy-rbar
@@ -557,7 +557,7 @@ to-report nominal-GDP
 end
 
 to plot-nominal-GDP
-  plot ln nominal-GDP
+  plot ln-hopital nominal-GDP
 end
 
 to-report CPI
@@ -571,13 +571,13 @@ to-report real-GDP
 end
 
 to plot-real-GDP
-  plot ln real-GDP
+  plot ln-hopital real-GDP
 end
 
 to-report logarithm-of-households-consumption
   let output sum [production-Y * individual-price-P] of firms
   let consumption output - sum [inventory-S] of firms
-  report ln consumption
+  report ln-hopital consumption
 end
 
 to-report fn-unemployment-rate
@@ -707,7 +707,7 @@ wages-shock-xi
 wages-shock-xi
 0
 0.5
-0.01
+0.0
 0.01
 1
 NIL
@@ -752,7 +752,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.1
+0.15
 0.01
 1
 NIL
@@ -1217,9 +1217,9 @@ PLOT
 10
 1716
 130
-Log Production of firms
+Production of firms
 Quarter
-NIL
+Quantity
 0.0
 10.0
 0.0
@@ -1289,6 +1289,24 @@ base-net-worth
 1
 $
 HORIZONTAL
+
+PLOT
+1516
+133
+1717
+253
+Desired production
+Quarter
+Quantity
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [desired-production-Yd] of firms"
 
 @#$#@#$#@
 ## WHAT IS IT?
