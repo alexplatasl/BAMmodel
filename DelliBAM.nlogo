@@ -528,9 +528,9 @@ to-report fn-tanh [a]
 end
 
 to-report fn-minimum-wage-W-hat
-  ;let currently-minimum-w min [minimum-wage-W-hat] of firms
-  ;report annualized-inflation * currently-minimum-w
-  report 1
+  let currently-minimum-w min [minimum-wage-W-hat] of firms
+  report annualized-inflation * currently-minimum-w
+  ;report 0.001
 end
 
 to-report interest-rate-policy-rbar
@@ -602,9 +602,13 @@ to plot-annualized-inflation
   plot (annualized-inflation - 1) * 100
 end
 
-;to-report base-price
-;  report 6
-;end
+to-report ln-hopital [number]
+  report ifelse-value (number > 0)[ln number][0]
+end
+
+to plot-size-of-firms
+  histogram map ln-hopital [production-Y] of fn-incumbent-firms
+end
 
 to-report average-real-interest-rate
 
@@ -880,7 +884,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor min [log net-worth-A 10] of fn-incumbent-firms ceiling max [log net-worth-A 10] of fn-incumbent-firms\nhistogram  [log net-worth-A 10] of fn-incumbent-firms"
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor ln-hopital min [net-worth-A] of fn-incumbent-firms ceiling ln-hopital max [net-worth-A] of fn-incumbent-firms\nhistogram map ln-hopital [net-worth-A] of fn-incumbent-firms"
 
 PLOT
 1246
@@ -898,9 +902,9 @@ true
 true
 "" ""
 PENS
-"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 ceiling log max [net-worth-A] of firms 10\nplot log mean [net-worth-A] of firms 10"
-"min" 1.0 0 -2674135 true "" "plot log min [net-worth-A] of firms 10"
-"max" 1.0 2 -13840069 true "set-plot-pen-mode 2" "plot log max [net-worth-A] of firms 10"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 ceiling ln-hopital max [net-worth-A] of firms\nplot ln-hopital mean [net-worth-A] of firms"
+"min" 1.0 0 -2674135 true "" "plot ln-hopital min [net-worth-A] of firms"
+"max" 1.0 2 -13840069 true "set-plot-pen-mode 2" "plot ln-hopital max [net-worth-A] of firms"
 
 PLOT
 708
@@ -1047,7 +1051,7 @@ PLOT
 379
 974
 499
-Ln Wage offered
+|
 Quarter
 NIL
 0.0
@@ -1188,7 +1192,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count workers\nset-plot-y-range 0 ceiling sqrt count workers\nset-plot-x-range floor min [log wealth 10] of workers ceiling max [log wealth 10] of workers\nhistogram  [log wealth 10] of workers with [wealth > 0]"
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count workers\nset-plot-y-range 0 ceiling sqrt count workers\nset-plot-x-range floor ln-hopital min [wealth] of workers ceiling ln-hopital max [wealth] of workers\nhistogram map ln-hopital [wealth] of workers with [wealth > 0]"
 
 PLOT
 1246
@@ -1206,7 +1210,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor ln min [production-Y] of fn-incumbent-firms ceiling ln max [production-Y] of fn-incumbent-firms\nhistogram map ln [production-Y] of fn-incumbent-firms"
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars sqrt count firms\nset-plot-y-range 0 ceiling sqrt count firms\nset-plot-x-range floor ln-hopital min [production-Y] of fn-incumbent-firms ceiling ln-hopital max [production-Y] of fn-incumbent-firms\nplot-size-of-firms"
 
 PLOT
 1516
@@ -1224,7 +1228,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot log mean [production-Y] of fn-incumbent-firms 10"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [production-Y] of fn-incumbent-firms"
 
 SLIDER
 3
