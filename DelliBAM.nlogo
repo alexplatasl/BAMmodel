@@ -1308,6 +1308,24 @@ false
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [desired-production-Yd] of firms"
 
+PLOT
+1516
+257
+1716
+377
+Expected demand
+Quaters
+QUantity
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [expected-demand-De] of firms"
+
 @#$#@#$#@
 ## WHAT IS IT?
 
