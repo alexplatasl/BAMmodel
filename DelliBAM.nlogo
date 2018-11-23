@@ -191,6 +191,7 @@ end
 to adapt-individual-price; submodel 27 y 28
   let avg-market-price average-market-price
   ask firms [
+    ; Delli assumes that production is always positive
     let minimum-price-Pl ifelse-value (production-Y > 0)[( total-payroll-W + amount-of-Interest-to-pay ) / production-Y] [avg-market-price]
     if (inventory-S = 0 and individual-price-P <  avg-market-price)
     [
@@ -418,6 +419,7 @@ to buying-step [trials money]; workers procedure
     let possible-goods-to-buy min list money [inventory-S] of my-cheapest-store
     set money money - possible-goods-to-buy
     ask my-cheapest-store [
+      ; goods are fractional e.g. liters or pounds, so its possible to buy a fraction
       set inventory-S inventory-S - possible-goods-to-buy
     ]
     set trials trials - 1
@@ -705,9 +707,9 @@ SLIDER
 117
 wages-shock-xi
 wages-shock-xi
-0
+0.01
 0.5
-0.0
+0.05
 0.01
 1
 NIL
@@ -817,7 +819,7 @@ credit-market-H
 credit-market-H
 1
 10
-1.0
+2.0
 1
 1
 trials
