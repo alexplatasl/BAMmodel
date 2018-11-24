@@ -40,6 +40,8 @@ firms-own[
   ; for visual representation
   x-position
   y-position
+  ; to count chosen strategies (price quantity) per period
+  chosen-strategies
 ]
 
 workers-own[
@@ -102,6 +104,7 @@ to initialize-variables
     set individual-price-P 1 + random-poisson base-price
     set revenue-R 0
     set retained-profits-pi 0
+    set chosen-strategies 0
   ]
   ask workers [
     set employed? false
@@ -176,6 +179,7 @@ end
 
 ;;;;;;;;;; to firms-calculate production ;;;;;;;;;;
 to firms-calculate-production
+  ask firms [set chosen-strategies 0]
   adapt-expected-demand
   adapt-individual-price
   ask firms [
@@ -196,10 +200,12 @@ to adapt-individual-price; submodel 27 y 28
     if (inventory-S = 0 and individual-price-P <  avg-market-price)
     [
       set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 + price-shock-eta)))
+      set chosen-strategies chosen-strategies + 1
     ]
     if (inventory-S > 0 and individual-price-P >= avg-market-price)
     [
       set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 - price-shock-eta)))
+      set chosen-strategies chosen-strategies + 1
     ]
   ]
 end
@@ -211,11 +217,13 @@ to adapt-expected-demand; submodel 29 y 30
     [
       ;set expected-demand-De max list 4 ceiling ( production-Y * (1 + production-shock-rho))
       set expected-demand-De ceiling ( production-Y * (1 + production-shock-rho))
+      set chosen-strategies chosen-strategies + 1
     ]
     if (inventory-S > 0 and individual-price-P < avg-market-price)
     [
       ;set expected-demand-De max list 4 ceiling (production-Y * (1 - production-shock-rho))
       set expected-demand-De ceiling (production-Y * (1 - production-shock-rho))
+      set chosen-strategies chosen-strategies + 1
     ]
   ]
 end
@@ -1733,6 +1741,14 @@ NetLogo 6.0.4
     <steppedValueSet variable="base-savings" first="1" step="1" last="10"/>
     <steppedValueSet variable="base-net-worth" first="1" step="1" last="10"/>
     <steppedValueSet variable="base-production" first="1" step="1" last="10"/>
+  </experiment>
+  <experiment name="chosen-strategies" repetitions="100" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>[chosen-strategies] of firms</metric>
+    <enumeratedValueSet variable="beta">
+      <value value="0.87"/>
+    </enumeratedValueSet>
   </experiment>
 </experiments>
 @#$#@#$#@
