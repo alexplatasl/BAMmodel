@@ -1742,10 +1742,10 @@ NetLogo 6.0.4
     <steppedValueSet variable="base-net-worth" first="1" step="1" last="10"/>
     <steppedValueSet variable="base-production" first="1" step="1" last="10"/>
   </experiment>
-  <experiment name="chosen-strategies" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="chosen-strategies" repetitions="10" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
-    <metric>[chosen-strategies] of firms</metric>
+    <metric>sum [chosen-strategies] of firms</metric>
     <enumeratedValueSet variable="beta">
       <value value="0.87"/>
     </enumeratedValueSet>
