@@ -207,6 +207,9 @@ to adapt-individual-price; submodel 27 y 28
       set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 - price-shock-eta)))
       set chosen-strategies chosen-strategies + 1
     ]
+    if (chosen-strategies != 1)[
+      show (word "Selected strategies " chosen-strategies " with signal inventory " inventory-S " avg-market-price= " avg-market-price " individual price= " individual-price-P " at quarter " ticks)
+    ]
   ]
 end
 
@@ -1251,7 +1254,7 @@ base-production
 base-production
 1
 100
-10.0
+6.0
 1
 1
 units
@@ -1266,7 +1269,7 @@ base-price
 base-price
 1
 100
-10.0
+6.0
 1
 1
 $
@@ -1344,8 +1347,8 @@ PLOT
 1716
 501
 Wealth of workers
-NIL
-NIL
+Quarter
+Ln
 0.0
 10.0
 0.0
