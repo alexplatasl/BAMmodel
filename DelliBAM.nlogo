@@ -1251,7 +1251,7 @@ base-production
 base-production
 1
 100
-6.0
+10.0
 1
 1
 units
@@ -1266,7 +1266,7 @@ base-price
 base-price
 1
 100
-6.0
+10.0
 1
 1
 $
@@ -1337,6 +1337,24 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [expected-demand-De] of firms"
+
+PLOT
+1516
+381
+1716
+501
+Wealth of workers
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln-hopital mean [wealth] of workers"
 
 @#$#@#$#@
 ## WHAT IS IT?
