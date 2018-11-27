@@ -395,6 +395,10 @@ to firms-produce
     set inventory-S production-Y * individual-price-P
     set net-worth-A net-worth-A - total-payroll-W
   ]
+  ask workers with [not employed?][
+    set income 0
+  ]
+
   ask workers with [employed?][
     set income my-wage
     set contract contract - 1
@@ -406,6 +410,7 @@ to firms-produce
       fd (random 4) + 1
     ]
   ]
+
   ; firing employees with expired contract
   ask firms [
     set my-employees my-employees with [contract > 0]
@@ -885,7 +890,7 @@ dividends-delta
 dividends-delta
 0
 0.5
-0.05
+0.15
 0.01
 1
 NIL
