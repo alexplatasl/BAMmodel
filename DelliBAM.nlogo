@@ -552,8 +552,8 @@ to-report interest-rate-policy-rbar
 end
 
 to-report fn-incumbent-firms
-  let lower count firms * 0.05
-  let upper count firms * 0.95
+  let lower 1 + count firms * 0.20
+  let upper -1 + count firms * 0.90
   let ordered-firms sort-on [net-worth-A] firms
   let list-incumbent-firms sublist ordered-firms lower upper
   report (turtle-set list-incumbent-firms)
@@ -947,7 +947,7 @@ PLOT
 253
 Quarterly inflation
 Quarter
-NIL
+%
 0.0
 10.0
 0.0
@@ -966,7 +966,7 @@ PLOT
 253
 Annualized inflation
 Year
-NIL
+%
 0.0
 10.0
 -1.0
@@ -997,7 +997,7 @@ size-replacing-firms
 size-replacing-firms
 0.05
 0.5
-0.2
+0.05
 0.01
 1
 NIL
@@ -1229,7 +1229,7 @@ PENS
 PLOT
 1516
 10
-1716
+1761
 130
 Production of firms
 Quarter
@@ -1307,7 +1307,7 @@ HORIZONTAL
 PLOT
 1516
 133
-1717
+1761
 253
 Desired production
 Quarter
@@ -1325,7 +1325,7 @@ PENS
 PLOT
 1516
 257
-1716
+1761
 377
 Expected demand
 Quaters
@@ -1343,7 +1343,7 @@ PENS
 PLOT
 1516
 381
-1716
+1761
 501
 Wealth of workers
 Quarter
