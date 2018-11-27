@@ -421,8 +421,13 @@ to goods-market
     let money-to-consume propensity-to-consume-c * wealth
     set savings ((1 - propensity-to-consume-c) * wealth)
     ; rewrite this procedure
-    set my-stores (turtle-set my-large-store n-of (goods-market-Z - count (turtle-set my-large-store)) firms)
-    set my-large-store max-one-of my-stores [production-Y]
+    ifelse (any? my-stores)[
+      set my-large-store one-of firms
+    ][
+      set my-large-store max-one-of my-stores [production-Y]
+    ]
+    let other-stores n-of (goods-market-Z - 1) firms with [myself != my-large-store]
+    set my-stores (turtle-set my-large-store other-stores)
     buying-step goods-market-Z money-to-consume
   ]
 end
