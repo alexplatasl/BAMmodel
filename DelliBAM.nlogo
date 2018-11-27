@@ -413,7 +413,7 @@ to firms-produce
 end
 
 ;;;;;;;;;; to goods-market  ;;;;;;;;;;
-to goods-market
+to goods-market ;; an observer procedure
   let average-savings mean [savings] of workers
   ask workers[
     set wealth income + savings
@@ -426,7 +426,8 @@ to goods-market
     ][
       set my-large-store max-one-of my-stores [production-Y]
     ]
-    let other-stores n-of (goods-market-Z - 1) firms with [myself != my-large-store]
+    let mls my-large-store
+    let other-stores n-of (goods-market-Z - 1) firms with [self != mls]
     set my-stores (turtle-set my-large-store other-stores)
     buying-step goods-market-Z money-to-consume
   ]
@@ -826,7 +827,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range max list 0 (ticks - 500)  (ticks + 5)\nunemployment-rate"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0  (ticks + 5)\nunemployment-rate"
 "pen-1" 1.0 2 -7500403 true "" "plot 0"
 "pen-2" 1.0 2 -2674135 true "" "plot 0.1"
 
@@ -1073,7 +1074,7 @@ PLOT
 379
 974
 499
-|
+wage-offered-Wb
 Quarter
 NIL
 0.0
@@ -1252,6 +1253,7 @@ true
 PENS
 "mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [production-Y] of fn-incumbent-firms"
 "max" 1.0 0 -13840069 true "" "plot max [production-Y] of fn-incumbent-firms"
+"min" 1.0 0 -2674135 true "" "plot min [production-Y] of fn-incumbent-firms"
 
 SLIDER
 3
