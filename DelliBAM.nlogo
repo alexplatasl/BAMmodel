@@ -1,6 +1,6 @@
 ; Bottom-up Adaptive Macroeconomics
 
-extensions [palette array] ; arrays are used to enhance performance.
+extensions [palette array cf] ; arrays are used to enhance performance.
 
 breed[firms firm]          ; the firms in the simulation, 500 by default.
 breed[workers worker]      ; the workers or households, 5 * number of firms by default.
@@ -179,9 +179,7 @@ end
 
 ;;;;;;;;;; to firms-calculate production ;;;;;;;;;;
 to firms-calculate-production
-  ask firms [set chosen-strategies 0]
-  adapt-expected-demand
-  adapt-individual-price
+  adapt-expected-demand-or-price
   ask firms [
     set desired-production-Yd expected-demand-De; submodel 2
   ]
@@ -192,44 +190,24 @@ to firms-calculate-production
   array:set quarters-inflation (ticks mod 4) quarter-inflation
 end
 
-to adapt-individual-price; submodel 27 y 28
+to adapt-expected-demand-or-price
   let avg-market-price average-market-price
   ask firms [
-    ; Delli assumes that production is always positive
     let minimum-price-Pl ifelse-value (production-Y > 0)[( total-payroll-W + amount-of-Interest-to-pay ) / production-Y] [avg-market-price]
-    if (inventory-S = 0 and individual-price-P <  avg-market-price)
-    [
-      set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 + price-shock-eta)))
-      set chosen-strategies chosen-strategies + 1
-    ]
-    if (inventory-S > 0 and individual-price-P >= avg-market-price)
-    [
-      set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 - price-shock-eta)))
-      set chosen-strategies chosen-strategies + 1
-    ]
-    if (chosen-strategies != 1)[
-      show (word "Selected strategies " chosen-strategies " with signal inventory " inventory-S " avg-market-price= " avg-market-price " individual price= " individual-price-P " at quarter " ticks)
-    ]
+    (cf:ifelse
+      (inventory-S = 0 and individual-price-P >= avg-market-price)
+        [ set expected-demand-De ceiling ( production-Y * (1 + production-shock-rho))]
+      (inventory-S > 0 and individual-price-P < avg-market-price)
+        [ set expected-demand-De ceiling (production-Y * (1 - production-shock-rho))]
+      (inventory-S = 0 and individual-price-P <  avg-market-price)
+        [ set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 + price-shock-eta)))]
+      (inventory-S > 0 and individual-price-P >= avg-market-price)
+        [ set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 - price-shock-eta)))]
+        [ show (word "No selected strategies ")]
+    )
   ]
 end
 
-to adapt-expected-demand; submodel 29 y 30
-  let avg-market-price average-market-price
-  ask firms [
-    if (inventory-S = 0 and individual-price-P >= avg-market-price)
-    [
-      ;set expected-demand-De max list 4 ceiling ( production-Y * (1 + production-shock-rho))
-      set expected-demand-De ceiling ( production-Y * (1 + production-shock-rho))
-      set chosen-strategies chosen-strategies + 1
-    ]
-    if (inventory-S > 0 and individual-price-P < avg-market-price)
-    [
-      ;set expected-demand-De max list 4 ceiling (production-Y * (1 - production-shock-rho))
-      set expected-demand-De ceiling (production-Y * (1 - production-shock-rho))
-      set chosen-strategies chosen-strategies + 1
-    ]
-  ]
-end
 ;;;;;;;;;; to labor-market  ;;;;;;;;;;
 to labor-market
   let law-minimum-wage ifelse-value (ticks > 0 and ticks mod 4 = 0 )[fn-minimum-wage-W-hat][[minimum-wage-W-hat] of firms]
