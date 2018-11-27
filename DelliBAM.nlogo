@@ -241,6 +241,8 @@ to labor-market-opens
 
   hiring-step labor-market-M
   ask workers with [not employed?][
+    set my-wage 0
+    set income 0
     rt random 360
     fd (random 4) + 1
   ]
@@ -356,6 +358,7 @@ to firing-step
         set color yellow
         set employed? false
         set my-wage 0
+        set income 0
         set contract 0
         set my-firm no-turtles
         rt random 360
@@ -371,9 +374,6 @@ to firms-produce
     set production-Y labor-productivity-alpha * count my-employees; submodel 1
     set inventory-S production-Y * individual-price-P
     set net-worth-A net-worth-A - total-payroll-W
-  ]
-  ask workers with [not employed?][
-    set income 0
   ]
 
   ask workers with [employed?][
@@ -402,16 +402,16 @@ to goods-market ;; an observer procedure
     set propensity-to-consume-c 1 / (1 + (fn-tanh (savings / average-savings)) ^ beta)
     let money-to-consume propensity-to-consume-c * wealth
     set savings ((1 - propensity-to-consume-c) * wealth)
-    ; rewrite this procedure
-    ifelse (any? my-stores)[
-      set my-large-store one-of firms
-    ][
-      set my-large-store max-one-of my-stores [production-Y]
-    ]
-    let mls my-large-store
-    let other-stores n-of (goods-market-Z - 1) firms with [self != mls]
-    set my-stores (turtle-set my-large-store other-stores)
-    show (word "Number of my stores " count my-stores)
+    ifelse (any? turtle-set my-large-store)
+      [
+        let id-store [who] of my-large-store
+        set my-stores (turtle-set my-large-store n-of (goods-market-Z - 1) firms with [who != id-store])
+      ]
+      [
+        set my-stores n-of goods-market-Z firms
+      ]
+    set my-large-store max-one-of my-stores [production-Y]
+    if (count my-stores != goods-market-Z) [show (word "Number of my stores " count my-stores " who " who)]
     buying-step goods-market-Z money-to-consume
   ]
 end
@@ -844,7 +844,7 @@ goods-market-Z
 goods-market-Z
 1
 15
-2.0
+4.0
 1
 1
 trials
