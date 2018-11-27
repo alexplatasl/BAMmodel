@@ -473,7 +473,7 @@ end
 to firms-banks-survive
   ask firms [
     set net-worth-A net-worth-A + retained-profits-pi
-    if (net-worth-A <= 0)[
+    if (net-worth-A <= 0 or production-Y <= 0)[
       ask my-bank [
         set bad-debt-BD bad-debt-BD + 1
       ]
@@ -487,7 +487,6 @@ to firms-banks-survive
         fd (random 4) + 1
       ]
       die
-      show (word "Some firm died")
     ]
   ]
   ask banks with [patrimonial-base-E < 0][
@@ -767,7 +766,7 @@ production-shock-rho
 production-shock-rho
 0
 0.5
-0.15
+0.1
 0.01
 1
 NIL
@@ -819,7 +818,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nunemployment-rate"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range max list 0 (ticks - 500)  (ticks + 5)\nunemployment-rate"
 "pen-1" 1.0 2 -7500403 true "" "plot 0"
 "pen-2" 1.0 2 -2674135 true "" "plot 0.1"
 
@@ -877,7 +876,7 @@ dividends-delta
 dividends-delta
 0
 0.5
-0.15
+0.05
 0.01
 1
 NIL
@@ -957,7 +956,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -5 10\nplot quarterly-inflation"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range max list 0 (ticks - 500)  (ticks + 5)\nset-plot-y-range -5 10\nplot quarterly-inflation"
 "pen-1" 1.0 2 -5987164 true "" "plot 0"
 
 PLOT
@@ -976,8 +975,8 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nset-plot-y-range -2 16\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
-"pen-1" 1.0 0 -7500403 true "" "set-plot-x-range 0 ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[plot 0]"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range max list 0 (ceiling (ticks / 4) - 125) ceiling (ticks / 4) + 1\nset-plot-y-range -2 16\nif (ticks > 0 and ticks mod 4 = 0 )[\nplot-annualized-inflation]"
+"pen-1" 1.0 0 -7500403 true "" "set-plot-x-range max list 0 (ceiling (ticks / 4) - 125) ceiling (ticks / 4) + 1\nif (ticks > 0 and ticks mod 4 = 0 )[plot 0]"
 
 TEXTBOX
 7
@@ -1254,7 +1253,7 @@ base-production
 base-production
 1
 100
-6.0
+10.0
 1
 1
 units
