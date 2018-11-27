@@ -447,6 +447,9 @@ to buying-step [trials money]; workers procedure
       ; goods are fractional e.g. liters or pounds, so its possible to buy a fraction
       set inventory-S inventory-S - possible-goods-to-buy
     ]
+    ask [patch-here] of my-cheapest-store [
+      set pcolor green
+    ]
     set trials trials - 1
     set my-stores max-n-of trials my-stores [individual-price-P]; eliminate cheap-store of my-stores with sets
   ]
@@ -543,6 +546,10 @@ to replace-bankrupt
     set interest-rate-r 0
     set my-borrowing-firms no-turtles
     set bankrupt? false
+  ]
+  ; re-paint patches
+  ask patches [
+    set pcolor black
   ]
 end
 
@@ -1011,7 +1018,7 @@ size-replacing-firms
 size-replacing-firms
 0.05
 0.5
-0.05
+0.2
 0.01
 1
 NIL
@@ -1374,7 +1381,7 @@ false
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln-hopital mean [wealth] of workers"
 "max" 1.0 0 -13840069 true "" "plot ln-hopital max [wealth] of workers"
-"min" 1.0 0 -2674135 true "" "plot ln-hopital min [wealth] of workers"
+"min" 1.0 0 -2674135 true "" "plot ln-hopital round min [wealth] of workers"
 
 @#$#@#$#@
 ## WHAT IS IT?
