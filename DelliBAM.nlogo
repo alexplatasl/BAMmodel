@@ -420,6 +420,7 @@ to goods-market
     set propensity-to-consume-c 1 / (1 + (fn-tanh (savings / average-savings)) ^ beta)
     let money-to-consume propensity-to-consume-c * wealth
     set savings ((1 - propensity-to-consume-c) * wealth)
+    ; rewrite this procedure
     set my-stores (turtle-set my-large-store n-of (goods-market-Z - count (turtle-set my-large-store)) firms)
     set my-large-store max-one-of my-stores [production-Y]
     buying-step goods-market-Z money-to-consume
@@ -473,7 +474,9 @@ end
 to firms-banks-survive
   ask firms [
     set net-worth-A net-worth-A + retained-profits-pi
-    if (net-worth-A <= 0 or production-Y <= 0)[
+    if (net-worth-A <= 0
+      ; or production-Y <= 0
+      )[
       ask my-bank [
         set bad-debt-BD bad-debt-BD + 1
       ]
@@ -1239,10 +1242,11 @@ Quantity
 0.0
 1.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [production-Y] of fn-incumbent-firms"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [production-Y] of fn-incumbent-firms"
+"max" 1.0 0 -13840069 true "" "plot max [production-Y] of fn-incumbent-firms"
 
 SLIDER
 3
@@ -1253,7 +1257,7 @@ base-production
 base-production
 1
 100
-10.0
+6.0
 1
 1
 units
@@ -1784,5 +1788,5 @@ true
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 @#$#@#$#@
-0
+1
 @#$#@#$#@
