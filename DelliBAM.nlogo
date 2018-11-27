@@ -1368,6 +1368,8 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln-hopital mean [wealth] of workers"
+"max" 1.0 0 -13840069 true "" "plot ln-hopital max [wealth] of workers"
+"min" 1.0 0 -2674135 true "" "plot ln-hopital min [wealth] of workers"
 
 @#$#@#$#@
 ## WHAT IS IT?
