@@ -9,6 +9,7 @@ breed[banks bank]          ; the banks, max of credit-market-h + 1 and number of
 globals [
   quarters-average-price   ; an array storing the average price for the last 4 quarters.
   quarters-inflation       ; an array storing the inflation for the last 4 quarters.
+  phase-detection
 ]
 
 firms-own[
@@ -40,8 +41,6 @@ firms-own[
   ; for visual representation
   x-position
   y-position
-  ; to count chosen strategies (price quantity) per period
-  chosen-strategies
 ]
 
 workers-own[
@@ -104,7 +103,6 @@ to initialize-variables
     set individual-price-P 1 + random-poisson base-price
     set revenue-R 0
     set retained-profits-pi 0
-    set chosen-strategies 0
   ]
   ask workers [
     set employed? false
@@ -128,6 +126,7 @@ to initialize-variables
   ]
   set quarters-average-price array:from-list n-values 4 [base-price]
   set quarters-inflation array:from-list n-values 4 [0]
+  set phase-detection array:from-list n-values 2 [0]
 end
 
 to start-firms [#firms]
@@ -412,6 +411,7 @@ to goods-market ;; an observer procedure
     let mls my-large-store
     let other-stores n-of (goods-market-Z - 1) firms with [self != mls]
     set my-stores (turtle-set my-large-store other-stores)
+    show (word "Number of my stores " count my-stores)
     buying-step goods-market-Z money-to-consume
   ]
 end
@@ -819,7 +819,6 @@ false
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0  (ticks + 5)\nunemployment-rate"
 "pen-1" 1.0 2 -7500403 true "" "plot 0"
-"pen-2" 1.0 2 -2674135 true "" "plot 0.1"
 
 SLIDER
 2
@@ -955,7 +954,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range max list 0 (ticks - 500)  (ticks + 5)\nset-plot-y-range -5 10\nplot quarterly-inflation"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range -5 10\nplot quarterly-inflation"
 "pen-1" 1.0 2 -5987164 true "" "plot 0"
 
 PLOT
@@ -1254,7 +1253,7 @@ base-production
 base-production
 1
 100
-6.0
+100.0
 1
 1
 units
