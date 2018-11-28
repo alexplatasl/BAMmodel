@@ -994,7 +994,7 @@ size-replacing-firms
 size-replacing-firms
 0.05
 0.5
-0.2
+0.5
 0.01
 1
 NIL
@@ -1326,9 +1326,9 @@ PLOT
 257
 1761
 377
-Expected demand
+Interest rate offered
 Quaters
-QUantity
+%
 0.0
 10.0
 0.0
@@ -1337,7 +1337,9 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [expected-demand-De] of firms"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [my-interest-rate] of firms"
+"pen-1" 1.0 0 -2674135 true "" "plot max [my-interest-rate] of firms"
+"pen-2" 1.0 0 -13345367 true "" "plot min [my-interest-rate] of firms"
 
 PLOT
 1516
