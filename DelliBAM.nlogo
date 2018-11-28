@@ -9,7 +9,6 @@ breed[banks bank]          ; the banks, max of credit-market-h + 1 and number of
 globals [
   quarters-average-price   ; an array storing the average price for the last 4 quarters.
   quarters-inflation       ; an array storing the inflation for the last 4 quarters.
-  phase-detection
 ]
 
 firms-own[
@@ -126,7 +125,6 @@ to initialize-variables
   ]
   set quarters-average-price array:from-list n-values 4 [base-price]
   set quarters-inflation array:from-list n-values 4 [0]
-  set phase-detection array:from-list n-values 2 [0]
 end
 
 to start-firms [#firms]
@@ -467,7 +465,7 @@ to firms-banks-survive
   ask firms [
     set net-worth-A net-worth-A + retained-profits-pi
     if (net-worth-A <= 0
-      ; or production-Y <= 0
+       ; or production-Y <= 0
       )[
       ask my-bank [
         set bad-debt-BD bad-debt-BD + 1
@@ -481,6 +479,7 @@ to firms-banks-survive
         rt random 360
         fd (random 4) + 1
       ]
+      show (word "Die ")
       die
     ]
   ]
@@ -509,7 +508,7 @@ to replace-bankrupt
       set my-employees no-turtles
       set minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
       set wage-offered-Wb random-float (1 - size-replacing-firms) * mean [wage-offered-Wb] of incumbent-firms
-      set net-worth-A random-float (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
+      set net-worth-A (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
       set my-potential-banks no-turtles
       set my-bank no-turtles
       set inventory-S one-of [0 1]
@@ -551,7 +550,7 @@ to-report interest-rate-policy-rbar
 end
 
 to-report fn-incumbent-firms
-  let lower 1 + count firms * 0.20
+  let lower 1 + count firms * 0.10
   let upper -1 + count firms * 0.90
   let ordered-firms sort-on [net-worth-A] firms
   let list-incumbent-firms sublist ordered-firms lower upper
@@ -844,7 +843,7 @@ goods-market-Z
 goods-market-Z
 1
 15
-4.0
+2.0
 1
 1
 trials
@@ -1253,7 +1252,7 @@ base-production
 base-production
 1
 100
-100.0
+6.0
 1
 1
 units
