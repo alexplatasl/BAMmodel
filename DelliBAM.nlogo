@@ -327,7 +327,7 @@ to lending-step [#borrowing-firms]; banks procedure
     let networth max (list [net-worth-A] of my-best-borrower 1)
     let leverage-of-borrower [loan-B] of my-best-borrower / networth; submodel 19
     ;submodel 17
-    let contractual-interest interest-rate-policy-rbar * (1 + ([operational-interest-rate] of self * leverage-of-borrower))
+    let contractual-interest 0.07; interest-rate-policy-rbar * (1 + ([operational-interest-rate] of self * leverage-of-borrower))
     let the-lender-bank self
     let loan min (list [loan-B] of my-best-borrower total-amount-of-credit-C); part of submodel 14
 
@@ -994,7 +994,7 @@ size-replacing-firms
 size-replacing-firms
 0.05
 0.5
-0.5
+0.2
 0.01
 1
 NIL
@@ -1326,7 +1326,7 @@ PLOT
 257
 1761
 377
-Interest rate offered
+Contractual interest rate
 Quaters
 %
 0.0
