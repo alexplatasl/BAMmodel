@@ -512,7 +512,7 @@ to replace-bankrupt
       set my-potential-banks no-turtles
       set my-bank no-turtles
       set inventory-S one-of [0 1]
-      set individual-price-P mean [individual-price-P] of incumbent-firms
+      set individual-price-P  mean [individual-price-P] of incumbent-firms ;1.1 * average-market-price;
     ]
   ]
 
@@ -1334,12 +1334,12 @@ Quaters
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [my-interest-rate] of firms"
-"pen-1" 1.0 0 -2674135 true "" "plot max [my-interest-rate] of firms"
-"pen-2" 1.0 0 -13345367 true "" "plot min [my-interest-rate] of firms"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot 100 * mean [my-interest-rate] of firms"
+"max" 1.0 0 -2674135 true "" "plot 100 * max [my-interest-rate] of firms"
+"min" 1.0 0 -13345367 true "" "plot 100 * min [my-interest-rate] of firms"
 
 PLOT
 1516
@@ -1360,6 +1360,26 @@ PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln-hopital mean [wealth] of workers"
 "max" 1.0 0 -13840069 true "" "plot ln-hopital max [wealth] of workers"
 "min" 1.0 0 -2674135 true "" "plot ln-hopital round min [wealth] of workers"
+
+PLOT
+710
+505
+975
+625
+Inventory-S
+Quarter
+Quantity
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [inventory-S] of firms"
+"max" 1.0 0 -2674135 true "" "plot max [inventory-S] of firms"
+"min" 1.0 0 -13345367 true "" "plot min [inventory-S] of firms"
 
 @#$#@#$#@
 ## WHAT IS IT?
