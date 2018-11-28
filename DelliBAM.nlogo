@@ -93,7 +93,7 @@ to initialize-variables
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
     set wage-offered-Wb minimum-wage-W-hat
-    set net-worth-A 1 + random-poisson base-net-worth
+    set net-worth-A 9000000 *  random-poisson base-net-worth
     set total-payroll-W 0
     set loan-B 0
     set my-potential-banks no-turtles
@@ -268,7 +268,7 @@ to hiring-step [trials]
         set color green
         set employed? true
         set my-wage wage-employees
-        set contract random-poisson 4
+        set contract random-poisson 10
         set my-firm firms-here
         set my-potential-firms no-turtles
       ]
@@ -1397,9 +1397,9 @@ true
 true
 "" ""
 PENS
-"mean" 1.0 0 -16777216 true "" "plot ln-hopital mean [patrimonial-base-E] of firms"
-"max" 1.0 0 -2674135 true "" "plot ln-hopital max [patrimonial-base-E] of firms"
-"min" 1.0 0 -13345367 true "" "plot ln-hopital min [patrimonial-base-E] of firms"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln-hopital mean [patrimonial-base-E] of banks"
+"max" 1.0 0 -2674135 true "" "plot ln-hopital max [patrimonial-base-E] of banks"
+"min" 1.0 0 -13345367 true "" "plot ln-hopital min [patrimonial-base-E] of banks"
 
 @#$#@#$#@
 ## WHAT IS IT?
