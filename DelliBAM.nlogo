@@ -268,7 +268,7 @@ to hiring-step [trials]
         set color green
         set employed? true
         set my-wage wage-employees
-        set contract random-poisson 10
+        set contract random-poisson 4
         set my-firm firms-here
         set my-potential-firms no-turtles
       ]
@@ -1368,7 +1368,7 @@ PLOT
 625
 Inventory-S
 Quarter
-Quantity
+Money
 0.0
 10.0
 0.0
@@ -1377,9 +1377,29 @@ true
 true
 "" ""
 PENS
-"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [inventory-S] of firms"
-"max" 1.0 0 -2674135 true "" "plot max [inventory-S] of firms"
-"min" 1.0 0 -13345367 true "" "plot min [inventory-S] of firms"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln-hopital mean [inventory-S] of firms"
+"max" 1.0 0 -2674135 true "" "plot ln-hopital max [inventory-S] of firms"
+"min" 1.0 0 -13345367 true "" "plot ln-hopital min [inventory-S] of firms"
+
+PLOT
+975
+505
+1240
+625
+Banks patrimonial base
+Quarter
+Ln
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"mean" 1.0 0 -16777216 true "" "plot ln-hopital mean [patrimonial-base-E] of firms"
+"max" 1.0 0 -2674135 true "" "plot ln-hopital max [patrimonial-base-E] of firms"
+"min" 1.0 0 -13345367 true "" "plot ln-hopital min [patrimonial-base-E] of firms"
 
 @#$#@#$#@
 ## WHAT IS IT?
