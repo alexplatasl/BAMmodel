@@ -193,9 +193,9 @@ to adapt-expected-demand-or-price
     let minimum-price-Pl ifelse-value (production-Y > 0)[( total-payroll-W + amount-of-Interest-to-pay ) / production-Y] [avg-market-price]
     (cf:ifelse
       (inventory-S = 0 and individual-price-P >= avg-market-price)
-        [ set expected-demand-De ceiling ( production-Y * (1 + production-shock-rho))]
+        [ set expected-demand-De max (list 1 ceiling ( production-Y * (1 + production-shock-rho)))]
       (inventory-S > 0 and individual-price-P < avg-market-price)
-        [ set expected-demand-De ceiling (production-Y * (1 - production-shock-rho))]
+        [ set expected-demand-De max (list 1 ceiling (production-Y * (1 - production-shock-rho)))]
       (inventory-S = 0 and individual-price-P <  avg-market-price)
         [ set individual-price-P max(list minimum-price-Pl (individual-price-P * (1 + price-shock-eta)))]
       (inventory-S > 0 and individual-price-P >= avg-market-price)
@@ -327,7 +327,7 @@ to lending-step [#borrowing-firms]; banks procedure
     let networth max (list [net-worth-A] of my-best-borrower 1)
     let leverage-of-borrower [loan-B] of my-best-borrower / networth; submodel 19
     ;submodel 17
-    let contractual-interest 0.07; interest-rate-policy-rbar * (1 + ([operational-interest-rate] of self * leverage-of-borrower))
+    let contractual-interest interest-rate-policy-rbar * (1 + ([operational-interest-rate] of self * leverage-of-borrower)); 0.07
     let the-lender-bank self
     let loan min (list [loan-B] of my-best-borrower total-amount-of-credit-C); part of submodel 14
 
@@ -465,11 +465,12 @@ to firms-banks-survive
   ask firms [
     set net-worth-A net-worth-A + retained-profits-pi
     if (net-worth-A <= 0
-       ; or production-Y <= 0
+        or production-Y <= 0
       )[
       ask my-bank [
         set bad-debt-BD bad-debt-BD + 1
       ]
+      show (word "Die with number of employees " count my-employees)
       ask my-employees [
         set color yellow
         set employed? false
@@ -479,7 +480,6 @@ to firms-banks-survive
         rt random 360
         fd (random 4) + 1
       ]
-      show (word "Die ")
       die
     ]
   ]
@@ -507,12 +507,12 @@ to replace-bankrupt
       set labor-productivity-alpha 1
       set my-employees no-turtles
       set minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
-      set wage-offered-Wb random-float (1 - size-replacing-firms) * mean [wage-offered-Wb] of incumbent-firms
+      set wage-offered-Wb (1 - size-replacing-firms) * mean [wage-offered-Wb] of incumbent-firms
       set net-worth-A (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
       set my-potential-banks no-turtles
       set my-bank no-turtles
       set inventory-S one-of [0 1]
-      set individual-price-P  mean [individual-price-P] of incumbent-firms ;1.1 * average-market-price;
+      set individual-price-P  1.1 * average-market-price; mean [individual-price-P] of incumbent-firms ;
     ]
   ]
 
@@ -1368,7 +1368,7 @@ PLOT
 625
 Inventory-S
 Quarter
-Money
+Ln
 0.0
 10.0
 0.0
@@ -1400,6 +1400,23 @@ PENS
 "mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln-hopital mean [patrimonial-base-E] of banks"
 "max" 1.0 0 -2674135 true "" "plot ln-hopital max [patrimonial-base-E] of banks"
 "min" 1.0 0 -13345367 true "" "plot ln-hopital min [patrimonial-base-E] of banks"
+
+PLOT
+1245
+505
+1515
+625
+Leverage
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
 
 @#$#@#$#@
 ## WHAT IS IT?
