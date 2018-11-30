@@ -470,7 +470,6 @@ to firms-banks-survive
       ask my-bank [
         set bad-debt-BD bad-debt-BD + 1
       ]
-      show (word "Die with number of employees " count my-employees)
       ask my-employees [
         set color yellow
         set employed? false
@@ -1400,23 +1399,6 @@ PENS
 "mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln-hopital mean [patrimonial-base-E] of banks"
 "max" 1.0 0 -2674135 true "" "plot ln-hopital max [patrimonial-base-E] of banks"
 "min" 1.0 0 -13345367 true "" "plot ln-hopital min [patrimonial-base-E] of banks"
-
-PLOT
-1245
-505
-1515
-625
-Leverage
-NIL
-NIL
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
 
 @#$#@#$#@
 ## WHAT IS IT?
