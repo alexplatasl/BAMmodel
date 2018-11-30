@@ -93,7 +93,7 @@ to initialize-variables
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
     set wage-offered-Wb minimum-wage-W-hat
-    set net-worth-A 9000000 *  random-poisson base-net-worth
+    set net-worth-A 900 *  random-poisson base-net-worth
     set total-payroll-W 0
     set loan-B 0
     set my-potential-banks no-turtles
@@ -209,7 +209,7 @@ end
 to labor-market
   let law-minimum-wage ifelse-value (ticks > 0 and ticks mod 4 = 0 )[fn-minimum-wage-W-hat][[minimum-wage-W-hat] of firms]
   ask firms [
-    set desired-labor-force-Ld round (desired-production-Yd / labor-productivity-alpha); submodel 3
+    set desired-labor-force-Ld ceiling (desired-production-Yd / labor-productivity-alpha); submodel 3
     set current-numbers-employees-L0 count my-employees; summodel 4
     set number-of-vacancies-offered-V max(list (desired-labor-force-Ld - current-numbers-employees-L0) 0 ); submodel 5
     if (ticks > 0 and ticks mod 4 = 0 )
@@ -288,7 +288,8 @@ to credit-market; observer-procedure
 
   ask firms with [production-Y > 0][
     if (total-payroll-W > net-worth-A)[
-      set loan-B max (list (total-payroll-W - net-worth-A) 0); submodel 10
+      let leverage desired-production-Yd * wage-offered-Wb
+      set loan-B max (list (leverage - net-worth-A) 0); submodel 10
       if (loan-B > 0)[
         set shape "person business"
       ]
@@ -327,7 +328,7 @@ to lending-step [#borrowing-firms]; banks procedure
     let networth max (list [net-worth-A] of my-best-borrower 1)
     let leverage-of-borrower [loan-B] of my-best-borrower / networth; submodel 19
     ;submodel 17
-    let contractual-interest interest-rate-policy-rbar * (1 + ([operational-interest-rate] of self * leverage-of-borrower)); 0.07
+    let contractual-interest interest-rate-policy-rbar * (1 + ([operational-interest-rate] of self * leverage-of-borrower));
     let the-lender-bank self
     let loan min (list [loan-B] of my-best-borrower total-amount-of-credit-C); part of submodel 14
 
@@ -502,7 +503,7 @@ to replace-bankrupt
       set size 1.2
       set shape "factory"
       ;-----------------
-      set production-Y mean [production-Y] of incumbent-firms
+      set production-Y ceiling mean [production-Y] of incumbent-firms
       set labor-productivity-alpha 1
       set my-employees no-turtles
       set minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
@@ -549,8 +550,8 @@ to-report interest-rate-policy-rbar
 end
 
 to-report fn-incumbent-firms
-  let lower 1 + count firms * 0.10
-  let upper -1 + count firms * 0.90
+  let lower 1 + count firms * 0.05
+  let upper -1 + count firms * 0.95
   let ordered-firms sort-on [net-worth-A] firms
   let list-incumbent-firms sublist ordered-firms lower upper
   report (turtle-set list-incumbent-firms)
@@ -815,7 +816,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0  (ticks + 5)\nunemployment-rate"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0  (ticks + 5)\nset-plot-y-range 0  1.0\nunemployment-rate"
 "pen-1" 1.0 2 -7500403 true "" "plot 0"
 
 SLIDER
@@ -912,7 +913,7 @@ true
 true
 "" ""
 PENS
-"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 ceiling ln-hopital max [net-worth-A] of firms\nplot ln-hopital mean [net-worth-A] of firms"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 max (list 1 ceiling ln-hopital max [net-worth-A] of firms)\nplot ln-hopital mean [net-worth-A] of firms"
 "min" 1.0 0 -2674135 true "" "plot ln-hopital min [net-worth-A] of firms"
 "max" 1.0 2 -13840069 true "set-plot-pen-mode 2" "plot ln-hopital max [net-worth-A] of firms"
 
@@ -1225,7 +1226,7 @@ PENS
 PLOT
 1516
 10
-1761
+1776
 130
 Production of firms
 Quarter
@@ -1238,7 +1239,7 @@ true
 true
 "" ""
 PENS
-"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [production-Y] of fn-incumbent-firms"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 ceiling (max (list 1 [production-Y] of firms))\nplot mean [production-Y] of fn-incumbent-firms"
 "max" 1.0 0 -13840069 true "" "plot max [production-Y] of fn-incumbent-firms"
 "min" 1.0 0 -2674135 true "" "plot min [production-Y] of fn-incumbent-firms"
 
@@ -1251,7 +1252,7 @@ base-production
 base-production
 1
 100
-6.0
+100.0
 1
 1
 units
@@ -1305,7 +1306,7 @@ HORIZONTAL
 PLOT
 1516
 133
-1761
+1776
 253
 Desired production
 Quarter
@@ -1315,15 +1316,18 @@ Quantity
 0.0
 10.0
 true
-false
+true
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot mean [desired-production-Yd] of firms"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 ceiling (max (list 1 [desired-production-Yd] of firms))\nplot mean [desired-production-Yd] of firms"
+"max" 1.0 0 -13840069 true "" "plot max [desired-production-Yd] of firms"
+"min" 1.0 0 -2674135 true "" "plot min [desired-production-Yd] of firms"
+"median" 1.0 0 -11053225 true "" "plot median [desired-production-Yd] of firms"
 
 PLOT
 1516
 257
-1761
+1776
 377
 Contractual interest rate
 Quaters
@@ -1343,7 +1347,7 @@ PENS
 PLOT
 1516
 381
-1761
+1776
 501
 Wealth of workers
 Quarter
@@ -1356,7 +1360,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln-hopital mean [wealth] of workers"
+"default" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range 0 max (list 1 ceiling ln-hopital max [wealth] of workers)\nplot ln-hopital mean [wealth] of workers"
 "max" 1.0 0 -13840069 true "" "plot ln-hopital max [wealth] of workers"
 "min" 1.0 0 -2674135 true "" "plot ln-hopital round min [wealth] of workers"
 
@@ -1396,7 +1400,7 @@ true
 true
 "" ""
 PENS
-"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nplot ln-hopital mean [patrimonial-base-E] of banks"
+"mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range max (list 0 ceiling ln-hopital min [patrimonial-base-E] of banks) max (list 1 (1 + ceiling ln-hopital max [patrimonial-base-E] of banks))\nplot ln-hopital mean [patrimonial-base-E] of banks"
 "max" 1.0 0 -2674135 true "" "plot ln-hopital max [patrimonial-base-E] of banks"
 "min" 1.0 0 -13345367 true "" "plot ln-hopital min [patrimonial-base-E] of banks"
 
