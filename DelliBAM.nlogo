@@ -1621,9 +1621,7 @@ Initialization
 Input data
 ----------
 
-Data from the Italian economy are used in the validation phase, although
-some data may be required in the simulation, like central bank interest
-rates.
+No input data were needed to represent process.
 
 Submodels
 ---------
@@ -1807,6 +1805,7 @@ Submodels
 
 44. If a bank goes bankrupt, it is replaced with a copy of the
     surviving banks.
+
 
 Reference
 ========
