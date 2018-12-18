@@ -1626,185 +1626,116 @@ No input data were needed to represent process.
 Submodels
 ---------
 
-1.  Production with constant returns to scale and
-    technological multiplier. $Y_ 
-    ​    {it} = \alpha_ {it} L_{it}, \alpha_{it}> 0 $.
+1.  Production with constant returns to scale and technological multiplier. 
+	Y<sub>it</sub> = &alpha;<sub>it</sub> L<sub>it</sub>, &alpha;<sub>it</sub> > 0.
 
-2.  Desired production level $ Y_ {it} ^ d $ is equal to the expected
-    demand $ D_ 
-    ​    {it} ^ d $.
+2.  Desired production level Y<sub>it</sub><sup>d</sup> is equal to the expected demand 	D<sub>it</sub><sup>d</sup>.
 
-3.  Desired labor force (employees) $ L_ {it} ^ d $ is
-    $ L_ {it} ^ d = \frac {Y_ {it} ^ d} {\alpha_ {it}} $
+3.  Desired labor force (employees) L<sub>it</sub><sup>d</sup> is L<sub>it</sub><sup>d</sup> = Y<sub>it</sub><sup>d</sup> &frasl; &alpha;<sub>it</sub>
 
-4.  Current number of employees $ L_ {it} ^ 0 $ is the sum of employees
-    with and without a valid contract.
+4.  Current number of employees L<sub>it</sub><sup>0</sup> is the sum of employees     with and without a valid contract.
 
-5.  Number of vacancies offered by firms $ V_ {it} $ is
-    $ V_ {it} = max (L_ {it} ^ d - L_ {it} ^ 0, 0) $.
+5.  Number of vacancies offered by firms V<sub>it</sub> is V<sub>it</sub> = max (L<sub>it</sub><sup>d</sup> - L<sub>it</sub><sup>0</sup>, 0).
 
-6.  $ \hat {w_t} $ is the minimum wage determined by law.
+6.  w&#770;<sub>t</sub> is the minimum wage determined by law.
 
-7.  If there are no vacancies $ V_ {it} = 0 $, wage offered is:
-    $ w_ {it} ^ b = max (\hat {w_t}, w_ {it-1}) $,
+7.  If there are no vacancies V<sub>it</sub> = 0, wage offered is:
+    w<sub>it</sub><sup>b</sup> = max (w&#770;<sub>t</sub>, w<sub>it-1</sub>),
 
 8.  If number of vacancies is greater than 0, wage offered is:
-    $ w_ {it} ^ b = max (\hat {w_t}, w_ {it-1} (1+ \xi_ {it})) $,
+    w<sub>it</sub><sup>b</sup> = max (w&#770;<sub>t</sub>, w<sub>it-1</sub> (1+ &xi;<sub>it</sub>)),
 
-9.  $ \xi_ {it} $ is a random term evenly distributed between
-    $ (0, h _ {\xi}) $.
+9.  &xi;<sub>it</sub> is a random term evenly distributed between (0, h<sub>&xi;</sub>).
 
-10. At the beginning of each period, a firm has a net value $ A_ {it} $.
-    If total payroll to be paid $ W_ {it} $ is greater than $ A_ {it} $,
-    firm asks for a $ B_ {it} $ loan:
-    $ B_ {it} = max (W_ {it} - A_ {it}, 0 )$
+10. At the beginning of each period, a firm has a net value A<sub>it</sub>. If total payroll to be paid W<sub>it</sub> is greater than A<sub>it</sub>, firm asks for a B<sub>it</sub> loan:
+    B<sub>it</sub> = max (W<sub>it</sub> - A<sub>it</sub>, 0 )
 
-11. For the loan search costs, it must be met that $ H <K $
+11. For the loan search costs, it must be met that H < K.
 
-12. In each period the $ k $ -thmost bank can distribute a total amount
-    of credit $ 
-    ​    C_k $ equivalent to a multiple of its patrimonial base:
-    $ C_ {kt} = \frac {E_ {kt}} 
-    ​    {v} $,
+12. In each period the <i>k</i>-th most bank can distribute a total amount of credit C<sub>k</sub> equivalent to a multiple of its patrimonial base:
+    C<sub>kt</sub> = E<sub>kt</sub> &frasl; v,
 
-13. where $ 0 <v <1 $ can be interpreted as the capital requirement
-    coefficient. Therefore, the $ v $ reciprocal represents the maximum
-    allowed leverage by the bank.
+13. where 0 < <i>v</i> < 1 can be interpreted as the capital requirement coefficient. Therefore, the <i>v</i> reciprocal represents the maximum allowed leverage by the bank.
 
-14. Bank offers credit $ C_ {k} $, with its respective interest rate
-    $ r_ 
-    ​    {it} ^ k $ and contract for 1 period.
+14. Bank offers credit C<sub>k</sub>, with its respective interest rate r<sub>it</sub><sup>k</sup> and contract for 1 period.
 
-15. Payment scheme if $ A_ {it + 1}> 0 $: $ B_ {it} (1 + r_ {it} ^ k) $
+15. Payment scheme if A<sub>it + 1</sub> > 0: B<sub>it</sub> (1 + r<sub>it</sub><sup>k</sup>).
 
-16. If $ A_ {it + 1} \leq 0 $, bank retrieves $ R_ {it + 1} $
+16. If A<sub>it + 1</sub> &#8804; 0 , bank retrieves R<sub>it + 1</sub>.
 
-17. Contractual interest rate offered by the bank $ k $ to the firm
-    $ i $ is determined as a margin on a rate policy established by
-    Central Monetary Authority $ \bar {r} $:
-    $ R_ {it} ^ k = \bar {r} (1+ \phi_ {kt} \mu (\ell_ {it})) $.
+17. Contractual interest rate offered by the bank k to the firm i is determined as a margin on a rate policy established by Central Monetary Authority r&#772;:
+    R<sub>it</sub><sup>k</sup> = r&#772; (1 + &phi;<sub>kt</sub> &mu;(&ell;<sub>it</sub>)).
 
-18. Margin is a function of the specificity of the bank as possible
-    variations in its operating costs and captured by the uniform random
-    variable $ \phi_ {kt} $ in the interval $ (0, h_\phi) $.
+18. Margin is a function of the specificity of the bank as possible variations in its operating costs and captured by the uniform random variable &phi;<sub>kt</sub> in the interval (0, h<sub>&phi;</sub>).
 
-19. Margin is also a function of the borrower’s financial fragility,
-    captured by the term $ \mu (\ell_ {it}) $, $ \mu ^ {'}> 0 $. Where
-    $ \ell_ {it} = \frac 
-    ​    {B_ {it}} {A_ {it}} $ is the leverage of borrower.
+19. Margin is also a function of the borrower’s financial fragility, captured by the term
+	&mu; (&ell;<sub>it</sub>), &mu;<sup>'</sup>} > 0. Where &ell;<sub>it</sub> = B<sub>it</sub> &frasl;A<sub>it</sub> is the leverage of borrower.
 
-20. Demand for credit is divisible, that is, if a single bank is not
-    able to satisfy the requested credit, it can request in the
-    remaining $ H-1 $ randomly selected banks.
+20. Demand for credit is divisible, that is, if a single bank is not able to satisfy the requested credit, it can request in the remaining H-1 randomly selected banks.
 
-21. Each firm has an inventory of unsold goods $ S_ {it} $, where excess
-    supply $ S_ {it}> 0 $ or demand $ S_ {it} = 0 $ is reflected.
+21. Each firm has an inventory of unsold goods S<sub>it</sub>, where excess supply  S<sub>it</sub> > 0 or demand S<sub>it</sub> = 0 is reflected.
 
-22. Deviation of the individual price from the average market price
-    during the previous period is represented as:
-    $ P_ {it-1} - P_ {t-1} $
+22. Deviation of the individual price from the average market price during the previous period is represented as:
+    P<sub>it-1</sub> - P<sub>t-1</sub>
 
-23. If deviation is positive $ P_ {it-1}> P_ {t-1} $, firm recognizes
-    that its price is high compared to its competitors, and is induced
-    to decrease the price or quantity to prevent a migration massive in
-    favor of its rivals.
+23. If deviation is positive, P<sub>it-1</sub> > P<sub>t-1</sub>, firm recognizes that its price is high compared to its competitors, and is induced to decrease the price or quantity to prevent a migration massive in favor of its rivals.
 
 24. Vice versa.
 
-25. In case of adjusting price to downside, this is bounded below
-    $ P_ {it} ^l $ to not be less than your average costs
-    $$P_ {it} ^ l = \frac {W_ {it} + \sum\limits_k r_ {kit} B_ {kit}} {Y_ {it}}$$.
+25. In case of adjusting price to downside, this is bounded below P<sub>it</sub><sup>l</sup> to not be less than your average costs
+    P<sub>it</sub><sup>l</sup> = &#91; W<sub>it</sub> + &Sigma;<sub>k</sub> r<sub>kit</sub> B<sub>kit</sub> &#93; &frasl; Y<sub>it</sub>.
 
-26. Aggregate price $ P_t $ is common knowledge (global variable), while
-    inventory $ S_ {it} $ and individual price $ P_ {it} $ private
-    knowledge child (local variables).
+26. Aggregate price P<sub>t</sub> is common knowledge (global variable), while inventory S<sub>it</sub> and individual price P<sub>it</sub> private knowledge child (local variables).
 
-27. Only the price or quantity to be produced can be modified. In the
-    case of price, we have the following rule:
+27. Only the price or quantity to be produced can be modified. In the case of price, we have the following rule for P<sub>it</sub><sup>s</sup>:
+max[P<sub>it</sub><sup>l</sup>, P<sub>it-1</sub>(1+&eta;<sub>it</sub>)]  &nbsp;&nbsp;&nbsp;    if &nbsp;&nbsp;&nbsp; S<sub>it-1</sub>=0 and P<sub>it-1</sub><P
+max[P<sub>it</sub><sup>l</sup>, P<sub>it-1</sub>(1-&eta;<sub>it</sub>)] &nbsp;&nbsp;&nbsp;    if &nbsp;&nbsp;&nbsp; S<sub>it-1</sub>>0 and P<sub>it-1</sub>&#8805; P
 
-    $$\begin{aligned}
-    P_{it}^s=
-    ​    \begin{cases}
-    ​    \text{max}[P_{it}^l, P_{it-1}(1+\eta_{it})] & \text{if $S_{it-1}=0$ and $P_{it-1}<P$ 
-    ​    }\\
-    ​    \text{max}[P_{it}^l, P_{it-1}(1-\eta_{it})] & \text{if $S_{it-1}>0$ and $P_{it-1}\geq 
-    ​    P$}
-    ​    \end{cases}\end{aligned}$$
+28. &eta;<sub>it</sub> is a randomized term uniformly distributed in the range (0, h<sub> &eta;</sub>) and P<sub>it</sub><sup>l</sup> is the minimum price at which firm i can solve its minimal costs at time t (previously defined).
 
-28. $\eta_ {it} $ is a randomized term uniformly distributed in the
-    range $ (0, h_ 
-    ​    \eta) $ and $ P_ {it} ^ l $ is the minimum price at which firm
-    $ i $ can solve its minimal costs at time $ t $
-    (previously defined).
+29. In the case of quantities, these are adjusted adaptively according to the following rule for D<sub>it</sub><sup>e</sup> :
+Y<sub>it-1</sub>(1+&rho;<sub>it</sub>) &nbsp;&nbsp;&nbsp; if &nbsp;&nbsp;&nbsp; S<sub>it-1</sub>=0 and P<sub>it-1</sub>&#8805; P
+Y<sub>it-1</sub>(1-&rho;<sub>it</sub>) &nbsp;&nbsp;&nbsp; if &nbsp;&nbsp;&nbsp; S<sub>it-1</sub>>0 and P<sub>it-1</sub>< P
 
-29. In the case of quantities, these are adjusted adaptively according
-    to the following rule:
+30. &rho;<sub>it</sub> is a random term uniform distributed and bounded between (0, h<sub>&rho;</sub>).
 
-    $$\begin{aligned}
-    D_{it}^e=
-    ​    \begin{cases}
-    ​        Y_{it-1}(1+\rho_{it}) & \text{if $S_{it-1}=0$ and $P_{it-1}\geq P$} \\
-    ​        Y_{it-1}(1-\rho_{it}) & \text{if $S_{it-1}>0$ and $P_{it-1}< P$}
-    ​    \end{cases}\end{aligned}$$
+31. Total income of households (workers/consumers) is the sum of the payroll paid to the workers (each household represents a worker) in t and the dividends distributed to the shareholders in t-1.
 
-30. $\rho_ {it} $ is a random term uniform distributed and bounded
-    between $ (0, h_ 
-    ​    \rho) $.
+32. Wealth is defined as the sum of labor income plus the sum of all savings SA of the past.
 
-31. Total income of households (workers/consumers) is the sum of the
-    payroll paid to the workers (each household represents a worker) in
-    $ t $ and the dividends distributed to the shareholders in $ t-1 $.
+33. Marginal propensity to consume c is a decreasing function of the worker’s total wealth (higher the wealth lower the proportion spent on consumption) defined as:
 
-32. Wealth is defined as the sum of labor income plus the sum of all
-    savings $SA$ of the past.
+    c<sub>jt</sub> = 1 &frasl; [ 1 + tanh (SA<sub>jt</sub> &frasl;SA<sub>t</sub>)]<sup>&beta;</sup>
 
-33. Marginal propensity to consume $c$ is a decreasing function of the
-    worker’s total wealth (higher the wealth lower the proportion spent
-    on consumption) defined as:
+34. SA<sub>t</sub> is the average savings. SA<sub>jt</sub> is the real saving of the j -th consumer.
 
-    $$c_ {jt} = \frac {1} {1+ \left [\text {tanh} \left (\frac {SA_ {jt}} {SAt} \right) 
-    ​    \right] ^ \beta}$$
+35. The revenue R<sub>it</sub> of a firm after the goods market closes is equal to:
 
-34. $ SA_t $ is the average savings. $ SA_ {jt} $ is the real saving of
-    the $ j $ -th consumer.
+    R<sub>it</sub> = P<sub>it</sub> Y<sub>it</sub>
 
-35. The revenue $ R_ {it} $ of a firm after the goods market closes is
-    equal to:
+36. At the end of t period, each firm computes benefits &pi;<sub>it-1</sub>.
 
-    $$R_ {it} = P_ {it} Y_ {it}$$
+37. If the benefits are positive, the shareholders of firms receive dividends:
 
-36. At the end of $ t $ period, each firm computes benefits
-    $ \pi_ {it-1} $ .
+    Div<sub>it-1</sub> = &delta; &pi;<sub>it-1</sub>
 
-37. If the benefits are positive, the shareholders of firms receive
-    dividends:
+38. Residual, after discounting dividends, is added to net value inherited from previous period, A<sub>it-1</sub>. Therefore, net worth of a profitable firm in t is:
 
-    $Div_ {it-1} = \delta \pi_ {it-1} $
+    A<sub>it</sub> = A<sub>it-1</sub>+&pi;<sub>it-1</sub> -Div<sub>it-1</sub> &equiv; A<sub>it-1</sub>+ (1-&delta;)&pi;<sub>it-1</sub>
 
-38. Residual, after discounting dividends, is added to net value
-    inherited from previous period, $A_{it-1}$. Therefore, net worth of
-    a profitable firm in $t$ is:
+39. If firm, say f, accumulates a net value A<sub>it</sub> < 0 goes bankrupt.
 
-    $A_{it} = A_{it-1}+\pi_{it-1} -Div_{it-1} \equiv A_{it-1}+ (1-\delta)\pi_{it-1} $
+40. Firm that goes bankrupt is replaced with another one of smaller size than the average of incumbent firms.
 
-39. If firm, say $f$, accumulates a net value $ A_ {it} <0 $
-    goes bankrupt.
-
-40. Firm that goes bankrupt is replaced with another one of smaller size
-    than the average of incumbent firms.
-
-41. Non-incumbent firms are those whose size is above and below 5%, is
-    used to calculate a more robust estimator of the average.
+41. Non-incumbent firms are those whose size is above and below 5%, is used to calculate a more robust estimator of the average.
 
 42. Bank’s capital
 
-    $E_{kt}=E_{kt-1} + \sum \limits_ {i \in \Theta} r_ {kit-1} B_ {kit-1} -BD_{kt-1}$
+    E<sub>kt</sub>=E<sub>kt-1</sub> + &Sigma;<sub>i &isin; &Theta;</sub> r<sub>kit-1</sub> B<sub>kit-1</sub> - BD<sub>kt-1</sub>
 
-43. $ \Theta $ is the bank’s loan portfolio, $ BD_{kt-1} $ represents
-    the portfolio of firms that go bankrupt.
+43. &Theta; is the bank’s loan portfolio, BD<sub>kt-1</sub> represents the portfolio of firms that go bankrupt.
 
-44. If a bank goes bankrupt, it is replaced with a copy of the
-    surviving banks.
+44. If a bank goes bankrupt, it is replaced with a copy of the surviving banks.
 
 
 Reference
