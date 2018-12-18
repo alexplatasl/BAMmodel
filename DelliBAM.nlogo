@@ -1532,97 +1532,87 @@ Initialization
     <th class="tg-0pky">Value</th>
   </tr>
   <tr>
-    <td class="tg-0pky">$I$</td>
+    <td class="tg-0pky">I</td>
     <td class="tg-0pky">Consumers</td>
     <td class="tg-0pky">500</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$J$</td>
+    <td class="tg-0pky">J</td>
     <td class="tg-0pky">Producers</td>
     <td class="tg-0pky">100</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$K$</td>
+    <td class="tg-0pky">K</td>
     <td class="tg-0pky">Banks</td>
     <td class="tg-0pky">10</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$T$</td>
+    <td class="tg-0pky">T</td>
     <td class="tg-0pky">Periods</td>
     <td class="tg-0pky">1000</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$C_P$</td>
+    <td class="tg-0pky">C<sub>P</sub></td>
     <td class="tg-0pky">Propensity to consume of poorest people</td>
     <td class="tg-0pky">1</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$C_R$</td>
+    <td class="tg-0pky">C<sub>R</sub></td>
     <td class="tg-0pky">Propensity to consume of richest people</td>
     <td class="tg-0pky">0.5</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$\sigma_P$</td>
-    <td class="tg-0pky">R&amp;D investment of poorest firms</td>
-    <td class="tg-0pky">0</td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">$\sigma_R$</td>
-    <td class="tg-0pky">R&amp;D investment of richest firms</td>
-    <td class="tg-0pky">0.1</td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">$h_\xi$</td>
+    <td class="tg-0pky">h<sub>&xi</sub></td>
     <td class="tg-0pky">Maximum growth rate of wages</td>
     <td class="tg-0pky">0.05</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$H_\eta$</td>
+    <td class="tg-0pky">H<sub>&eta</sub></td>
     <td class="tg-0pky">Maximum growth rate of prices</td>
     <td class="tg-0pky">0.1</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$H_\rho$</td>
+    <td class="tg-0pky">H<sub>&rho</sub></td>
     <td class="tg-0pky">Maximum growth rate of quantities</td>
     <td class="tg-0pky">0.1</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$H_\phi$</td>
+    <td class="tg-0pky">H<sub>&phi</sub></td>
     <td class="tg-0pky">Maximum amount of banks’ costs</td>
     <td class="tg-0pky">0.1</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$Z$</td>
+    <td class="tg-0pky">Z</td>
     <td class="tg-0pky">Number of trials in the goods market</td>
     <td class="tg-0pky">2</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$M$</td>
+    <td class="tg-0pky">M</td>
     <td class="tg-0pky">Number of trials in the labor market</td>
     <td class="tg-0pky">4</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$H$</td>
+    <td class="tg-0pky">H</td>
     <td class="tg-0pky">Number of trials in the credit market</td>
     <td class="tg-0pky">2</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$\hat{w}$</td>
+    <td class="tg-0pky">w&#770</td>
     <td class="tg-0pky">Minimum wage (set by a mandatory law)</td>
     <td class="tg-0pky">1</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$P_t$</td>
+    <td class="tg-0pky">P<sub>t<sub></td>
     <td class="tg-0pky">Base price</td>
     <td class="tg-0pky">1</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$\delta$</td>
+    <td class="tg-0pky">&delta</td>
     <td class="tg-0pky">Fixed fraction to share dividends</td>
     <td class="tg-0pky">0.15</td>
   </tr>
   <tr>
-    <td class="tg-0pky">$\bar{r}$</td>
+    <td class="tg-0pky">r&#772</td>
     <td class="tg-0pky">Interest rate (set by the central monetary authority)</td>
     <td class="tg-0pky">0.07</td>
   </tr>
