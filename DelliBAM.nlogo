@@ -99,7 +99,7 @@ to initialize-variables
     set my-potential-banks no-turtles
     set my-bank no-turtles
     set inventory-S 0
-    set individual-price-P 1 + random-poisson base-price
+    set individual-price-P base-price
     set revenue-R 0
     set retained-profits-pi 0
   ]
@@ -620,6 +620,10 @@ end
 
 to plot-size-of-firms
   histogram map ln-hopital [production-Y] of fn-incumbent-firms
+end
+
+to-report base-price
+  report 1.5
 end
 
 to-report average-real-interest-rate
@@ -1243,66 +1247,6 @@ PENS
 "max" 1.0 0 -13840069 true "" "plot max [production-Y] of fn-incumbent-firms"
 "min" 1.0 0 -2674135 true "" "plot min [production-Y] of fn-incumbent-firms"
 
-SLIDER
-3
-531
-196
-564
-base-production
-base-production
-1
-100
-6.0
-1
-1
-units
-HORIZONTAL
-
-SLIDER
-4
-567
-196
-600
-base-price
-base-price
-1
-100
-1.0
-1
-1
-$
-HORIZONTAL
-
-SLIDER
-4
-603
-196
-636
-base-savings
-base-savings
-2
-70
-2.0
-1
-1
-$
-HORIZONTAL
-
-SLIDER
-4
-639
-196
-672
-base-net-worth
-base-net-worth
-2
-100
-2.0
-1
-1
-$
-HORIZONTAL
-
 PLOT
 1516
 133
@@ -1403,6 +1347,21 @@ PENS
 "mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range max (list 0 ceiling ln-hopital min [patrimonial-base-E] of banks) max (list 1 (1 + ceiling ln-hopital max [patrimonial-base-E] of banks))\nplot ln-hopital mean [patrimonial-base-E] of banks"
 "max" 1.0 0 -2674135 true "" "plot ln-hopital max [patrimonial-base-E] of banks"
 "min" 1.0 0 -13345367 true "" "plot ln-hopital min [patrimonial-base-E] of banks"
+
+SLIDER
+5
+551
+197
+584
+base-savings
+base-savings
+2
+70
+2.0
+1
+1
+$
+HORIZONTAL
 
 @#$#@#$#@
 Overview
