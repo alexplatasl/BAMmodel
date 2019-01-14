@@ -83,7 +83,7 @@ end
 
 to initialize-variables
   ask firms [
-    set production-Y 1 + random-poisson base-production
+    set production-Y 1
     set labor-productivity-alpha 1
     set desired-production-Yd 0
     set expected-demand-De 1
@@ -93,12 +93,12 @@ to initialize-variables
     set number-of-vacancies-offered-V 0
     set minimum-wage-W-hat 1
     set wage-offered-Wb minimum-wage-W-hat
-    set net-worth-A 900 *  random-poisson base-net-worth
+    set net-worth-A 10
     set total-payroll-W 0
     set loan-B 0
     set my-potential-banks no-turtles
     set my-bank no-turtles
-    set inventory-S one-of [0 1]
+    set inventory-S 0
     set individual-price-P 1 + random-poisson base-price
     set revenue-R 0
     set retained-profits-pi 0
@@ -192,7 +192,7 @@ to adapt-expected-demand-or-price
   ask firms [
     let minimum-price-Pl ifelse-value (production-Y > 0)[( total-payroll-W + amount-of-Interest-to-pay ) / production-Y] [avg-market-price]
     (cf:ifelse
-      (inventory-S = 0 and individual-price-P >= avg-market-price)
+      (inventory-S = 0 and individual-price-P >= avg-market-price and production-Y > 0)
         [ set expected-demand-De max (list 1 ceiling (production-Y * (1 + production-shock-rho)))]
       (inventory-S > 0 and individual-price-P < avg-market-price)
         [ set expected-demand-De max (list 1 ceiling (production-Y * (1 - production-shock-rho)))]
@@ -268,7 +268,7 @@ to hiring-step [trials]
         set color green
         set employed? true
         set my-wage wage-employees
-        set contract random-poisson 10
+        set contract 8 + random-poisson 10
         set my-firm firms-here
         set my-potential-firms no-turtles
       ]
@@ -511,7 +511,7 @@ to replace-bankrupt
       set net-worth-A (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
       set my-potential-banks no-turtles
       set my-bank no-turtles
-      set inventory-S one-of [0 1]
+      set inventory-S 0
       set individual-price-P  1.26 * average-market-price
     ]
   ]
