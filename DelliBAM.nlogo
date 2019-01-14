@@ -550,8 +550,8 @@ to-report interest-rate-policy-rbar
 end
 
 to-report fn-incumbent-firms
-  let lower 1 + count firms * 0.05
-  let upper -1 + count firms * 0.95
+  let lower count firms * 0.05
+  let upper count firms * 0.95
   let ordered-firms sort-on [net-worth-A] firms
   let list-incumbent-firms sublist ordered-firms lower upper
   report (turtle-set list-incumbent-firms)
@@ -624,6 +624,10 @@ end
 
 to-report base-price
   report 1.5
+end
+
+to-report base-savings
+  report 2
 end
 
 to-report average-real-interest-rate
@@ -822,6 +826,7 @@ false
 PENS
 "default" 1.0 0 -16777216 true "" "set-plot-x-range 0  (ticks + 5)\nset-plot-y-range 0  0.3\nunemployment-rate"
 "pen-1" 1.0 2 -7500403 true "" "plot 0"
+"pen-2" 1.0 0 -2674135 true "" "plot 0.10"
 
 SLIDER
 2
@@ -1347,21 +1352,6 @@ PENS
 "mean" 1.0 0 -16777216 true "" "set-plot-x-range 0 (ticks + 5)\nset-plot-y-range max (list 0 ceiling ln-hopital min [patrimonial-base-E] of banks) max (list 1 (1 + ceiling ln-hopital max [patrimonial-base-E] of banks))\nplot ln-hopital mean [patrimonial-base-E] of banks"
 "max" 1.0 0 -2674135 true "" "plot ln-hopital max [patrimonial-base-E] of banks"
 "min" 1.0 0 -13345367 true "" "plot ln-hopital min [patrimonial-base-E] of banks"
-
-SLIDER
-5
-551
-197
-584
-base-savings
-base-savings
-2
-70
-2.0
-1
-1
-$
-HORIZONTAL
 
 @#$#@#$#@
 Overview
