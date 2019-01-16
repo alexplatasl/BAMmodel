@@ -4,7 +4,7 @@ Overview
 Purpose
 -------
 
-Defend a paradigm (methodological and explanatory) ascending for economic theory, rooted in the science of complexity. In which, there are no equations that govern the actions of economic agents, but simply a set of rules encoded algorithmically from which emanates an adaptive behavior among agents at the micro level and that eventually leads to a macroeconomic equilibrium.
+Modeling an economy with stable macro signals, that works as a benchmark for studying the effects of the agent activities, e.g. extortion, at the service of the elaboration of public policies..
 
 Entities, state variables, and scales
 -------------------------------------
