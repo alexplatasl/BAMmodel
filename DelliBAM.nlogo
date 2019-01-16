@@ -1360,7 +1360,7 @@ Overview
 Purpose
 -------
 
-Defend a paradigm (methodological and explanatory) ascending for economic theory, rooted in the science of complexity. In which, there are no equations that govern the actions of economic agents, but simply a set of rules encoded algorithmically from which emanates an adaptive behavior among agents at the micro level and that eventually leads to a macroeconomic equilibrium.
+Modeling an economy with stable macro signals, that works as a benchmark for studying the effects of the agent activities, e.g. extortion, at the service of the elaboration of public policies.
 
 Entities, state variables, and scales
 -------------------------------------
@@ -1409,7 +1409,7 @@ Model as a whole has the objective of generating adaptive behavior of the agents
 
 ### Adaptation
 
-Firms can adapt in each period $t$ price or amount to supply (only one of the two strategies). Adaptation of each strategy depends on the condition of the firm (level of excessive supply / demand in the previous period) and/or the market environment (the difference between the individual price and the market price in the previous period).
+Firms can adapt in each period t price or amount to supply (only one of the two strategies). Adaptation of each strategy depends on the condition of the firm (level of excessive supply / demand in the previous period) and/or the market environment (the difference between the individual price and the market price in the previous period).
 
 ### Objectives
 
@@ -2038,39 +2038,10 @@ NetLogo 6.0.4
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="experiment" repetitions="10" runMetricsEveryStep="false">
+  <experiment name="stylized-facts" repetitions="100" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <metric>ticks</metric>
-    <metric>count workers with [not employed?] / count workers</metric>
-    <metric>annualized-inflation</metric>
-    <steppedValueSet variable="wages-shock-xi" first="0.07" step="0.01" last="0.08"/>
-    <steppedValueSet variable="interest-shock-phi" first="0.07" step="0.01" last="0.08"/>
-    <steppedValueSet variable="price-shock-eta" first="0.07" step="0.01" last="0.08"/>
-    <steppedValueSet variable="production-shock-rho" first="0.07" step="0.01" last="0.08"/>
-  </experiment>
-  <experiment name="baseVariables" repetitions="2" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <metric>ticks</metric>
-    <steppedValueSet variable="base-price" first="1" step="1" last="10"/>
-    <steppedValueSet variable="base-savings" first="1" step="1" last="10"/>
-    <steppedValueSet variable="base-net-worth" first="1" step="1" last="10"/>
-    <steppedValueSet variable="base-production" first="1" step="1" last="10"/>
-  </experiment>
-  <experiment name="chosen-strategies" repetitions="10" runMetricsEveryStep="true">
-    <setup>setup</setup>
-    <go>go</go>
-    <metric>sum [chosen-strategies] of firms</metric>
-    <enumeratedValueSet variable="beta">
-      <value value="0.87"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="estabilizacion" repetitions="100" runMetricsEveryStep="true">
-    <setup>setup</setup>
-    <go>go</go>
-    <metric>fn-unemployment-rate</metric>
-    <metric>quarterly-inflation</metric>
+    <metric>[net-worth-A] of fn-incumbent-firms</metric>
   </experiment>
 </experiments>
 @#$#@#$#@
