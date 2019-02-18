@@ -220,7 +220,7 @@ Submodels
 ---------
 
 1. Production with constant returns to scale and
-   technological multiplier. ![](https://latex.codecogs.com/gif.latex?$Y_{it}&space;=&space;\alpha_&space;{it}&space;L_{it},&space;\alpha_{it}>&space;0$)$Y_{it} = \alpha_ {it} L_{it}, \alpha_{it}> 0$.
+   technological multiplier. ![alt text](https://latex.codecogs.com/gif.latex?Y_{it}&space;=&space;\alpha_&space;{it}&space;L_{it},&space;\alpha_{it}>&space;0)
 
 2. Desired production level $ Y_ {it} ^ d $ is equal to the expected
    demand $ D_ 
