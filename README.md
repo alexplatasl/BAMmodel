@@ -222,29 +222,29 @@ Submodels
 1.  Production with constant returns to scale and
     technological multiplier. $Y_{it} = \alpha_ {it} L_{it}, \alpha_{it}> 0 $.
 
-2.  Desired production level $ Y_ {it} ^ d $ is equal to the expected
-    demand $ D_ 
-    ​    {it} ^ d $.
+2. Desired production level $ Y_ {it} ^ d $ is equal to the expected
+   demand $ D_ 
+   ​    {it} ^ d $.
 
-3.  Desired labor force (employees) $ L_ {it} ^ d $ is
-    $ L_ {it} ^ d = \frac {Y_ {it} ^ d} {\alpha_ {it}} $
+3. Desired labor force (employees) $ L_ {it} ^ d $ is
+   $ L_ {it} ^ d = \frac {Y_ {it} ^ d} {\alpha_ {it}} $
 
-4.  Current number of employees $ L_ {it} ^ 0 $ is the sum of employees
-    with and without a valid contract.
+4. Current number of employees $ L_ {it} ^ 0 $ is the sum of employees
+   with and without a valid contract.
 
-5.  Number of vacancies offered by firms $ V_ {it} $ is
-    $ V_ {it} = max (L_ {it} ^ d - L_ {it} ^ 0, 0) $.
+5. Number of vacancies offered by firms $ V_ {it} $ is
+   $ V_ {it} = max (L_ {it} ^ d - L_ {it} ^ 0, 0) $.
 
-6.  $ \hat {w_t} $ is the minimum wage determined by law.
+6. $ \hat {w_t} $ is the minimum wage determined by law.
 
-7.  If there are no vacancies $ V_ {it} = 0 $, wage offered is:
-    $ w_ {it} ^ b = max (\hat {w_t}, w_ {it-1}) $,
+7. If there are no vacancies $ V_ {it} = 0 $, wage offered is:
+   $ w_ {it} ^ b = max (\hat {w_t}, w_ {it-1}) $,
 
-8.  If number of vacancies is greater than 0, wage offered is:
-    $ w_ {it} ^ b = max (\hat {w_t}, w_ {it-1} (1+ \xi_ {it})) $,
+8. If number of vacancies is greater than 0, wage offered is:
+   $ w_ {it} ^ b = max (\hat {w_t}, w_ {it-1} (1+ \xi_ {it})) $,
 
-9.  $ \xi_ {it} $ is a random term evenly distributed between
-    $ (0, h _ {\xi}) $.
+9. $ \xi_ {it} $ is a random term evenly distributed between
+   $ (0, h _ {\xi}) $.
 
 10. At the beginning of each period, a firm has a net value $ A_ {it} $.
     If total payroll to be paid $ W_ {it} $ is greater than $ A_ {it} $,
