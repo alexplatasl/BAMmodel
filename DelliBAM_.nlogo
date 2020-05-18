@@ -187,7 +187,7 @@ to firms-calculate-production
   array:set quarters-average-price (ticks mod 4) mean [individual-price-P] of firms
   let actual-price array:item quarters-average-price (ticks mod 4)
   let previous-price array:item quarters-average-price ((ticks - 1) mod 4)
-  let quarter-inflation ((actual-price - previous-price) / previous-price) * 100
+  let quarter-inflation ((actual-price - previous-price) / ifelse-value previous-price = 0 [0.00001][previous-price]) * 100    ; with safe division
   array:set quarters-inflation (ticks mod 4) quarter-inflation
 end
 
@@ -213,7 +213,7 @@ end
 to labor-market
   let law-minimum-wage ifelse-value (ticks > 0 and ticks mod 4 = 0 )[fn-minimum-wage-W-hat][[minimum-wage-W-hat] of firms]
   ask firms [
-    set desired-labor-force-Ld ceiling (desired-production-Yd / labor-productivity-alpha); submodel 3
+    set desired-labor-force-Ld ceiling (desired-production-Yd / ifelse-value labor-productivity-alpha = 0 [0.00001][labor-productivity-alpha]); submodel 3
     set current-numbers-employees-L0 count my-employees; summodel 4
     set number-of-vacancies-offered-V max(list (desired-labor-force-Ld - current-numbers-employees-L0) 0 ); submodel 5
     if (ticks > 0 and ticks mod 4 = 0 )
@@ -408,10 +408,10 @@ to goods-market ;; an observer procedure
     ifelse (any? turtle-set my-large-store)
       [
         let id-store [who] of my-large-store
-        set my-stores (turtle-set my-large-store n-of (goods-market-Z - 1) firms with [who != id-store])
+        set my-stores (turtle-set my-large-store n-of ( min list (goods-market-Z - 1) count firms with [who != id-store] ) firms with [who != id-store])    ; safe n-of: n-of ( min list NNN count ASET ) ASET
       ]
       [
-        set my-stores n-of goods-market-Z firms
+        set my-stores n-of ( min list goods-market-Z count firms ) firms
       ]
     set my-large-store max-one-of my-stores [production-Y]
     if (count my-stores != goods-market-Z) [show (word "Number of my stores " count my-stores " who " who)]
@@ -507,7 +507,7 @@ to replace-bankrupt
       set size 1.2
       set shape "factory"
       ;-----------------
-      set production-Y ceiling mean [production-Y] of incumbent-firms
+      set production-Y ceiling mean [production-Y] of incumbent-firms    ; error if [production-Y] of incumbent-firms is an empty list
       set labor-productivity-alpha 1
       set my-employees no-turtles
       set minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
@@ -554,8 +554,10 @@ to-report interest-rate-policy-rbar
 end
 
 to-report fn-incumbent-firms
-  let lower count firms * 0.05
-  let upper count firms * 0.95
+  ; this is to produce a trimmed agentset
+  let num_firms count firms
+  let lower floor (num_firms * 0.05)
+  let upper (num_firms - lower)
   let ordered-firms sort-on [net-worth-A] firms
   let list-incumbent-firms sublist ordered-firms lower upper
   report (turtle-set list-incumbent-firms)
