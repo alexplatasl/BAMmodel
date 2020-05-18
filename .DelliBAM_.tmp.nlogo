@@ -74,7 +74,7 @@ banks-own[
 ; Setup procedures
 to setup
   clear-all
-  set seed_used new-seed    ; new-seed generate a seed and it's traced in seed_used
+  set seed_used new-seed; new-seed generate a seed and it's traced in seed_used
   random-seed seed_used
 
   start-firms number-of-firms
