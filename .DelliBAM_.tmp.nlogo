@@ -499,7 +499,7 @@ end
 to replace-bankrupt
   if (count firms < number-of-firms)[
     let incumbent-firms fn-incumbent-firms
-    if (not any? incumbent-firms) [ user-message ( "what to do if all firms go bankrupt?" ) ]   ; error caching routine
+
     create-firms (number-of-firms - count firms) [
       set x-position random-pxcor * 0.9
       set y-position random-pycor * 0.9
