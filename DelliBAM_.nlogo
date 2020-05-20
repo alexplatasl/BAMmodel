@@ -1,6 +1,6 @@
 ; Bottom-up Adaptive Macroeconomics
 
-extensions [palette array cf] ; arrays are used to enhance performance.
+extensions [palette array] ; arrays are used to enhance performance.
 
 breed[firms firm]          ; the firms in the simulation, 500 by default.
 breed[workers worker]      ; the workers or households, 5 * number of firms by default.
@@ -9,6 +9,14 @@ breed[banks bank]          ; the banks, max of credit-market-h + 1 and number of
 globals [
   quarters-average-price   ; an array storing the average price for the last 4 quarters.
   quarters-inflation       ; an array storing the inflation for the last 4 quarters.
+
+  seed_used                ; to store the seed of the random generator, for replicability
+
+  new_firms-production-Y   ; stats for new firms
+  new_firms-minimum-wage-W-hat
+  new_firms-wage-offered-Wb
+  new_firms-net-worth-A
+  new_firms-individual-price-P
 ]
 
 firms-own[
@@ -72,6 +80,8 @@ banks-own[
 ; Setup procedures
 to setup
   clear-all
+  set seed_used new-seed    ; new-seed generate a seed and it's traced in seed_used
+  random-seed seed_used
 
   start-firms number-of-firms
   start-workers round (number-of-firms * 5)
@@ -183,7 +193,7 @@ to firms-calculate-production
   array:set quarters-average-price (ticks mod 4) mean [individual-price-P] of firms
   let actual-price array:item quarters-average-price (ticks mod 4)
   let previous-price array:item quarters-average-price ((ticks - 1) mod 4)
-  let quarter-inflation ((actual-price - previous-price) / previous-price) * 100
+  let quarter-inflation ((actual-price - previous-price) / ifelse-value previous-price = 0 [0.00001][previous-price]) * 100    ; with safe division
   array:set quarters-inflation (ticks mod 4) quarter-inflation
 end
 
@@ -191,7 +201,7 @@ to adapt-expected-demand-or-price
   let avg-market-price average-market-price
   ask firms [
     let minimum-price-Pl ifelse-value (production-Y > 0)[( total-payroll-W + amount-of-Interest-to-pay ) / production-Y] [avg-market-price]
-    (cf:ifelse
+    (ifelse
       (inventory-S = 0 and individual-price-P >= avg-market-price and production-Y > 0)
         [ set expected-demand-De max (list 1 ceiling (production-Y * (1 + production-shock-rho)))]
       (inventory-S > 0 and individual-price-P < avg-market-price)
@@ -209,7 +219,7 @@ end
 to labor-market
   let law-minimum-wage ifelse-value (ticks > 0 and ticks mod 4 = 0 )[fn-minimum-wage-W-hat][[minimum-wage-W-hat] of firms]
   ask firms [
-    set desired-labor-force-Ld ceiling (desired-production-Yd / labor-productivity-alpha); submodel 3
+    set desired-labor-force-Ld ceiling (desired-production-Yd / ifelse-value labor-productivity-alpha = 0 [0.00001][labor-productivity-alpha]); submodel 3
     set current-numbers-employees-L0 count my-employees; summodel 4
     set number-of-vacancies-offered-V max(list (desired-labor-force-Ld - current-numbers-employees-L0) 0 ); submodel 5
     if (ticks > 0 and ticks mod 4 = 0 )
@@ -404,10 +414,10 @@ to goods-market ;; an observer procedure
     ifelse (any? turtle-set my-large-store)
       [
         let id-store [who] of my-large-store
-        set my-stores (turtle-set my-large-store n-of (goods-market-Z - 1) firms with [who != id-store])
+        set my-stores (turtle-set my-large-store n-of ( min list (goods-market-Z - 1) count firms with [who != id-store] ) firms with [who != id-store])    ; safe n-of: n-of ( min list NNN count ASET ) ASET
       ]
       [
-        set my-stores n-of goods-market-Z firms
+        set my-stores n-of ( min list goods-market-Z count firms ) firms
       ]
     set my-large-store max-one-of my-stores [production-Y]
     if (count my-stores != goods-market-Z) [show (word "Number of my stores " count my-stores " who " who)]
@@ -493,8 +503,15 @@ to firms-banks-survive
 end
 
 to replace-bankrupt
+  let incumbent-firms fn-incumbent-firms
+  if (any? incumbent-firms) [    ; evaluate and grab trimmed statistics of incumbent-firms
+    set new_firms-production-Y ceiling mean [production-Y] of incumbent-firms    ; error if [production-Y] of incumbent-firms is an empty list
+    set new_firms-minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
+    set new_firms-wage-offered-Wb (1 - size-replacing-firms) * mean [wage-offered-Wb] of incumbent-firms
+    set new_firms-net-worth-A (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
+    set new_firms-individual-price-P  1.26 * average-market-price
+  ]
   if (count firms < number-of-firms)[
-    let incumbent-firms fn-incumbent-firms
     create-firms (number-of-firms - count firms) [
       set x-position random-pxcor * 0.9
       set y-position random-pycor * 0.9
@@ -503,16 +520,16 @@ to replace-bankrupt
       set size 1.2
       set shape "factory"
       ;-----------------
-      set production-Y ceiling mean [production-Y] of incumbent-firms
+      set production-Y new_firms-production-Y
       set labor-productivity-alpha 1
       set my-employees no-turtles
-      set minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
-      set wage-offered-Wb (1 - size-replacing-firms) * mean [wage-offered-Wb] of incumbent-firms
-      set net-worth-A (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
+      set minimum-wage-W-hat new_firms-minimum-wage-W-hat
+      set wage-offered-Wb new_firms-wage-offered-Wb
+      set net-worth-A new_firms-net-worth-A
       set my-potential-banks no-turtles
       set my-bank no-turtles
       set inventory-S 0
-      set individual-price-P  1.26 * average-market-price
+      set individual-price-P  new_firms-individual-price-P
     ]
   ]
 
@@ -550,8 +567,10 @@ to-report interest-rate-policy-rbar
 end
 
 to-report fn-incumbent-firms
-  let lower count firms * 0.05
-  let upper count firms * 0.95
+  ; this is to produce a trimmed agentset
+  let num_firms count firms
+  let lower floor (num_firms * 0.05)
+  let upper (num_firms - lower)
   let ordered-firms sort-on [net-worth-A] firms
   let list-incumbent-firms sublist ordered-firms lower upper
   report (turtle-set list-incumbent-firms)
@@ -712,7 +731,7 @@ number-of-firms
 number-of-firms
 2
 1000
-100.0
+10.0
 2
 1
 NIL
@@ -2033,7 +2052,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.4
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
