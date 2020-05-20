@@ -10,13 +10,13 @@ globals [
   quarters-average-price   ; an array storing the average price for the last 4 quarters.
   quarters-inflation       ; an array storing the inflation for the last 4 quarters.
 
-  seed_used                ; to store the seed of the random generator, for replicability
+  seed-used                ; to store the seed of the random generator, for replicability
 
-  new_firms-production-Y   ; stats for new firms
-  new_firms-minimum-wage-W-hat
-  new_firms-wage-offered-Wb
-  new_firms-net-worth-A
-  new_firms-individual-price-P
+  new-firms-production-Y   ; stats for new firms
+  new-firms-minimum-wage-W-hat
+  new-firms-wage-offered-Wb
+  new-firms-net-worth-A
+  new-firms-individual-price-P
 ]
 
 firms-own[
@@ -80,8 +80,8 @@ banks-own[
 ; Setup procedures
 to setup
   clear-all
-  set seed_used new-seed    ; new-seed generate a seed and it's traced in seed_used
-  random-seed seed_used
+  set seed-used new-seed    ; new-seed generate a seed and it's traced in seed-used
+  random-seed seed-used
 
   start-firms number-of-firms
   start-workers round (number-of-firms * 5)
@@ -505,11 +505,11 @@ end
 to replace-bankrupt
   let incumbent-firms fn-incumbent-firms
   if (any? incumbent-firms) [    ; evaluate and grab trimmed statistics of incumbent-firms
-    set new_firms-production-Y ceiling mean [production-Y] of incumbent-firms    ; error if [production-Y] of incumbent-firms is an empty list
-    set new_firms-minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
-    set new_firms-wage-offered-Wb (1 - size-replacing-firms) * mean [wage-offered-Wb] of incumbent-firms
-    set new_firms-net-worth-A (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
-    set new_firms-individual-price-P  1.26 * average-market-price
+    set new-firms-production-Y ceiling mean [production-Y] of incumbent-firms    ; error if [production-Y] of incumbent-firms is an empty list
+    set new-firms-minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
+    set new-firms-wage-offered-Wb (1 - size-replacing-firms) * mean [wage-offered-Wb] of incumbent-firms
+    set new-firms-net-worth-A (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
+    set new-firms-individual-price-P  1.26 * average-market-price
   ]
   if (count firms < number-of-firms)[
     create-firms (number-of-firms - count firms) [
@@ -520,16 +520,16 @@ to replace-bankrupt
       set size 1.2
       set shape "factory"
       ;-----------------
-      set production-Y new_firms-production-Y
+      set production-Y new-firms-production-Y
       set labor-productivity-alpha 1
       set my-employees no-turtles
-      set minimum-wage-W-hat new_firms-minimum-wage-W-hat
-      set wage-offered-Wb new_firms-wage-offered-Wb
-      set net-worth-A new_firms-net-worth-A
+      set minimum-wage-W-hat new-firms-minimum-wage-W-hat
+      set wage-offered-Wb new-firms-wage-offered-Wb
+      set net-worth-A new-firms-net-worth-A
       set my-potential-banks no-turtles
       set my-bank no-turtles
       set inventory-S 0
-      set individual-price-P  new_firms-individual-price-P
+      set individual-price-P  new-firms-individual-price-P
     ]
   ]
 
@@ -568,9 +568,9 @@ end
 
 to-report fn-incumbent-firms
   ; this is to produce a trimmed agentset
-  let num_firms count firms
-  let lower floor (num_firms * 0.05)
-  let upper (num_firms - lower)
+  let num-firms count firms
+  let lower floor (num-firms * 0.05)
+  let upper (num-firms - lower)
   let ordered-firms sort-on [net-worth-A] firms
   let list-incumbent-firms sublist ordered-firms lower upper
   report (turtle-set list-incumbent-firms)
