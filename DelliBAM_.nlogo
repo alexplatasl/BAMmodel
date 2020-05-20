@@ -11,6 +11,12 @@ globals [
   quarters-inflation       ; an array storing the inflation for the last 4 quarters.
 
   seed_used                ; to store the seed of the random generator, for replicability
+
+  new_firms-production-Y   ; stats for new firms
+  new_firms-minimum-wage-W-hat
+  new_firms-wage-offered-Wb
+  new_firms-net-worth-A
+  new_firms-individual-price-P
 ]
 
 firms-own[
@@ -497,9 +503,15 @@ to firms-banks-survive
 end
 
 to replace-bankrupt
+  let incumbent-firms fn-incumbent-firms
+  if (any? incumbent-firms) [    ; evaluate and grab trimmed statistics of incumbent-firms
+    set new_firms-production-Y ceiling mean [production-Y] of incumbent-firms    ; error if [production-Y] of incumbent-firms is an empty list
+    set new_firms-minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
+    set new_firms-wage-offered-Wb (1 - size-replacing-firms) * mean [wage-offered-Wb] of incumbent-firms
+    set new_firms-net-worth-A (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
+    set new_firms-individual-price-P  1.26 * average-market-price
+  ]
   if (count firms < number-of-firms)[
-    let incumbent-firms fn-incumbent-firms
-    if (not any? incumbent-firms) [ user-message ( "what to do if all firms go bankrupt?" ) ]   ; error caching routine
     create-firms (number-of-firms - count firms) [
       set x-position random-pxcor * 0.9
       set y-position random-pycor * 0.9
@@ -508,16 +520,16 @@ to replace-bankrupt
       set size 1.2
       set shape "factory"
       ;-----------------
-      set production-Y ceiling mean [production-Y] of incumbent-firms    ; error if [production-Y] of incumbent-firms is an empty list
+      set production-Y new_firms-production-Y
       set labor-productivity-alpha 1
       set my-employees no-turtles
-      set minimum-wage-W-hat min [minimum-wage-W-hat] of incumbent-firms
-      set wage-offered-Wb (1 - size-replacing-firms) * mean [wage-offered-Wb] of incumbent-firms
-      set net-worth-A (1 - size-replacing-firms) * mean [net-worth-A] of incumbent-firms
+      set minimum-wage-W-hat new_firms-minimum-wage-W-hat
+      set wage-offered-Wb new_firms-wage-offered-Wb
+      set net-worth-A new_firms-net-worth-A
       set my-potential-banks no-turtles
       set my-bank no-turtles
       set inventory-S 0
-      set individual-price-P  1.26 * average-market-price
+      set individual-price-P  new_firms-individual-price-P
     ]
   ]
 
@@ -719,7 +731,7 @@ number-of-firms
 number-of-firms
 2
 1000
-100.0
+10.0
 2
 1
 NIL
