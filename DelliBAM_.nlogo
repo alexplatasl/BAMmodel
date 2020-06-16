@@ -447,7 +447,7 @@ end
 ;;;;;;;;;; to firms-pay  ;;;;;;;;;;
 to firms-pay
   ask firms [
-    set revenue-R individual-price-P * production-Y
+    set revenue-R individual-price-P * (production-Y - inventory-S)
     set gross-profits revenue-R - total-payroll-W
     let principal-and-Interest amount-of-Interest-to-pay
     if (amount-of-Interest-to-pay > 0)[
